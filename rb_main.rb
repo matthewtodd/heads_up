@@ -19,5 +19,8 @@ end
 
 if $0 == __FILE__ then
   rb_main_init
-  OSX.NSApplicationMain(0, nil)
+
+  OSX::NSApplication.sharedApplication
+  OSX::NSApp.setDelegate(HeadsUp.alloc.init)
+  OSX::NSApp.run
 end

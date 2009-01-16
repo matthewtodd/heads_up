@@ -1,7 +1,7 @@
 require 'osx/cocoa'
 
 class HeadsUpWindowController < OSX::NSWindowController
-  def init
-    initWithWindow(HeadsUpWindow.alloc.init)
+  def initWithLocation_command(location, command)
+    initWithWindow(HeadsUpWindow.alloc.initWithLocation(location))
   end
 end

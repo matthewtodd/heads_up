@@ -2,13 +2,18 @@ require 'osx/cocoa'
 
 class HeadsUpWindowController < OSX::NSWindowController
   def initWithLocation_command(location, command)
-    initWithWindow(HeadsUpWindow.alloc.initWithLocation(location))
     @command = command
+    initWithWindow(HeadsUpWindow.alloc.initWithLocation(location))
     start_window_update_timer
+    self
   end
 
   def update_window_contents
-    window.update_contents(`#{@command}`)
+    window.updateContents(`#{@command}`)
+  end
+
+  def update_window_position
+    window.updatePosition
   end
 
   private

@@ -26,6 +26,7 @@ class HeadsUpWindow < OSX::NSWindow
     self
   end
 
+  # FIXME contentView.setString isn't working with tabs?!?
   def updateContents(string)
     string = right_justify(string) if @location == :bottom_right
     contentView.setString(bottom_justify(string))

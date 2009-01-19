@@ -16,6 +16,8 @@ class HeadsUpWindow < OSX::NSWindow
     setAutodisplay(true)
     setBackgroundColor(OSX::NSColor.clearColor)
     setContentView(HeadsUpTextView.alloc.initWithFrame(frame))
+    # FIXME this setAlignment call belongs somewhere else
+    contentView.setAlignment(OSX::NSRightTextAlignment) if location == :bottom_right
     setHasShadow(false)
     setIgnoresMouseEvents(true)
     setLevel(OSX::KCGDesktopWindowLevel)
@@ -28,7 +30,6 @@ class HeadsUpWindow < OSX::NSWindow
 
   # FIXME contentView.setString isn't working with tabs?!?
   def updateContents(string)
-    string = right_justify(string) if @location == :bottom_right
     contentView.setString(bottom_justify(string))
   end
 
@@ -44,13 +45,6 @@ class HeadsUpWindow < OSX::NSWindow
     lines = string.split(/\n/)
     (ROWS - lines.size).times { lines.unshift('') }
     lines.join("\n")
-  end
-
-  # FIXME this will blow up when there are more than COLS columns
-  def right_justify(string)
-    lines = string.split(/\n/)
-    width = lines.map { |line| line.length }.max
-    lines.map { |line| (' ' * (COLS - width)) + line }.join("\n")
   end
 
   def frame_for_location

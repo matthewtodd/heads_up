@@ -16,6 +16,8 @@
 		E727576F0F20789900E2EBF4 /* HeadsUpWindowController.rb in Resources */ = {isa = PBXBuildFile; fileRef = E727576E0F20789900E2EBF4 /* HeadsUpWindowController.rb */; };
 		E727577C0F20792A00E2EBF4 /* HeadsUpWindow.rb in Resources */ = {isa = PBXBuildFile; fileRef = E727577B0F20792A00E2EBF4 /* HeadsUpWindow.rb */; };
 		E72757A30F207C4500E2EBF4 /* HeadsUpTextView.rb in Resources */ = {isa = PBXBuildFile; fileRef = E72757A20F207C4500E2EBF4 /* HeadsUpTextView.rb */; };
+		E77D5A4F0F24A900005DF4B7 /* PreferencePanes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E77D5A4E0F24A900005DF4B7 /* PreferencePanes.framework */; };
+		E77D5B840F24AC17005DF4B7 /* HeadsUpPreferencePane.nib in Resources */ = {isa = PBXBuildFile; fileRef = E77D5B820F24AC17005DF4B7 /* HeadsUpPreferencePane.nib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildStyle section */
@@ -35,6 +37,16 @@
 		};
 /* End PBXBuildStyle section */
 
+/* Begin PBXContainerItemProxy section */
+		E77D5A410F24A827005DF4B7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4DDCA7030ACC9A6100E082CE /* HeadsUp */;
+			remoteInfo = HeadsUp;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
@@ -47,6 +59,10 @@
 		E727576E0F20789900E2EBF4 /* HeadsUpWindowController.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = HeadsUpWindowController.rb; sourceTree = "<group>"; };
 		E727577B0F20792A00E2EBF4 /* HeadsUpWindow.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = HeadsUpWindow.rb; sourceTree = "<group>"; };
 		E72757A20F207C4500E2EBF4 /* HeadsUpTextView.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = HeadsUpTextView.rb; sourceTree = "<group>"; };
+		E77D5A3C0F24A81D005DF4B7 /* HeadsUpPreferencePane.prefPane */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HeadsUpPreferencePane.prefPane; sourceTree = BUILT_PRODUCTS_DIR; };
+		E77D5A3D0F24A81D005DF4B7 /* HeadsUpPreferencePane-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "HeadsUpPreferencePane-Info.plist"; sourceTree = "<group>"; };
+		E77D5A4E0F24A900005DF4B7 /* PreferencePanes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PreferencePanes.framework; path = /System/Library/Frameworks/PreferencePanes.framework; sourceTree = "<absolute>"; };
+		E77D5B830F24AC17005DF4B7 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/HeadsUpPreferencePane.nib; sourceTree = "<group>"; };
 		E8F5E24E03AEB6EC03A81C6F /* RubyCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RubyCocoa.framework; path = /Library/Frameworks/RubyCocoa.framework; sourceTree = "<absolute>"; };
 		E8F5E25803AEB7C803A81C6F /* rb_main.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = rb_main.rb; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -58,6 +74,14 @@
 			files = (
 				4DDCA70C0ACC9A6100E082CE /* Cocoa.framework in Frameworks */,
 				4DDCA70D0ACC9A6100E082CE /* RubyCocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E77D5A3A0F24A81D005DF4B7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E77D5A4F0F24A900005DF4B7 /* PreferencePanes.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -74,6 +98,7 @@
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E77D5A4E0F24A900005DF4B7 /* PreferencePanes.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
 				E8F5E24E03AEB6EC03A81C6F /* RubyCocoa.framework */,
 			);
@@ -93,6 +118,7 @@
 			isa = PBXGroup;
 			children = (
 				4DDCA7120ACC9A6100E082CE /* HeadsUp.app */,
+				E77D5A3C0F24A81D005DF4B7 /* HeadsUpPreferencePane.prefPane */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -110,6 +136,8 @@
 				E727577B0F20792A00E2EBF4 /* HeadsUpWindow.rb */,
 				E72757A20F207C4500E2EBF4 /* HeadsUpTextView.rb */,
 				E727576E0F20789900E2EBF4 /* HeadsUpWindowController.rb */,
+				E77D5A3D0F24A81D005DF4B7 /* HeadsUpPreferencePane-Info.plist */,
+				E77D5B820F24AC17005DF4B7 /* HeadsUpPreferencePane.nib */,
 			);
 			name = HeadsUp;
 			sourceTree = "<group>";
@@ -172,6 +200,63 @@
 			productReference = 4DDCA7120ACC9A6100E082CE /* HeadsUp.app */;
 			productType = "com.apple.product-type.application";
 		};
+		E77D5A3B0F24A81D005DF4B7 /* HeadsUpPreferencePane */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E77D5A3E0F24A81D005DF4B7 /* Build configuration list for PBXNativeTarget "HeadsUpPreferencePane" */;
+			buildPhases = (
+				E77D5A380F24A81D005DF4B7 /* Resources */,
+				E77D5A390F24A81D005DF4B7 /* Sources */,
+				E77D5A3A0F24A81D005DF4B7 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INFOPLIST_FILE = "HeadsUpPreferencePane-Info.plist";
+				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = HeadsUpPreferencePane;
+				WRAPPER_EXTENSION = bundle;
+				ZERO_LINK = YES;
+			};
+			dependencies = (
+				E77D5A420F24A827005DF4B7 /* PBXTargetDependency */,
+			);
+			name = HeadsUpPreferencePane;
+			productName = HeadsUpPreferencePane;
+			productReference = E77D5A3C0F24A81D005DF4B7 /* HeadsUpPreferencePane.prefPane */;
+			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
+<plist version=\"1.0\">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>${EXECUTABLE_NAME}</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.yourcompany.HeadsUpPreferencePane</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundlePackageType</key>
+	<string>BNDL</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>1.0</string>
+</dict>
+</plist>
+";
+			productType = "com.apple.product-type.bundle";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -189,6 +274,7 @@
 			projectDirPath = "";
 			targets = (
 				4DDCA7030ACC9A6100E082CE /* HeadsUp */,
+				E77D5A3B0F24A81D005DF4B7 /* HeadsUpPreferencePane */,
 			);
 		};
 /* End PBXProject section */
@@ -207,6 +293,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E77D5A380F24A81D005DF4B7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E77D5B840F24AC17005DF4B7 /* HeadsUpPreferencePane.nib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -218,7 +312,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E77D5A390F24A81D005DF4B7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E77D5A420F24A827005DF4B7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4DDCA7030ACC9A6100E082CE /* HeadsUp */;
+			targetProxy = E77D5A410F24A827005DF4B7 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
@@ -227,6 +336,14 @@
 				089C165DFE840E0CC02AAC07 /* English */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		E77D5B820F24AC17005DF4B7 /* HeadsUpPreferencePane.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E77D5B830F24AC17005DF4B7 /* English */,
+			);
+			name = HeadsUpPreferencePane.nib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -278,6 +395,56 @@
 			};
 			name = Release;
 		};
+		E77D5A3F0F24A81D005DF4B7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INFOPLIST_FILE = "HeadsUpPreferencePane-Info.plist";
+				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = HeadsUpPreferencePane;
+				WRAPPER_EXTENSION = prefPane;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		E77D5A400F24A81D005DF4B7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INFOPLIST_FILE = "HeadsUpPreferencePane-Info.plist";
+				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = HeadsUpPreferencePane;
+				WRAPPER_EXTENSION = prefPane;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -295,6 +462,15 @@
 			buildConfigurations = (
 				4DDCA70F0ACC9A6100E082CE /* Debug */,
 				4DDCA7100ACC9A6100E082CE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E77D5A3E0F24A81D005DF4B7 /* Build configuration list for PBXNativeTarget "HeadsUpPreferencePane" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E77D5A3F0F24A81D005DF4B7 /* Debug */,
+				E77D5A400F24A81D005DF4B7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -5,7 +5,9 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleIdentifier</key>
-	<string>org.matthewtodd.preference.HeadsUpApp</string>
+	<string>org.matthewtodd.HeadsUpApp</string>
+	<key>CFBundleName</key>
+	<string>HeadsUp</string>
 	<key>NSMainNibFile</key>
 	<string>HeadsUpPreferencePane</string>
 	<key>NSPrefPaneIconLabel</key>

@@ -6,10 +6,9 @@ require 'pathname'
 
 # Application own Settings
 APPNAME               = "HeadsUp"
-TARGET                = "#{APPNAME}.app"
 APPVERSION            = `git show-ref --hash refs/heads/master`
 PUBLISH               = 'matthew@woodward:~'
-DEFAULT_TARGET        = APPNAME
+DEFAULT_TARGET        = 'HeadsUpPreferencePane'
 DEFAULT_CONFIGURATION = 'Release'
 RELEASE_CONFIGURATION = 'Release'
 
@@ -18,7 +17,8 @@ task :default => [:run]
 
 desc "Build the default and run it."
 task :run => [:build] do
-  sh %{open "build/Release/#{APPNAME}.app"}
+  sh %{cp -r "build/Release/#{APPNAME}.prefPane" "#{ENV['HOME']}/Library/PreferencePanes/"}
+  sh %{open "#{ENV['HOME']}/Library/PreferencePanes/#{APPNAME}.prefPane"}
 end
 
 desc 'Build the default target using the default configuration'

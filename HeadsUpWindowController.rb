@@ -22,11 +22,10 @@ class HeadsUpWindowController < OSX::NSWindowController
 
   def initialize_user_defaults
     @defaults = OSX::NSUserDefaults.standardUserDefaults
-    @defaults.registerDefaults(@location => { :command => '' })
   end
 
   def read_command_from_user_defaults
-    @command = @defaults.dictionaryForKey(@location).objectForKey(:command)
+    @command = @defaults.stringForKey(@location)
   end
 
   def start_window_update_timer

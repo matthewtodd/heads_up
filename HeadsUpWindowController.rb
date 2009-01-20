@@ -21,11 +21,12 @@ class HeadsUpWindowController < OSX::NSWindowController
   private
 
   def initialize_user_defaults
-    @defaults = OSX::NSUserDefaults.standardUserDefaults
+    @defaults = OSX::NSUserDefaults.alloc.init
+    @defaults.addSuiteNamed('com.apple.systempreferences')
   end
 
   def read_command_from_user_defaults
-    @command = @defaults.stringForKey(@location)
+    @command = @defaults.stringForKey("org_matthewtodd_heads_up_#{@location}")
   end
 
   def start_window_update_timer

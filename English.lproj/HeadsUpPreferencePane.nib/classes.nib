@@ -9,7 +9,6 @@
                 "_initialKeyView" = NSView; 
                 "_lastKeyView" = NSView; 
                 "_window" = NSWindow; 
-                values = id; 
             }; 
             SUPERCLASS = NSObject; 
         }

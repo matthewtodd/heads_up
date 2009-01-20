@@ -1,5 +1,3 @@
-# -*- mode:ruby; indent-tabs-mode:nil; coding:utf-8 -*-
-# vim:ts=2:sw=2:expandtab:
 require 'rubygems'
 require 'rake'
 require 'rake/clean'
@@ -9,9 +7,8 @@ require 'pathname'
 # Application own Settings
 APPNAME               = "HeadsUp"
 TARGET                = "#{APPNAME}.app"
-#APPVERSION           = "rev#{`svn info`[/Revision: (\d+)/, 1]}"
-APPVERSION            = Time.now.strftime("%Y-%m-%d")
-PUBLISH               = 'yourname@yourhost:path'
+APPVERSION            = `git show-ref --hash refs/heads/master`
+PUBLISH               = 'matthew@woodward:~'
 DEFAULT_TARGET        = APPNAME
 DEFAULT_CONFIGURATION = 'Release'
 RELEASE_CONFIGURATION = 'Release'
@@ -30,30 +27,6 @@ task :build => "xcode:build:#{DEFAULT_TARGET}:#{DEFAULT_CONFIGURATION}"
 desc 'Deep clean of everything'
 task :clean do
   puts %x{ xcodebuild -alltargets clean }
-end
-
-desc "Add files to Xcode project"
-task :add do |t|
- files = ARGV[1..-1]
- project = %x{ xcodebuild -list }[/Information about project "([^"]+)":/, 1]
- files << "#{project}.xcodeproj"
- exec("rubycocoa", "add", *files)
-end
-
-desc "Create ruby skelton and add to Xcode project"
-task :create do |t|
- args = ARGV[1..-1]
- if system("rubycocoa", "create", *args)
-   project = %x{ xcodebuild -list }[/Information about project "([^"]+)":/, 1]
-   exec("rubycocoa", "add", args.last + ".rb", "#{project}.xcodeproj")
- end
-end
-
-desc "Update nib with ruby file"
-task :update do |t|
- args = ARGV[1..-1]
- args.unshift("English.lproj/MainMenu.nib")
- exec("rubycocoa", "update", *args)
 end
 
 desc "Package the application"
@@ -145,12 +118,4 @@ namespace :xcode do
 
    end
  end
-end
-
-
-if ["update", "add", "create"].include? ARGV[0]
-  # dupe rake
-  ARGV.map! {|a| a.sub(/^\+/, "-") }
-  Rake.application[ARGV[0].to_sym].invoke
-  exit # will not reach
 end

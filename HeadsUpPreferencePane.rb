@@ -11,7 +11,7 @@ class HeadsUpPreferencePane < OSX::NSPreferencePane
     willChangeValueForKey(key)
     OSX::CFPreferencesSetAppValue(key, value, APPLICATION_ID)
     OSX::CFPreferencesAppSynchronize(APPLICATION_ID)
-    # TODO send a Distributed Notification that we changed something
+    OSX::NSDistributedNotificationCenter.defaultCenter.postNotificationName_object('HeadsUpPreferencesChanged', APPLICATION_ID)
     didChangeValueForKey(key)
     value
   end

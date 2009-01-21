@@ -17,7 +17,7 @@
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
 	<key>CFBundleIdentifier</key>
-	<string>org.matthewtodd.HeadsUpApp</string>
+	<string>org.matthewtodd.HeadsUp</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>LSBackgroundOnly</key>

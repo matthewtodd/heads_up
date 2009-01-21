@@ -15,10 +15,23 @@ RELEASE_CONFIGURATION = 'Release'
 # Tasks
 task :default => [:run]
 
-desc "Build the default and run it."
+desc "Build the Preference Pane and run it."
 task :run => [:build] do
-  sh %{cp -r "build/Release/#{APPNAME}.prefPane" "#{ENV['HOME']}/Library/PreferencePanes/"}
-  sh %{open "#{ENV['HOME']}/Library/PreferencePanes/#{APPNAME}.prefPane"}
+  release_dir = 'build/Release'
+  install_dir = "#{ENV['HOME']}/Library/PreferencePanes"
+  pref_pane = "#{APPNAME}.prefPane"
+
+  sh %{killall HeadsUp || true}
+  sh %{osascript -e 'tell application "System Preferences" to quit'}
+  sh %{rm -r "#{install_dir}/#{pref_pane}"}
+  sh %{cp -r "#{release_dir}/#{pref_pane}" "#{install_dir}"}
+  sh %{open "#{install_dir}/#{pref_pane}"}
+end
+
+desc "Build the Application and run it."
+task :app => [:build] do
+  sh %{killall HeadsUp || true}
+  sh %{open build/Release/#{APPNAME}.app}
 end
 
 desc 'Build the default target using the default configuration'

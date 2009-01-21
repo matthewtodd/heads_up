@@ -18,6 +18,7 @@
 		E72757A30F207C4500E2EBF4 /* HeadsUpTextView.rb in Resources */ = {isa = PBXBuildFile; fileRef = E72757A20F207C4500E2EBF4 /* HeadsUpTextView.rb */; };
 		E77D5A4F0F24A900005DF4B7 /* PreferencePanes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E77D5A4E0F24A900005DF4B7 /* PreferencePanes.framework */; };
 		E77D5B840F24AC17005DF4B7 /* HeadsUpPreferencePane.nib in Resources */ = {isa = PBXBuildFile; fileRef = E77D5B820F24AC17005DF4B7 /* HeadsUpPreferencePane.nib */; };
+		E78461860F272C1600D6B0A2 /* HeadsUp.app in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4DDCA7120ACC9A6100E082CE /* HeadsUp.app */; };
 		E79624330F25D27700596D59 /* HeadsUpPreferencePaneLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = E79624320F25D27700596D59 /* HeadsUpPreferencePaneLoader.m */; };
 		E79624390F25D3AC00596D59 /* RubyCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8F5E24E03AEB6EC03A81C6F /* RubyCocoa.framework */; };
 		E79624510F25D44600596D59 /* HeadsUpPreferencePane.rb in Resources */ = {isa = PBXBuildFile; fileRef = E79624500F25D44600596D59 /* HeadsUpPreferencePane.rb */; };
@@ -49,6 +50,19 @@
 			remoteInfo = HeadsUp;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		E784617D0F272B6A00D6B0A2 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 7;
+			files = (
+				E78461860F272C1600D6B0A2 /* HeadsUp.app in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -215,6 +229,7 @@
 				E77D5A380F24A81D005DF4B7 /* Resources */,
 				E77D5A390F24A81D005DF4B7 /* Sources */,
 				E77D5A3A0F24A81D005DF4B7 /* Frameworks */,
+				E784617D0F272B6A00D6B0A2 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -417,7 +432,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
 				INFOPLIST_FILE = "HeadsUpPreferencePane-Info.plist";
-				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				INSTALL_PATH = "$(HOME)/Library/PreferencePanes";
 				OTHER_LDFLAGS = (
 					"-framework",
 					Foundation,
@@ -441,7 +456,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
 				INFOPLIST_FILE = "HeadsUpPreferencePane-Info.plist";
-				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				INSTALL_PATH = "$(HOME)/Library/PreferencePanes";
 				OTHER_LDFLAGS = (
 					"-framework",
 					Foundation,

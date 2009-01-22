@@ -1,33 +1,49 @@
 require 'osx/cocoa'
 
 class HeadsUpApplication < OSX::NSObject
-  attr_reader :executable_path
+  attr_reader :app_path
 
-  def initWithExecutablePath(executable_path)
+  kvc_accessor :button_enabled, :button_title
+
+  def initWithAppPath(app_path)
     init
-    @executable_path = executable_path
-    @properties = {}
-
+    @app_path = app_path
     OSX::NSDistributedNotificationCenter.defaultCenter.addObserver_selector_name_object(self, :refresh, 'HeadsUpLaunched', 'org.matthewtodd.HeadsUp')
     OSX::NSDistributedNotificationCenter.defaultCenter.addObserver_selector_name_object(self, :refresh, 'HeadsUpQuitOkay', 'org.matthewtodd.HeadsUp')
-
     self
   end
 
-  def valueForKey(key)
-    @properties[key.to_sym]
-  end
-
-  def setValue_forKey(value, key)
-    willChangeValueForKey(key)
-    @properties[key.to_sym] = value
-    didChangeValueForKey(key)
-    value
-  end
-
   def refresh(*args)
-    setValue_forKey(is_running ? 'Stop HeadsUp' : 'Start HeadsUp', 'button_title')
-    setValue_forKey(true, 'button_enabled')
+    self.button_title = is_running ? 'Stop HeadsUp' : 'Start HeadsUp'
+    self.button_enabled = true
+
+    willChangeValueForKey(:start_at_login)
+    OSX::CFPreferencesAppSynchronize('loginwindow')
+    didChangeValueForKey(:start_at_login)
+  end
+
+  def start_at_login
+    login_items = OSX::CFPreferencesCopyAppValue('AutoLaunchedApplicationDictionary', 'loginwindow')
+    login_items.any? { |item| item['Path'] == app_path }
+  end
+
+  def start_at_login=(start_at_login)
+    willChangeValueForKey(:start_at_login)
+
+    if start_at_login.to_ruby
+      login_items = OSX::CFPreferencesCopyAppValue('AutoLaunchedApplicationDictionary', 'loginwindow').autorelease.mutableCopy
+      login_items << { 'Path' => app_path } unless login_items.any? { |item| item['Path'] == app_path }
+      OSX::CFPreferencesSetAppValue('AutoLaunchedApplicationDictionary', login_items, 'loginwindow')
+      OSX::CFPreferencesAppSynchronize('loginwindow')
+    else
+      login_items = OSX::CFPreferencesCopyAppValue('AutoLaunchedApplicationDictionary', 'loginwindow').autorelease.mutableCopy
+      login_items.reject! { |item| item['Path'] == app_path }
+      OSX::CFPreferencesSetAppValue('AutoLaunchedApplicationDictionary', login_items, 'loginwindow')
+      OSX::CFPreferencesAppSynchronize('loginwindow')
+    end
+
+    didChangeValueForKey(:start_at_login)
+    start_at_login
   end
 
   def start_stop
@@ -36,18 +52,22 @@ class HeadsUpApplication < OSX::NSObject
 
   private
 
+  def executable_path
+    app_path.stringByAppendingPathComponent('Contents').stringByAppendingPathComponent('MacOS').stringByAppendingPathComponent('HeadsUp')
+  end
+
   def is_running
     `ps axww`.grep(/#{executable_path}/).any?
   end
 
   def stop
-    setValue_forKey(false, 'button_enabled')
+    self.button_enabled = false
     OSX::NSDistributedNotificationCenter.defaultCenter.postNotificationName_object_userInfo_deliverImmediately('HeadsUpQuit', 'org.matthewtodd.HeadsUp', nil, true)
     performSelector_withObject_afterDelay('refresh', nil, 4.0)
   end
 
   def start
-    setValue_forKey(false, 'button_enabled')
+    self.button_enabled = false
     OSX::NSTask.launchedTaskWithLaunchPath_arguments(executable_path, [])
     performSelector_withObject_afterDelay('refresh', nil, 4.0)
   end
@@ -92,7 +112,7 @@ class HeadsUpPreferencePane < OSX::NSPreferencePane
 
   def initWithBundle(bundle)
     super_initWithBundle(bundle)
-    self.application = HeadsUpApplication.alloc.initWithExecutablePath(bundle.pathForResource_ofType('HeadsUp', 'app').stringByAppendingPathComponent('Contents').stringByAppendingPathComponent('MacOS').stringByAppendingPathComponent('HeadsUp'))
+    self.application = HeadsUpApplication.alloc.initWithAppPath(bundle.pathForResource_ofType('HeadsUp', 'app'))
     self.preferences = HeadsUpPreferences.alloc.initWithBundleIdentifier(bundle.bundleIdentifier)
     self
   end

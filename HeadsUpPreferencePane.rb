@@ -1,24 +1,5 @@
 require 'osx/cocoa'
 
-# I'll use something like this code from the Growl project to see if the app's running!
-#
-# - (BOOL) isRunning:(NSString *)theBundleIdentifier {
-#   BOOL isRunning = NO;
-#   ProcessSerialNumber PSN = { kNoProcess, kNoProcess };
-#
-#   while (GetNextProcess(&PSN) == noErr) {
-#     NSDictionary *infoDict = (NSDictionary *)ProcessInformationCopyDictionary(&PSN, kProcessDictionaryIncludeAllInformationMask);
-#     NSString *bundleID = [infoDict objectForKey:(NSString *)kCFBundleIdentifierKey];
-#     isRunning = bundleID && [bundleID isEqualToString:theBundleIdentifier];
-#     [infoDict release];
-#
-#     if (isRunning)
-#       break;
-#   }
-#
-#   return isRunning;
-# }
-
 class HeadsUpApplication < OSX::NSObject
   attr_reader :executable_path
 
@@ -26,23 +7,25 @@ class HeadsUpApplication < OSX::NSObject
     init
     @executable_path = executable_path
     @properties = {}
+
+    OSX::NSDistributedNotificationCenter.defaultCenter.addObserver_selector_name_object(self, :refresh, 'HeadsUpLaunched', 'org.matthewtodd.HeadsUp')
+    OSX::NSDistributedNotificationCenter.defaultCenter.addObserver_selector_name_object(self, :refresh, 'HeadsUpQuitOkay', 'org.matthewtodd.HeadsUp')
+
     self
   end
 
   def valueForKey(key)
-    puts "calling valueForKey with #{key}"
     @properties[key.to_sym]
   end
 
   def setValue_forKey(value, key)
-    puts "calling setValue_forKey with #{value} for #{key}"
     willChangeValueForKey(key)
     @properties[key.to_sym] = value
     didChangeValueForKey(key)
     value
   end
 
-  def refresh
+  def refresh(*args)
     setValue_forKey(is_running ? 'Stop HeadsUp' : 'Start HeadsUp', 'button_title')
     setValue_forKey(true, 'button_enabled')
   end
@@ -58,14 +41,12 @@ class HeadsUpApplication < OSX::NSObject
   end
 
   def stop
-    puts 'calling stop'
     setValue_forKey(false, 'button_enabled')
-    `killall HeadsUp` # TODO send & receive distributed notification
+    OSX::NSDistributedNotificationCenter.defaultCenter.postNotificationName_object_userInfo_deliverImmediately('HeadsUpQuit', 'org.matthewtodd.HeadsUp', nil, true)
     performSelector_withObject_afterDelay('refresh', nil, 4.0)
   end
 
   def start
-    puts 'calling start'
     setValue_forKey(false, 'button_enabled')
     OSX::NSTask.launchedTaskWithLaunchPath_arguments(executable_path, [])
     performSelector_withObject_afterDelay('refresh', nil, 4.0)

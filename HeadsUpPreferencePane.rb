@@ -3,7 +3,7 @@ require 'osx/cocoa'
 class HeadsUpApplication < OSX::NSObject
   attr_reader :app_path
 
-  kvc_accessor :button_enabled, :button_title
+  kvc_accessor :button_enabled, :button_title, :status, :spinner_enabled
 
   def initWithAppPath(app_path)
     init
@@ -16,6 +16,8 @@ class HeadsUpApplication < OSX::NSObject
   def refresh(*args)
     self.button_title = is_running ? 'Stop HeadsUp' : 'Start HeadsUp'
     self.button_enabled = true
+    self.status = is_running ? 'HeadsUp is running.' : 'HeadsUp is stopped.'
+    self.spinner_enabled = false
 
     willChangeValueForKey(:start_at_login)
     OSX::CFPreferencesAppSynchronize('loginwindow')
@@ -62,12 +64,16 @@ class HeadsUpApplication < OSX::NSObject
 
   def stop
     self.button_enabled = false
+    self.status = 'Stopping HeadsUp...'
+    self.spinner_enabled = true
     OSX::NSDistributedNotificationCenter.defaultCenter.postNotificationName_object_userInfo_deliverImmediately('HeadsUpQuit', 'org.matthewtodd.HeadsUp', nil, true)
     performSelector_withObject_afterDelay('refresh', nil, 4.0)
   end
 
   def start
     self.button_enabled = false
+    self.status = 'Starting HeadsUp...'
+    self.spinner_enabled = true
     OSX::NSTask.launchedTaskWithLaunchPath_arguments(executable_path, [])
     performSelector_withObject_afterDelay('refresh', nil, 4.0)
   end

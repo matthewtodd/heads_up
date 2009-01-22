@@ -80,6 +80,7 @@
 		E77D5A3D0F24A81D005DF4B7 /* HeadsUpPreferencePane-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "HeadsUpPreferencePane-Info.plist"; sourceTree = "<group>"; };
 		E77D5A4E0F24A900005DF4B7 /* PreferencePanes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PreferencePanes.framework; path = /System/Library/Frameworks/PreferencePanes.framework; sourceTree = "<absolute>"; };
 		E77D5B830F24AC17005DF4B7 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/HeadsUpPreferencePane.nib; sourceTree = "<group>"; };
+		E7878D4E0F288AA8007FB855 /* README.rdoc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.rdoc; sourceTree = "<group>"; };
 		E79624320F25D27700596D59 /* preference_pane_main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = preference_pane_main.m; sourceTree = "<group>"; };
 		E79624500F25D44600596D59 /* HeadsUpPreferencePane.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = HeadsUpPreferencePane.rb; sourceTree = "<group>"; };
 		E8F5E24E03AEB6EC03A81C6F /* RubyCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RubyCocoa.framework; path = /Library/Frameworks/RubyCocoa.framework; sourceTree = "<absolute>"; };
@@ -160,6 +161,7 @@
 				E77D5A3D0F24A81D005DF4B7 /* HeadsUpPreferencePane-Info.plist */,
 				E77D5B820F24AC17005DF4B7 /* HeadsUpPreferencePane.nib */,
 				E79624320F25D27700596D59 /* preference_pane_main.m */,
+				E7878D4E0F288AA8007FB855 /* README.rdoc */,
 			);
 			name = HeadsUp;
 			sourceTree = "<group>";

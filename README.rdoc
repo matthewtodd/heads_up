@@ -1,0 +1,14 @@
+HeadsUp displays the output of a couple of commands in the bottom corners of your OSX Desktop.
+
+Think GeekTool, but simpler.
+
+== Dependencies
+
+RubyCocoa. I expect everything to Just Work on Leopard, but I'm developing on Tiger with the MacPorts rb-cocoa package.
+
+== Install
+
+Proper releases are on the way. In the meantime,
+
+$ git clone git://github.com/matthewtodd/heads_up.git
+$ cd heads_up && rake

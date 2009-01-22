@@ -28,12 +28,6 @@ task :run => [:build] do
   sh %{open "#{install_dir}/#{pref_pane}"}
 end
 
-desc "Build the Application and run it."
-task :app => [:build] do
-  sh %{killall HeadsUp || true}
-  sh %{open build/Release/#{APPNAME}.app}
-end
-
 desc 'Build the default target using the default configuration'
 task :build => "xcode:build:#{DEFAULT_TARGET}:#{DEFAULT_CONFIGURATION}"
 

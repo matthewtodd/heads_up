@@ -1,14 +1,74 @@
 require 'osx/cocoa'
 
-class HeadsUpApplication < OSX::NSObject
-  attr_reader :enabled
+# I'll use something like this code from the Growl project to see if the app's running!
+#
+# - (BOOL) isRunning:(NSString *)theBundleIdentifier {
+#   BOOL isRunning = NO;
+#   ProcessSerialNumber PSN = { kNoProcess, kNoProcess };
+#
+#   while (GetNextProcess(&PSN) == noErr) {
+#     NSDictionary *infoDict = (NSDictionary *)ProcessInformationCopyDictionary(&PSN, kProcessDictionaryIncludeAllInformationMask);
+#     NSString *bundleID = [infoDict objectForKey:(NSString *)kCFBundleIdentifierKey];
+#     isRunning = bundleID && [bundleID isEqualToString:theBundleIdentifier];
+#     [infoDict release];
+#
+#     if (isRunning)
+#       break;
+#   }
+#
+#   return isRunning;
+# }
 
-  def enabled=(state)
-    willChangeValueForKey(:enabled)
-    # TODO everything else
-    puts "received enabled= with #{state.inspect}"
-    didChangeValueForKey(:enabled)
-    state
+class HeadsUpApplication < OSX::NSObject
+  attr_reader :executable_path
+
+  def initWithExecutablePath(executable_path)
+    init
+    @executable_path = executable_path
+    @properties = {}
+    self
+  end
+
+  def valueForKey(key)
+    puts "calling valueForKey with #{key}"
+    @properties[key.to_sym]
+  end
+
+  def setValue_forKey(value, key)
+    puts "calling setValue_forKey with #{value} for #{key}"
+    willChangeValueForKey(key)
+    @properties[key.to_sym] = value
+    didChangeValueForKey(key)
+    value
+  end
+
+  def refresh
+    setValue_forKey(is_running ? 'Stop HeadsUp' : 'Start HeadsUp', 'button_title')
+    setValue_forKey(true, 'button_enabled')
+  end
+
+  def start_stop
+    is_running ? stop : start
+  end
+
+  private
+
+  def is_running
+    `ps axww`.grep(/#{executable_path}/).any?
+  end
+
+  def stop
+    puts 'calling stop'
+    setValue_forKey(false, 'button_enabled')
+    `killall HeadsUp` # TODO send & receive distributed notification
+    performSelector_withObject_afterDelay('refresh', nil, 4.0)
+  end
+
+  def start
+    puts 'calling start'
+    setValue_forKey(false, 'button_enabled')
+    OSX::NSTask.launchedTaskWithLaunchPath_arguments(executable_path, [])
+    performSelector_withObject_afterDelay('refresh', nil, 4.0)
   end
 end
 
@@ -51,12 +111,13 @@ class HeadsUpPreferencePane < OSX::NSPreferencePane
 
   def initWithBundle(bundle)
     super_initWithBundle(bundle)
-    self.application = HeadsUpApplication.alloc.init
+    self.application = HeadsUpApplication.alloc.initWithExecutablePath(bundle.pathForResource_ofType('HeadsUp', 'app').stringByAppendingPathComponent('Contents').stringByAppendingPathComponent('MacOS').stringByAppendingPathComponent('HeadsUp'))
     self.preferences = HeadsUpPreferences.alloc.initWithBundleIdentifier(bundle.bundleIdentifier)
     self
   end
 
   def willSelect
+    application.refresh
     preferences.refresh
   end
 end

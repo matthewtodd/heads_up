@@ -1,11 +1,3 @@
-#
-#  rb_main.rb
-#  HeadsUp
-#
-#  Created by Matthew Todd on 1/16/09.
-#  Copyright (c) 2009 __MyCompanyName__. All rights reserved.
-#
-
 require 'osx/cocoa'
 
 def rb_main_init

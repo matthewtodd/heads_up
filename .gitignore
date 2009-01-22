@@ -1,4 +1,5 @@
 build
+*.dmg
 *.mode1
 *~.nib
 *.pbxuser

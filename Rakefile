@@ -18,7 +18,7 @@ task :run => :build do
 
   sh %{ killall HeadsUp || true }
   sh %{ osascript -e 'tell application "System Preferences" to quit' }
-  sh %{ rm -r "#{install_dir}/#{pref_pane}" }
+  sh %{ rm -rf "#{install_dir}/#{pref_pane}" }
   sh %{ cp -r "#{release_dir}/#{pref_pane}" "#{install_dir}" }
   sh %{ open "#{install_dir}/#{pref_pane}" }
 end

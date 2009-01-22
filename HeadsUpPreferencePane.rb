@@ -109,7 +109,7 @@ class HeadsUpPreferences < OSX::NSObject
   private
 
   def all_preference_keys
-    OSX::CFPreferencesCopyKeyList(identifier, OSX::KCFPreferencesCurrentUser, OSX::KCFPreferencesAnyHost)
+    OSX::CFPreferencesCopyKeyList(identifier, OSX::KCFPreferencesCurrentUser, OSX::KCFPreferencesAnyHost) || []
   end
 end
 

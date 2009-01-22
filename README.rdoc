@@ -10,5 +10,5 @@ RubyCocoa. I expect everything to Just Work on Leopard, but I'm developing on Ti
 
 Proper releases are on the way. In the meantime,
 
-$ git clone git://github.com/matthewtodd/heads_up.git
-$ cd heads_up && rake
+  $ git clone git://github.com/matthewtodd/heads_up.git
+  $ cd heads_up && rake

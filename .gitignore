@@ -1,5 +1,3 @@
-build
+release
 *.dmg
-*.mode1
-*~.nib
-*.pbxuser
+*.o

@@ -6,7 +6,6 @@
 @interface HeadsUpPreferencePaneLoader : NSObject
 {}
 @end
-
 @implementation HeadsUpPreferencePaneLoader
 @end
 

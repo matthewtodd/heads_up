@@ -1,9 +1,23 @@
 require 'rake/clean'
 
-CLEAN.include('**/*.o')
+task :default => :open
+
+desc 'Open HeadsUp.prefPane.'
+task :open => :build do
+  sh 'open release/HeadsUp.prefPane'
+end
+
+desc 'Package HeadsUp.dmg.'
+task :package => [:clean, :build] do
+  sh 'hdiutil create -volname HeadsUp -srcfolder release HeadsUp.dmg'
+end
+CLEAN.include('HeadsUp.dmg')
+
+
 rule '.o' => ['.m'] do |task|
   sh "/usr/bin/gcc-4.0 -c #{task.source} -o #{task.name}"
 end
+CLEAN.include('**/*.o')
 
 def gcc_link(executable, object_file, options, frameworks)
   directory File.dirname(executable)
@@ -17,7 +31,6 @@ gcc_link 'release/HeadsUp.prefPane/Contents/MacOS/HeadsUp', 'preference_pane/ext
 gcc_link 'release/HeadsUp.prefPane/Contents/Resources/HeadsUp.app/Contents/MacOS/HeadsUp', 'application/ext/main.o', nil, %w[Cocoa RubyCocoa]
 directory 'release/HeadsUp.prefPane/Contents/Resources/HeadsUp.app/Contents/Resources'
 
-CLEAN.include('release')
 desc 'Build HeadsUp.prefPane.'
 task :build => ['release/HeadsUp.prefPane/Contents/MacOS/HeadsUp', 'release/HeadsUp.prefPane/Contents/Resources/HeadsUp.app/Contents/MacOS/HeadsUp', 'release/HeadsUp.prefPane/Contents/Resources/HeadsUp.app/Contents/Resources'] do
   cp_r 'application/Info.plist',      'release/HeadsUp.prefPane/Contents/Resources/HeadsUp.app/Contents'
@@ -27,16 +40,4 @@ task :build => ['release/HeadsUp.prefPane/Contents/MacOS/HeadsUp', 'release/Head
   cp_r Dir.glob('preference_pane/lib/*'),       'release/HeadsUp.prefPane/Contents/Resources'
   cp_r Dir.glob('preference_pane/resources/*'), 'release/HeadsUp.prefPane/Contents/Resources'
 end
-
-desc 'Run HeadsUp.prefPane.'
-task :run => :build do
-  sh 'open release/HeadsUp.prefPane'
-end
-
-CLEAN << 'HeadsUp.dmg'
-desc 'Package the HeadsUp Preference Pane'
-task :package => [:clean, :build] do
-  sh 'hdiutil create -volname HeadsUp -srcfolder release HeadsUp.dmg'
-end
-
-task :default => :run
+CLEAN.include('release')

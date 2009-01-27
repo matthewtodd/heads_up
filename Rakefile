@@ -1,6 +1,37 @@
 require 'rake/clean'
 
+
+rule '.o' => ['.m'] do |task|
+  sh "/usr/bin/gcc-4.0 -c #{task.source} -o #{task.name}"
+end; CLEAN.include('**/*.o')
+
+def bundle(name, options)
+  link_flags    = options[:link_flags] || []
+  frameworks    = options[:link_frameworks] || []
+  prefix        = options[:prefix] || ''
+  source        = options[:source] || raise('source is required')
+  contents_dir  = File.expand_path("release/#{prefix}/#{name}/Contents")
+  mac_os_dir    = "#{contents_dir}/MacOS"
+  resources_dir = "#{contents_dir}/Resources"
+  executable    = "#{mac_os_dir}/#{name.sub(/\.\w+$/, '')}"
+  object_file   = "#{source}/ext/main.o"
+
+  task name => object_file do
+    mkdir_p contents_dir
+    cp_r "#{source}/Info.plist", contents_dir
+    mkdir_p mac_os_dir
+    sh "/usr/bin/gcc-4.0 -o %s %s %s %s" % [executable, frameworks.map { |name| "-framework #{name}" }.join(' '), link_flags.join(' '), object_file]
+    mkdir_p resources_dir
+    cp_r Dir.glob("#{source}/lib/*"), resources_dir
+    cp_r Dir.glob("#{source}/resources/*"), resources_dir
+  end
+end
+
+
 task :default => :open
+
+desc 'Build HeadsUp.prefPane'
+task :build => ['HeadsUp.prefPane', 'HeadsUp.app']
 
 desc 'Open HeadsUp.prefPane.'
 task :open => :build do
@@ -10,34 +41,10 @@ end
 desc 'Package HeadsUp.dmg.'
 task :package => [:clean, :build] do
   sh 'hdiutil create -volname HeadsUp -srcfolder release HeadsUp.dmg'
-end
-CLEAN.include('HeadsUp.dmg')
+end; CLEAN.include('HeadsUp.dmg')
 
 
-rule '.o' => ['.m'] do |task|
-  sh "/usr/bin/gcc-4.0 -c #{task.source} -o #{task.name}"
-end
-CLEAN.include('**/*.o')
+bundle 'HeadsUp.prefPane', :source => 'preference_pane', :link_frameworks => ['Cocoa', 'RubyCocoa', 'AppKit', 'PreferencePanes'], :link_flags => ['-bundle']
+bundle 'HeadsUp.app',      :source => 'application',     :link_frameworks => ['Cocoa', 'RubyCocoa'], :prefix => 'HeadsUp.prefPane/Contents/Resources'
 
-def gcc_link(executable, object_file, options, frameworks)
-  directory File.dirname(executable)
-  file executable => [File.dirname(executable), object_file] do
-    link_frameworks = frameworks.map { |name| "-framework #{name}" }.join(' ')
-    sh "/usr/bin/gcc-4.0 -o #{executable} #{link_frameworks} #{options} #{object_file}"
-  end
-end
-
-gcc_link 'release/HeadsUp.prefPane/Contents/MacOS/HeadsUp', 'preference_pane/ext/bundle_main.o', '-bundle', %w[AppKit Cocoa PreferencePanes RubyCocoa]
-gcc_link 'release/HeadsUp.prefPane/Contents/Resources/HeadsUp.app/Contents/MacOS/HeadsUp', 'application/ext/main.o', nil, %w[Cocoa RubyCocoa]
-directory 'release/HeadsUp.prefPane/Contents/Resources/HeadsUp.app/Contents/Resources'
-
-desc 'Build HeadsUp.prefPane.'
-task :build => ['release/HeadsUp.prefPane/Contents/MacOS/HeadsUp', 'release/HeadsUp.prefPane/Contents/Resources/HeadsUp.app/Contents/MacOS/HeadsUp', 'release/HeadsUp.prefPane/Contents/Resources/HeadsUp.app/Contents/Resources'] do
-  cp_r 'application/Info.plist',      'release/HeadsUp.prefPane/Contents/Resources/HeadsUp.app/Contents'
-  cp_r Dir.glob('application/lib/*'), 'release/HeadsUp.prefPane/Contents/Resources/HeadsUp.app/Contents/Resources'
-
-  cp_r 'preference_pane/Info.plist',            'release/HeadsUp.prefPane/Contents'
-  cp_r Dir.glob('preference_pane/lib/*'),       'release/HeadsUp.prefPane/Contents/Resources'
-  cp_r Dir.glob('preference_pane/resources/*'), 'release/HeadsUp.prefPane/Contents/Resources'
-end
 CLEAN.include('release')

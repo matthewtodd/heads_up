@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleIdentifier</key>
-	<string>org.matthewtodd.HeadsUp</string>
+	<string>org.matthewtodd.HeadsUp.preferences</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -14,8 +14,10 @@
 	<string>BNDL</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
-	<key>CFBundleVersion</key>
+	<key>CFBundleShortVersionString</key>
 	<string><%= HEADS_UP_VERSION %></string>
+	<key>CFBundleVersion</key>
+	<string><%= HEADS_UP_VERSION %> (git sha <%= HEADS_UP_GIT_SHA %>)</string>
 	<key>NSMainNibFile</key>
 	<string>HeadsUpPreferencePane</string>
 	<key>NSPrefPaneIconLabel</key>

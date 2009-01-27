@@ -14,8 +14,10 @@
 	<string>APPL</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
-	<key>CFBundleVersion</key>
+	<key>CFBundleShortVersionString</key>
 	<string><%= HEADS_UP_VERSION %></string>
+	<key>CFBundleVersion</key>
+	<string><%= HEADS_UP_VERSION %> (git sha <%= HEADS_UP_GIT_SHA %>)</string>
 	<key>CFBundleIdentifier</key>
 	<string>org.matthewtodd.HeadsUp</string>
 	<key>LSBackgroundOnly</key>

@@ -29,6 +29,8 @@ end
 
 
 HEADS_UP_VERSION = '0.1.0'
+HEADS_UP_GIT_SHA = `git show-ref --hash=6 HEAD`.chomp
+
 task :default => :open
 
 desc 'Build HeadsUp.prefPane'

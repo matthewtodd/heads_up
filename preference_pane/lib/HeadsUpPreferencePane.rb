@@ -119,7 +119,7 @@ class HeadsUpPreferencePane < OSX::NSPreferencePane
   def initWithBundle(bundle)
     super_initWithBundle(bundle)
     self.application = HeadsUpApplication.alloc.initWithAppPath(bundle.pathForResource_ofType('HeadsUp', 'app'))
-    self.preferences = HeadsUpPreferences.alloc.initWithBundleIdentifier(bundle.bundleIdentifier)
+    self.preferences = HeadsUpPreferences.alloc.initWithBundleIdentifier('org.matthewtodd.HeadsUp')
     self
   end
 

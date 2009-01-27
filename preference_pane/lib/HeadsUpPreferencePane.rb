@@ -3,11 +3,12 @@ require 'osx/cocoa'
 class HeadsUpApplication < OSX::NSObject
   attr_reader :app_path
 
-  kvc_accessor :button_enabled, :button_title, :status, :spinner_enabled
+  kvc_accessor :button_enabled, :button_title, :status, :spinner_enabled, :version
 
-  def initWithAppPath(app_path)
+  def initWithBundle(bundle)
     init
-    @app_path = app_path
+    @app_path = bundle.pathForResource_ofType('HeadsUp', 'app')
+    @version  = "Version #{bundle.infoDictionary.objectForKey('CFBundleShortVersionString')}"
     OSX::NSDistributedNotificationCenter.defaultCenter.addObserver_selector_name_object(self, :refresh, 'HeadsUpLaunched', 'org.matthewtodd.HeadsUp')
     OSX::NSDistributedNotificationCenter.defaultCenter.addObserver_selector_name_object(self, :refresh, 'HeadsUpQuitOkay', 'org.matthewtodd.HeadsUp')
     self
@@ -118,7 +119,7 @@ class HeadsUpPreferencePane < OSX::NSPreferencePane
 
   def initWithBundle(bundle)
     super_initWithBundle(bundle)
-    self.application = HeadsUpApplication.alloc.initWithAppPath(bundle.pathForResource_ofType('HeadsUp', 'app'))
+    self.application = HeadsUpApplication.alloc.initWithBundle(bundle)
     self.preferences = HeadsUpPreferences.alloc.initWithBundleIdentifier('org.matthewtodd.HeadsUp')
     self
   end

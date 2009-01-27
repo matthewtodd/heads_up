@@ -36,6 +36,11 @@ task :default => :open
 desc 'Build HeadsUp.prefPane'
 task :build => ['HeadsUp.prefPane', 'HeadsUp.app']
 
+desc 'Edit the HeadsUp Preference Pane NIB.'
+task :edit do
+  sh 'open preference_pane/resources/English.lproj/HeadsUpPreferencePane.nib'
+end
+
 desc 'Open HeadsUp.prefPane.'
 task :open => :build do
   sh 'open release/HeadsUp.prefPane'

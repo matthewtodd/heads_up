@@ -1,5 +1,5 @@
 require 'rake/clean'
-
+require 'erb'
 
 rule '.o' => ['.m'] do |task|
   sh "/usr/bin/gcc-4.0 -c #{task.source} -o #{task.name}"
@@ -13,12 +13,12 @@ def bundle(name, options)
   contents_dir  = File.expand_path("release/#{prefix}/#{name}/Contents")
   mac_os_dir    = "#{contents_dir}/MacOS"
   resources_dir = "#{contents_dir}/Resources"
-  executable    = "#{mac_os_dir}/#{name.sub(/\.\w+$/, '')}"
+  executable    = "#{mac_os_dir}/#{name.pathmap('%n')}" # pathmap is from Rake; %n is basename without extension
   object_file   = "#{source}/ext/main.o"
 
   task name => object_file do
     mkdir_p contents_dir
-    cp_r "#{source}/Info.plist", contents_dir
+    File.open("#{contents_dir}/Info.plist", 'w') { |file| file.write(ERB.new(File.read("#{source}/Info.plist")).result) }
     mkdir_p mac_os_dir
     sh "/usr/bin/gcc-4.0 -o %s %s %s %s" % [executable, frameworks.map { |name| "-framework #{name}" }.join(' '), link_flags.join(' '), object_file]
     mkdir_p resources_dir
@@ -28,6 +28,7 @@ def bundle(name, options)
 end
 
 
+HEADS_UP_VERSION = '0.1.0'
 task :default => :open
 
 desc 'Build HeadsUp.prefPane'
@@ -40,8 +41,8 @@ end
 
 desc 'Package HeadsUp.dmg.'
 task :package => [:clean, :build] do
-  sh 'hdiutil create -volname HeadsUp -srcfolder release HeadsUp.dmg'
-end; CLEAN.include('HeadsUp.dmg')
+  sh "hdiutil create -volname HeadsUp -srcfolder release HeadsUp-#{HEADS_UP_VERSION}.dmg"
+end; CLEAN.include('HeadsUp-*.dmg')
 
 
 bundle 'HeadsUp.prefPane', :source => 'preference_pane', :link_frameworks => ['Cocoa', 'RubyCocoa', 'AppKit', 'PreferencePanes'], :link_flags => ['-bundle']

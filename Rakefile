@@ -56,3 +56,15 @@ bundle 'HeadsUp.prefPane', :source => 'preference_pane', :link_frameworks => ['C
 bundle 'HeadsUp.app',      :source => 'application',     :link_frameworks => ['Cocoa', 'RubyCocoa'], :prefix => 'HeadsUp.prefPane/Contents/Resources'
 
 CLEAN.include('release')
+
+
+namespace :website do
+  desc 'Build the website.'
+  task(:build)   { sh 'jekyll website public' }
+  desc 'Delete generated website files.'
+  task(:clean)   { sh 'rm -rf public' }
+  desc 'Serve the website, noticing file changes.'
+  task(:reserve) { sh 'jekyll website public --auto --server 3000' }
+  desc 'Serve the website.'
+  task(:serve)   { sh 'jekyll website public --server 3000' }
+end; CLEAN.include('public')

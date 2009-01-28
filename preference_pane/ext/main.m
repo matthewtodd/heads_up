@@ -1,7 +1,5 @@
-#import <Foundation/Foundation.h>
-#import <AppKit/AppKit.h>
-#import <RubyCocoa/RubyCocoa.h>
-#import <PreferencePanes/PreferencePanes.h>
+#import <Cocoa/Cocoa.h>
+#import <RubyCocoa/RBRuntime.h>
 
 @interface HeadsUpPreferencePaneLoader : NSObject
 {}

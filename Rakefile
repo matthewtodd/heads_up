@@ -56,6 +56,27 @@ task :package => [:clean, :build] do
   sh "hdiutil create -volname HeadsUp -srcfolder release HeadsUp-#{HEADS_UP_VERSION}.dmg"
 end; CLEAN.include('HeadsUp-*.dmg')
 
+desc 'Release HeadsUp.dmg.'
+task :release => [:package] do
+  disk_image = "HeadsUp-#{HEADS_UP_VERSION}.dmg"
+  cp disk_image, 'website/releases'
+
+  File.open("website/_posts/releases/#{Date.today.strftime('%Y-%m-%d')}-version-#{HEADS_UP_VERSION}", 'w') do |file|
+    file.puts '---'
+    file.puts "title: HeadsUp #{HEADS_UP_VERSION}"
+    file.puts "dmg: /releases/#{disk_image}"
+    file.puts "version: #{HEADS_UP_VERSION}"
+    file.puts "length: #{File.size(disk_image)}"
+    file.puts "signature: "
+    file.puts '---'
+    file.puts 'h2. Changelog'
+    file.puts
+
+    last_tag = `git tag | tail -1`.chomp
+    range = (last_tag.empty?) ? '' : "#{last_tag}.."
+    `git log --pretty=format:%s #{range}`.split(/\n/).each { |commit| file.puts "* #{commit}" } # TODO include dates? include authors? include links to commits on github?
+  end
+end
 
 bundle 'HeadsUp.prefPane', :source => 'preference_pane', :link_frameworks => ['Cocoa', 'RubyCocoa', 'AppKit', 'PreferencePanes'], :link_flags => ['-bundle']
 bundle 'HeadsUp.app',      :source => 'application',     :link_frameworks => ['Cocoa', 'RubyCocoa'], :prefix => 'HeadsUp.prefPane/Contents/Resources'

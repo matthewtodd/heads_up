@@ -35,6 +35,10 @@ class HeadsUp
   SHORT_VERSION = '0.1.0'
   VERSION       = "#{SHORT_VERSION}.#{Time.now.utc.strftime('%Y%m%d%H%M%S')}.#{`git show-ref --hash HEAD`.chomp}"
 
+  def self.check_release
+    new.check_release
+  end
+
   def self.create_release
     new.create_release
   end
@@ -47,9 +51,18 @@ class HeadsUp
     'HeadsUp'
   end
 
-  def create_release
-    FileUtils.cp disk_image, 'website/releases'
+  def check_release
+    die("Current directory has uncommitted changes.") if unclean?
+    die("Version #{SHORT_VERSION} has already been released. Update HeadsUp::SHORT_VERSION in the Rakefile.") if tags.include?(SHORT_VERSION)
+  end
 
+  def create_release
+    self.check_release
+
+    FileUtils.mkdir_p('website/releases')
+    FileUtils.cp(disk_image, 'website/releases')
+    FileUtils.mkdir_p(File.dirname(release_announcement))
+    
     File.open(release_announcement, 'w') do |file|
       file.puts '---'
       file.puts "title: HeadsUp #{SHORT_VERSION}"
@@ -64,14 +77,20 @@ class HeadsUp
       file.puts
       commits.each { |commit| file.puts "* #{commit}" } # TODO include dates? include authors? include links to commits on github?
     end
+
+    puts "Now, tweak the release notes, commit the website, commit the project, tag #{SHORT_VERSION}, and push."
   end
 
   private
 
   def commits
-    last_tag = `git tag | tail -1`.chomp
-    range = (last_tag.empty?) ? '' : "#{last_tag}.."
+    range = (tags.last.to_s.empty?) ? '' : "#{tags.last}.."
     `git log --pretty=format:%s #{range}`.split(/\n/)
+  end
+
+  def die(message)
+    puts message
+    exit 1
   end
 
   def disk_image
@@ -95,7 +114,15 @@ class HeadsUp
   end
 
   def release_announcement
-    "website/_posts/releases/#{Date.today.strftime('%Y-%m-%d')}-version-#{SHORT_VERSION}"
+    "website/_posts/releases/#{Date.today.strftime('%Y-%m-%d')}-version-#{SHORT_VERSION}.textile"
+  end
+
+  def tags
+    @tags ||= `git tag`.split(/\n/)
+  end
+
+  def unclean?
+    `git status`.grep(/working directory clean/).empty?
   end
 end
 
@@ -119,6 +146,15 @@ task :package => [:clean, :build] do
   sh "hdiutil create -volname #{HeadsUp.volume_name} -srcfolder release #{HeadsUp.disk_image}"
 end; CLEAN.include('*.dmg')
 
+desc 'Release HeadsUp.dmg.'
+task :release => [:check_release, :package] do
+  HeadsUp.create_release
+end
+
+task :check_release do
+  HeadsUp.check_release
+end
+
 bundle 'HeadsUp.prefPane', :source => 'preference_pane', :link_frameworks => ['Cocoa', 'RubyCocoa', 'AppKit', 'PreferencePanes'], :link_flags => ['-bundle']
 bundle 'HeadsUp.app',      :source => 'application',     :link_frameworks => ['Cocoa', 'RubyCocoa'], :prefix => 'HeadsUp.prefPane/Contents/Resources'
 
@@ -132,8 +168,3 @@ namespace :website do
   desc 'Serve the website.'
   task(:serve)   { sh 'jekyll website public --server 3000' }
 end; CLEAN.include('public')
-
-desc 'Release HeadsUp.dmg.'
-task :release => [:package] do
-  HeadsUp.create_release
-end

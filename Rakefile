@@ -31,9 +31,58 @@ def bundle(name, options)
   end
 end; CLEAN.include('release')
 
+class HeadsUp
+  SHORT_VERSION = '0.1.0'
+  VERSION       = "#{SHORT_VERSION}.#{Time.now.utc.strftime('%Y%m%d%H%M%S')}.#{`git show-ref --hash HEAD`.chomp}"
 
-HEADS_UP_VERSION = '0.1.0'
-HEADS_UP_GIT_SHA = `git show-ref --hash=6 HEAD`.chomp
+  def self.commits
+    last_tag = `git tag | tail -1`.chomp
+    range = (last_tag.empty?) ? '' : "#{last_tag}.."
+    `git log --pretty=format:%s #{range}`.split(/\n/)
+  end
+
+  def self.create_release
+    FileUtils.cp disk_image, 'website/releases'
+
+    File.open(release_announcement, 'w') do |file|
+      file.puts '---'
+      file.puts "title: HeadsUp #{SHORT_VERSION}"
+      file.puts "dmg: /releases/#{disk_image}"
+      file.puts "version: #{VERSION}"
+      file.puts "short_version: #{SHORT_VERSION}"
+      file.puts "length: #{disk_image_size}"
+      file.puts "signature: #{disk_image_signature}"
+      file.puts '---'
+      file.puts 'h2. Changelog'
+      file.puts
+      commits.each { |commit| file.puts "* #{commit}" } # TODO include dates? include authors? include links to commits on github?
+    end
+  end
+
+  def self.disk_image
+    "HeadsUp-#{SHORT_VERSION}.dmg"
+  end
+
+  def self.disk_image_signature
+    `openssl dgst -sha1 -binary < "#{disk_image}" | openssl dgst -dss1 -sign "#{private_key}" | openssl enc -base64`.chomp
+  end
+
+  def self.disk_image_size
+    File.size(disk_image)
+  end
+
+  def self.private_key
+    "#{ENV['HOME']}/.signing_keys/dsa_priv.pem"
+  end
+
+  def self.release_announcement
+    "website/_posts/releases/#{Date.today.strftime('%Y-%m-%d')}-version-#{SHORT_VERSION}"
+  end
+
+  def self.volume_name
+    'HeadsUp'
+  end
+end
 
 task :default => :open
 
@@ -52,12 +101,11 @@ end
 
 desc 'Package HeadsUp.dmg.'
 task :package => [:clean, :build] do
-  sh "hdiutil create -volname HeadsUp -srcfolder release HeadsUp-#{HEADS_UP_VERSION}.dmg"
-end; CLEAN.include('HeadsUp-*.dmg')
+  sh "hdiutil create -volname #{HeadsUp.volume_name} -srcfolder release #{HeadsUp.disk_image}"
+end; CLEAN.include('*.dmg')
 
 bundle 'HeadsUp.prefPane', :source => 'preference_pane', :link_frameworks => ['Cocoa', 'RubyCocoa', 'AppKit', 'PreferencePanes'], :link_flags => ['-bundle']
 bundle 'HeadsUp.app',      :source => 'application',     :link_frameworks => ['Cocoa', 'RubyCocoa'], :prefix => 'HeadsUp.prefPane/Contents/Resources'
-
 
 namespace :website do
   desc 'Build the website.'
@@ -70,32 +118,7 @@ namespace :website do
   task(:serve)   { sh 'jekyll website public --server 3000' }
 end; CLEAN.include('public')
 
-
-def commits
-  last_tag = `git tag | tail -1`.chomp
-  range = (last_tag.empty?) ? '' : "#{last_tag}.."
-  `git log --pretty=format:%s #{range}`.split(/\n/)
-end
-
-def signature(file)
-  `openssl dgst -sha1 -binary < "#{file}" | openssl dgst -dss1 -sign "#{ENV['HOME']}/.signing_keys/dsa_priv.pem" | openssl enc -base64`.chomp
-end
-
 desc 'Release HeadsUp.dmg.'
 task :release => [:package] do
-  disk_image = "HeadsUp-#{HEADS_UP_VERSION}.dmg"
-  cp disk_image, 'website/releases'
-
-  File.open("website/_posts/releases/#{Date.today.strftime('%Y-%m-%d')}-version-#{HEADS_UP_VERSION}", 'w') do |file|
-    file.puts '---'
-    file.puts "title: HeadsUp #{HEADS_UP_VERSION}"
-    file.puts "dmg: /releases/#{disk_image}"
-    file.puts "version: #{HEADS_UP_VERSION}"
-    file.puts "length: #{File.size(disk_image)}"
-    file.puts "signature: #{signature(disk_image)}"
-    file.puts '---'
-    file.puts 'h2. Changelog'
-    file.puts
-    commits.each { |commit| file.puts "* #{commit}" } # TODO include dates? include authors? include links to commits on github?
-  end
+  HeadsUp.create_release
 end

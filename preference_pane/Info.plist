@@ -15,9 +15,9 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleShortVersionString</key>
-	<string><%= HEADS_UP_VERSION %></string>
+	<string><%= HeadsUp::SHORT_VERSION %></string>
 	<key>CFBundleVersion</key>
-	<string><%= HEADS_UP_VERSION %> (<%= HEADS_UP_GIT_SHA %>)</string>
+	<string><%= HeadsUp::VERSION %></string>
 	<key>NSMainNibFile</key>
 	<string>HeadsUpPreferencePane</string>
 	<key>NSPrefPaneIconLabel</key>

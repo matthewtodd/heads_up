@@ -3,3 +3,6 @@
   * sparkle updates
 * icon
 * link to URLs in preference pane
+* clean up positioning in preference pane
+* sparkle updates: show last check date (SUUpdater.lastUpdateCheckDate is KVC-compliant, but we'd like to format the resulting NSDate.) (Maybe subclass SUUpdater? Wrapping is a KVC mess.)
+* sparkle updates: show spinner when checking (SUUpdater.updateInProgress is *not* KVC-compliant, so we'll have to figure something out.) (Maybe subclass SUUpdater? Wrapping is a KVC mess.)

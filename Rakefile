@@ -62,20 +62,25 @@ class HeadsUp
     FileUtils.mkdir_p('website/releases')
     FileUtils.cp(disk_image, 'website/releases')
     FileUtils.mkdir_p(File.dirname(release_announcement))
-    
+
     File.open(release_announcement, 'w') do |file|
       file.puts '---'
       file.puts "title: HeadsUp #{SHORT_VERSION}"
-      file.puts "dmg: /releases/#{disk_image}"
+      file.puts "dmg: #{disk_image_url}"
       file.puts "version: #{VERSION}"
       file.puts "short_version: #{SHORT_VERSION}"
       file.puts "length: #{disk_image_size}"
       file.puts "signature: #{disk_image_signature}"
       file.puts "minimum_system_version: #{minimum_system_version}"
       file.puts '---'
-      file.puts 'h2. Changelog'
+      file.puts 'h3. Changelog'
       file.puts
       commits.each { |commit| file.puts "* #{commit}" } # TODO include dates? include authors? include links to commits on github?
+    end
+
+    FileUtils.mkdir_p('website/_includes')
+    File.open(download_latest, 'w') do |file|
+      file.puts %Q{<a href="#{disk_image_url}">HeadsUp #{SHORT_VERSION}</a>}
     end
 
     puts "Now, tweak the release notes, commit the website, commit the project, tag #{SHORT_VERSION}, and push."
@@ -103,6 +108,14 @@ class HeadsUp
 
   def disk_image_size
     File.size(disk_image)
+  end
+
+  def disk_image_url
+    "/releases/#{disk_image}"
+  end
+
+  def download_latest
+    "website/_includes/download_latest.html"
   end
 
   def minimum_system_version

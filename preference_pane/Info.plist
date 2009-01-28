@@ -12,10 +12,10 @@
 	<string>HeadsUp</string>
 	<key>CFBundlePackageType</key>
 	<string>BNDL</string>
-	<key>CFBundleSignature</key>
-	<string>????</string>
 	<key>CFBundleShortVersionString</key>
 	<string><%= HeadsUp::SHORT_VERSION %></string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string><%= HeadsUp::VERSION %></string>
 	<key>NSMainNibFile</key>
@@ -24,7 +24,19 @@
 	<string>HeadsUp</string>
 	<key>NSPrincipalClass</key>
 	<string>HeadsUpPreferencePane</string>
+	<key>SUAllowsAutomaticUpdates</key>
+  <true/>
+	<key>SUEnableAutomaticChecks</key>
+  <true/>
+	<key>SUEnableSystemProfiling</key>
+  <false/>
+	<key>SUFeedURL</key>
+	<string>http://matthewtodd.github.com/heads_up/feed.xml</string>
 	<key>SUPublicDSAKeyFile</key>
 	<string>dsa_pub.pem</string>
+	<key>SUScheduledCheckInterval</key>
+	<integer>604800</integer>
+	<key>SUShowReleaseNotes</key>
+	<true/>
 </dict>
 </plist>

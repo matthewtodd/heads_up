@@ -35,13 +35,19 @@ class HeadsUp
   SHORT_VERSION = '0.1.0'
   VERSION       = "#{SHORT_VERSION}.#{Time.now.utc.strftime('%Y%m%d%H%M%S')}.#{`git show-ref --hash HEAD`.chomp}"
 
-  def self.commits
-    last_tag = `git tag | tail -1`.chomp
-    range = (last_tag.empty?) ? '' : "#{last_tag}.."
-    `git log --pretty=format:%s #{range}`.split(/\n/)
+  def self.create_release
+    new.create_release
   end
 
-  def self.create_release
+  def self.disk_image
+    "HeadsUp-#{SHORT_VERSION}.dmg"
+  end
+
+  def self.volume_name
+    'HeadsUp'
+  end
+
+  def create_release
     FileUtils.cp disk_image, 'website/releases'
 
     File.open(release_announcement, 'w') do |file|
@@ -52,6 +58,7 @@ class HeadsUp
       file.puts "short_version: #{SHORT_VERSION}"
       file.puts "length: #{disk_image_size}"
       file.puts "signature: #{disk_image_signature}"
+      file.puts "minimum_system_version: #{minimum_system_version}"
       file.puts '---'
       file.puts 'h2. Changelog'
       file.puts
@@ -59,28 +66,36 @@ class HeadsUp
     end
   end
 
-  def self.disk_image
-    "HeadsUp-#{SHORT_VERSION}.dmg"
+  private
+
+  def commits
+    last_tag = `git tag | tail -1`.chomp
+    range = (last_tag.empty?) ? '' : "#{last_tag}.."
+    `git log --pretty=format:%s #{range}`.split(/\n/)
   end
 
-  def self.disk_image_signature
+  def disk_image
+    self.class.disk_image
+  end
+
+  def disk_image_signature
     `openssl dgst -sha1 -binary < "#{disk_image}" | openssl dgst -dss1 -sign "#{private_key}" | openssl enc -base64`.chomp
   end
 
-  def self.disk_image_size
+  def disk_image_size
     File.size(disk_image)
   end
 
-  def self.private_key
+  def minimum_system_version
+    '10.4.11'
+  end
+
+  def private_key
     "#{ENV['HOME']}/.signing_keys/dsa_priv.pem"
   end
 
-  def self.release_announcement
+  def release_announcement
     "website/_posts/releases/#{Date.today.strftime('%Y-%m-%d')}-version-#{SHORT_VERSION}"
-  end
-
-  def self.volume_name
-    'HeadsUp'
   end
 end
 

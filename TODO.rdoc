@@ -1,7 +1,4 @@
-* remove Automatically Check option, set it to false
-* sparkle updates: show last check date (SUUpdater.lastUpdateCheckDate is KVC-compliant, but we'd like to format the resulting NSDate.) (Maybe subclass SUUpdater? Wrapping is a KVC mess.)
 * automate screenshot-taking on release
 * icon
-* link to URLs in preference pane
 * must the helper app be in a sub-bundle? can't we package everything together instead?
 * figure out a better way to handle base href in website (don't want to paste /heads_up everywhere.)

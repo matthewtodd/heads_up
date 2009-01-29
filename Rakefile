@@ -82,7 +82,7 @@ class HeadsUp
 
     FileUtils.mkdir_p('website/_includes')
     File.open(download_latest, 'w') do |file|
-      file.puts %Q{<a href="#{disk_image_url}">#{disk_image}</a>}
+      file.puts %Q{<a href="/heads_up#{disk_image_url}">#{disk_image}</a>}
     end
 
     puts "Now, tweak the release notes, commit the website, commit the project, tag #{SHORT_VERSION}, and push."
@@ -175,11 +175,21 @@ bundle 'HeadsUp.app',      :source => 'application',     :link_frameworks => ['C
 
 namespace :website do
   desc 'Build the website.'
-  task(:build)   { sh 'jekyll website public' }
+  task :build do
+    sh 'jekyll website public/heads_up'
+  end
+
   desc 'Delete generated website files.'
-  task(:clean)   { sh 'rm -rf public' }
-  desc 'Serve the website, noticing file changes.'
-  task(:reserve) { sh 'jekyll website public --auto --server 3000' }
+  task :clean do
+    sh 'rm -rf public'
+  end
+
   desc 'Serve the website.'
-  task(:serve)   { sh 'jekyll website public --server 3000' }
+  task :serve => :build do
+    require 'webrick'
+    server = WEBrick::HTTPServer.new(:Port => 3000, :DocumentRoot => 'public')
+    thread = Thread.new { server.start }
+    trap('INT') { server.shutdown }
+    thread.join
+  end
 end; CLEAN.include('public')

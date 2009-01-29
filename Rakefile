@@ -82,7 +82,7 @@ class HeadsUp
 
     FileUtils.mkdir_p('website/_includes')
     File.open(download_latest, 'w') do |file|
-      file.puts %Q{<a href="/heads_up#{disk_image_url}">#{disk_image}</a>}
+      file.puts %Q{<a href="/heads_up#{disk_image_url}" class="download"><img src="/heads_up/images/dmg.png" class="icon" />#{disk_image}</a>}
     end
 
     puts "Now, tweak the release notes, commit the website, commit the project, tag #{SHORT_VERSION}, and push."

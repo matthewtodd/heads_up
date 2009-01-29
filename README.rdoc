@@ -8,7 +8,9 @@ RubyCocoa. I expect everything to Just Work on Leopard, but I'm developing on Ti
 
 == Install
 
-Proper releases are on the way. In the meantime,
+Stable releases are available at http://matthewtodd.github.com/heads_up.
+
+Development versions can be tracked like so:
 
   $ git clone git://github.com/matthewtodd/heads_up.git
   $ cd heads_up && rake

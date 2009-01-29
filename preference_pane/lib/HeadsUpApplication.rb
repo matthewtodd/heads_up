@@ -19,34 +19,6 @@ class HeadsUpApplication < OSX::NSObject
     self.button_enabled = true
     self.status = is_running ? 'HeadsUp is running.' : 'HeadsUp is stopped.'
     self.spinner_enabled = false
-
-    willChangeValueForKey(:start_at_login)
-    OSX::CFPreferencesAppSynchronize('loginwindow')
-    didChangeValueForKey(:start_at_login)
-  end
-
-  def start_at_login
-    login_items = OSX::CFPreferencesCopyAppValue('AutoLaunchedApplicationDictionary', 'loginwindow')
-    login_items.any? { |item| item['Path'] == app_path }
-  end
-
-  def start_at_login=(start_at_login)
-    willChangeValueForKey(:start_at_login)
-
-    if start_at_login.to_ruby
-      login_items = OSX::CFPreferencesCopyAppValue('AutoLaunchedApplicationDictionary', 'loginwindow').autorelease.mutableCopy
-      login_items << { 'Path' => app_path } unless login_items.any? { |item| item['Path'] == app_path }
-      OSX::CFPreferencesSetAppValue('AutoLaunchedApplicationDictionary', login_items, 'loginwindow')
-      OSX::CFPreferencesAppSynchronize('loginwindow')
-    else
-      login_items = OSX::CFPreferencesCopyAppValue('AutoLaunchedApplicationDictionary', 'loginwindow').autorelease.mutableCopy
-      login_items.reject! { |item| item['Path'] == app_path }
-      OSX::CFPreferencesSetAppValue('AutoLaunchedApplicationDictionary', login_items, 'loginwindow')
-      OSX::CFPreferencesAppSynchronize('loginwindow')
-    end
-
-    didChangeValueForKey(:start_at_login)
-    start_at_login
   end
 
   def start_stop
@@ -67,6 +39,7 @@ class HeadsUpApplication < OSX::NSObject
     self.button_enabled = false
     self.status = 'Stopping HeadsUp...'
     self.spinner_enabled = true
+    self.start_at_login = false
     OSX::NSDistributedNotificationCenter.defaultCenter.postNotificationName_object_userInfo_deliverImmediately('HeadsUpQuit', 'org.matthewtodd.HeadsUp', nil, true)
     performSelector_withObject_afterDelay('refresh', nil, 4.0)
   end
@@ -75,7 +48,23 @@ class HeadsUpApplication < OSX::NSObject
     self.button_enabled = false
     self.status = 'Starting HeadsUp...'
     self.spinner_enabled = true
+    self.start_at_login = true
     OSX::NSTask.launchedTaskWithLaunchPath_arguments(executable_path, [])
     performSelector_withObject_afterDelay('refresh', nil, 4.0)
+  end
+
+  def start_at_login=(start_at_login)
+    OSX::CFPreferencesAppSynchronize('loginwindow')
+    if start_at_login
+      login_items = OSX::CFPreferencesCopyAppValue('AutoLaunchedApplicationDictionary', 'loginwindow').autorelease.mutableCopy
+      login_items << { 'Path' => app_path } unless login_items.any? { |item| item['Path'] == app_path }
+      OSX::CFPreferencesSetAppValue('AutoLaunchedApplicationDictionary', login_items, 'loginwindow')
+      OSX::CFPreferencesAppSynchronize('loginwindow')
+    else
+      login_items = OSX::CFPreferencesCopyAppValue('AutoLaunchedApplicationDictionary', 'loginwindow').autorelease.mutableCopy
+      login_items.reject! { |item| item['Path'] == app_path }
+      OSX::CFPreferencesSetAppValue('AutoLaunchedApplicationDictionary', login_items, 'loginwindow')
+      OSX::CFPreferencesAppSynchronize('loginwindow')
+    end
   end
 end

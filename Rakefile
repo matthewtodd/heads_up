@@ -68,6 +68,7 @@ class HeadsUp
       file.puts "title: HeadsUp #{SHORT_VERSION}"
       file.puts "layout: default"
       file.puts "dmg: #{disk_image_url}"
+      file.puts "dmg_name: #{disk_image}"
       file.puts "version: #{VERSION}"
       file.puts "short_version: #{SHORT_VERSION}"
       file.puts "length: #{disk_image_size}"
@@ -81,7 +82,7 @@ class HeadsUp
 
     FileUtils.mkdir_p('website/_includes')
     File.open(download_latest, 'w') do |file|
-      file.puts %Q{<a href="#{disk_image_url}">HeadsUp #{SHORT_VERSION}</a>}
+      file.puts %Q{<a href="#{disk_image_url}">#{disk_image}</a>}
     end
 
     puts "Now, tweak the release notes, commit the website, commit the project, tag #{SHORT_VERSION}, and push."
@@ -116,7 +117,7 @@ class HeadsUp
   end
 
   def download_latest
-    "website/_includes/download_latest.html"
+    "website/_includes/download.html"
   end
 
   def minimum_system_version

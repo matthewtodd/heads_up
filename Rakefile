@@ -66,6 +66,7 @@ class HeadsUp
     File.open(release_announcement, 'w') do |file|
       file.puts '---'
       file.puts "title: HeadsUp #{SHORT_VERSION}"
+      file.puts "layout: default"
       file.puts "dmg: #{disk_image_url}"
       file.puts "version: #{VERSION}"
       file.puts "short_version: #{SHORT_VERSION}"

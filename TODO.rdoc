@@ -1,6 +1,3 @@
-* install from online
-  * basic website with jekyll on github pages
-  * sparkle updates
 * icon
 * link to URLs in preference pane
 * clean up positioning in preference pane

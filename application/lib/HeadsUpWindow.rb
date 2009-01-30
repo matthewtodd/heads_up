@@ -15,20 +15,23 @@ class HeadsUpWindow < OSX::NSWindow
     initWithContentRect_styleMask_backing_defer(frame_for_location, OSX::NSBorderlessWindowMask, OSX::NSBackingStoreBuffered, false)
     setAutodisplay(true)
     setBackgroundColor(OSX::NSColor.clearColor)
-    setContentView(HeadsUpTextView.alloc.initWithFrame(frame))
-    # FIXME this setAlignment call belongs somewhere else
-    contentView.setAlignment(OSX::NSRightTextAlignment) if location == :bottom_right
     setHasShadow(false)
     setIgnoresMouseEvents(true)
     setLevel(OSX::KCGDesktopWindowLevel)
     setOpaque(false)
     setReleasedWhenClosed(true)
-    orderFront(self)
 
+    text = OSX::NSTextView.alloc.initWithFrame(contentView.frame)
+    text.setAlignment(OSX::NSRightTextAlignment) if location == :bottom_right
+    text.setBackgroundColor(OSX::NSColor.clearColor)
+    text.setFont(OSX::NSFont.fontWithName_size('Monaco', 12.0))
+    text.setTextColor(OSX::NSColor.whiteColor.colorWithAlphaComponent(0.5))
+    setContentView(text)
+
+    orderFront(self)
     self
   end
 
-  # FIXME contentView.setString isn't working with tabs?!?
   def updateContents(string)
     contentView.setString(bottom_justify(string))
   end

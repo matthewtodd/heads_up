@@ -53,7 +53,7 @@ class HeadsUp
 
   def check_release
     die("Current directory has uncommitted changes.") if unclean?
-    die("Version #{SHORT_VERSION} has already been released. Update HeadsUp::SHORT_VERSION in the Rakefile.") if tags.include?(SHORT_VERSION)
+    die("Version #{SHORT_VERSION} has already been released.\nUpdate HeadsUp::SHORT_VERSION in the Rakefile.") if tags.include?(SHORT_VERSION)
   end
 
   def create_release
@@ -84,6 +84,9 @@ class HeadsUp
     File.open(download_latest, 'w') do |file|
       file.puts %Q{<a href="/heads_up#{disk_image_url}" class="download"><img src="/heads_up/images/dmg.png" class="icon" />#{disk_image}</a>}
     end
+
+    FileUtils.mkdir_p('website/images')
+    Screenshot.take('website/images')
 
     puts "Now, tweak the release notes, commit the website, commit the project, tag #{SHORT_VERSION}, and push."
   end
@@ -138,6 +141,45 @@ class HeadsUp
 
   def unclean?
     `git status`.grep(/working directory clean/).empty?
+  end
+
+  class Screenshot
+    def self.take(path)
+      new.take(path)
+    end
+
+    def take(path)
+      original_frame = current_frame
+
+      script('tell application "System Preferences" to quit')
+      script('tell application "Finder" to set visible of every process whose name is not "System Preferences" to false')
+      resize(1024, 768)
+      script('tell application "System Preferences" to activate')
+      script('tell application "System Preferences" to set current pane to pane "org.matthewtodd.HeadsUp.preferences"')
+      script('tell application "Finder" to set visible of every process whose name is not "System Preferences" to false')
+
+      `screencapture -m -tjpg #{path}/screenshot.jpg`
+      `convert -resize 300x #{path}/screenshot.jpg #{path}/screenshot-small.jpg`
+
+      resize(*original_frame)
+      script('tell application "System Preferences" to quit')
+    end
+
+    private
+
+    def current_frame
+      require 'osx/cocoa'
+      frame = OSX::NSScreen.mainScreen.frame
+      [frame.width.to_i, frame.height.to_i]
+    end
+
+    def resize(width, height)
+      `./utilities/cscreen -x #{width} -y #{height}`
+    end
+
+    def script(string)
+      `osascript -e '#{string}'`
+    end
   end
 end
 

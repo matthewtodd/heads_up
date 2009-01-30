@@ -1,14 +1,6 @@
 require 'osx/cocoa'
 
 class HeadsUpWindow < OSX::NSWindow
-  ROWS, COLS = 12, 80
-
-  # FIXME chicken-and-egg keeps me from asking
-  # layoutManger.defaultLineHeightForFont. So resize window, textView, *after*
-  # initializing? Aternatively, maybe I could grow the window to accomodate
-  # its textView?
-  FONT_HEIGHT, FONT_WIDTH = 16.0, 7.201171875
-
   def initWithLocation(location)
     @location = location
 
@@ -22,10 +14,13 @@ class HeadsUpWindow < OSX::NSWindow
     setReleasedWhenClosed(true)
 
     text = OSX::NSTextView.alloc.initWithFrame(contentView.frame)
-    text.setAlignment(OSX::NSRightTextAlignment) if location == :bottom_right
     text.setBackgroundColor(OSX::NSColor.clearColor)
     text.setFont(OSX::NSFont.fontWithName_size('Monaco', 12.0))
+    text.setHorizontallyResizable(false)
+    text.setVerticallyResizable(false)
     text.setTextColor(OSX::NSColor.whiteColor.colorWithAlphaComponent(0.5))
+    text.textContainer.setWidthTracksTextView(false)
+    text.textContainer.setHeightTracksTextView(false)
     setContentView(text)
 
     orderFront(self)
@@ -33,7 +28,8 @@ class HeadsUpWindow < OSX::NSWindow
   end
 
   def updateContents(string)
-    contentView.setString(bottom_justify(string))
+    contentView.setString(string.to_s.chomp)
+    updatePosition
   end
 
   def updatePosition
@@ -42,28 +38,33 @@ class HeadsUpWindow < OSX::NSWindow
 
   private
 
-  # FIXME rather than all this string padding, is it better to resize the textView??? (Better how?)
-  # FIXME this will blow up when there are more than ROWS lines
-  def bottom_justify(string)
-    lines = string.split(/\n/)
-    (ROWS - lines.size).times { lines.unshift('') }
-    lines.join("\n")
+  def frame_for_location
+    send("frame_for_#{@location}", *content_dimensions)
   end
 
-  def frame_for_location
+  MARGIN = 16.0
+
+  def frame_for_bottom_left(width, height)
+    [MARGIN, MARGIN, width, height]
+  end
+
+  def frame_for_bottom_right(width, height)
     main_frame = OSX::NSScreen.mainScreen.frame
+    [main_frame.width - width - MARGIN, MARGIN, width, height]
+  end
 
-    margin = FONT_HEIGHT
-    width  = COLS * FONT_WIDTH
-    height = ROWS * FONT_HEIGHT
+  def content_dimensions
+    if contentView
+      container = contentView.textContainer
+      manager = contentView.layoutManager
 
-    case @location
-    when :bottom_left
-      [margin, margin, width, height]
-    when :bottom_right
-      [main_frame.width - width - margin, margin, width, height]
+      manager.glyphRangeForTextContainer(container) # cause layout
+      rect = manager.usedRectForTextContainer(container)
+      width, height = rect.width, rect.height
     else
-      raise "Unsupported window location: #{location}"
+      width, height = ((OSX::NSScreen.mainScreen.frame.width / 2) - MARGIN * 2), 100
     end
+
+    [width, height]
   end
 end

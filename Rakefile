@@ -152,11 +152,10 @@ class HeadsUp
       original_frame = current_frame
 
       script('tell application "System Preferences" to quit')
-      script('tell application "Finder" to set visible of every process whose name is not "System Preferences" to false')
+      script('tell application "Finder" to set visible of every process whose name is not "Finder" to false')
       resize(1024, 768)
       script('tell application "System Preferences" to activate')
       script('tell application "System Preferences" to set current pane to pane "org.matthewtodd.HeadsUp.preferences"')
-      script('tell application "Finder" to set visible of every process whose name is not "System Preferences" to false')
 
       `screencapture -m -tjpg #{path}/screenshot.jpg`
       `convert -resize 300x #{path}/screenshot.jpg #{path}/screenshot-small.jpg`
@@ -174,7 +173,7 @@ class HeadsUp
     end
 
     def resize(width, height)
-      system("utilities/cscreen -x #{width} -y #{height}") || (puts $?; exit(1))
+      `utilities/cscreen.exe -x #{width} -y #{height}`
     end
 
     def script(string)

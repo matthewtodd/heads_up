@@ -14,11 +14,15 @@ class HeadsUpWindow < OSX::NSWindow
     setReleasedWhenClosed(true)
 
     text = OSX::NSTextView.alloc.initWithFrame(contentView.frame)
+    text.setAllowsUndo(false)
     text.setBackgroundColor(OSX::NSColor.clearColor)
+    text.setEditable(false)
+    text.setFieldEditor(false)
     text.setFont(OSX::NSFont.fontWithName_size('Monaco', 12.0))
     text.setHorizontallyResizable(false)
-    text.setVerticallyResizable(false)
+    text.setSelectable(false)
     text.setTextColor(OSX::NSColor.whiteColor.colorWithAlphaComponent(0.5))
+    text.setVerticallyResizable(false)
     text.textContainer.setWidthTracksTextView(false)
     text.textContainer.setHeightTracksTextView(false)
     setContentView(text)
@@ -42,7 +46,7 @@ class HeadsUpWindow < OSX::NSWindow
     send("frame_for_#{@location}", *content_dimensions)
   end
 
-  MARGIN = 16.0
+  MARGIN = 12.0
 
   def frame_for_bottom_left(width, height)
     [MARGIN, MARGIN, width, height]

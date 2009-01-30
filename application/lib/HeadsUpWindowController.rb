@@ -17,7 +17,6 @@ class HeadsUpWindowController < OSX::NSWindowController
     @timer.fire
   end
 
-  # TODO set up a binding, so that the window just observes me
   def update_window_contents
     if command.empty?
       window.updateContents('')

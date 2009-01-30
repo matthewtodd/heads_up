@@ -32,7 +32,7 @@ def bundle(name, options)
 end; CLEAN.include('release')
 
 class HeadsUp
-  SHORT_VERSION = '0.1.0'
+  SHORT_VERSION = '0.2.0'
   VERSION       = "#{SHORT_VERSION}.#{Time.now.utc.strftime('%Y%m%d%H%M%S')}.#{`git show-ref --hash HEAD`.chomp}"
 
   def self.check_release
@@ -174,7 +174,7 @@ class HeadsUp
     end
 
     def resize(width, height)
-      `./utilities/cscreen -x #{width} -y #{height}`
+      system("utilities/cscreen -x #{width} -y #{height}") || (puts $?; exit(1))
     end
 
     def script(string)

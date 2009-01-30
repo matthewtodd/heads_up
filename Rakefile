@@ -152,10 +152,12 @@ class HeadsUp
       original_frame = current_frame
 
       script('tell application "System Preferences" to quit')
+      script('tell application "Finder" to open home')
       script('tell application "Finder" to set visible of every process whose name is not "Finder" to false')
       resize(1024, 768)
       script('tell application "System Preferences" to activate')
       script('tell application "System Preferences" to set current pane to pane "org.matthewtodd.HeadsUp.preferences"')
+      script('tell application "Finder" to set visible of every process whose name is not "System Preferences" to false')
 
       `screencapture -m -tjpg #{path}/screenshot.jpg`
       `convert -resize 300x #{path}/screenshot.jpg #{path}/screenshot-small.jpg`

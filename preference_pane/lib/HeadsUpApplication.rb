@@ -55,16 +55,10 @@ class HeadsUpApplication < OSX::NSObject
 
   def start_at_login=(start_at_login)
     OSX::CFPreferencesAppSynchronize('loginwindow')
-    if start_at_login
-      login_items = OSX::CFPreferencesCopyAppValue('AutoLaunchedApplicationDictionary', 'loginwindow').autorelease.to_ruby
-      login_items << { 'Path' => app_path } unless login_items.any? { |item| item['Path'] == app_path }
-      OSX::CFPreferencesSetAppValue('AutoLaunchedApplicationDictionary', login_items, 'loginwindow')
-      OSX::CFPreferencesAppSynchronize('loginwindow')
-    else
-      login_items = OSX::CFPreferencesCopyAppValue('AutoLaunchedApplicationDictionary', 'loginwindow').autorelease.to_ruby
-      login_items.reject! { |item| item['Path'] == app_path }
-      OSX::CFPreferencesSetAppValue('AutoLaunchedApplicationDictionary', login_items, 'loginwindow')
-      OSX::CFPreferencesAppSynchronize('loginwindow')
-    end
+    login_items = OSX::CFPreferencesCopyAppValue('AutoLaunchedApplicationDictionary', 'loginwindow').autorelease.to_ruby
+    login_items.reject! { |item| item['Path'] == app_path }
+    login_items << { 'Path' => app_path } if start_at_login
+    OSX::CFPreferencesSetAppValue('AutoLaunchedApplicationDictionary', login_items, 'loginwindow')
+    OSX::CFPreferencesAppSynchronize('loginwindow')
   end
 end

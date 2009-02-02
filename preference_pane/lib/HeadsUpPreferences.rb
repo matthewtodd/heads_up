@@ -4,6 +4,7 @@ class HeadsUpPreferences < OSX::NSObject
   attr_reader :identifier
 
   def initWithBundleIdentifier(identifier)
+    init
     @identifier = identifier
     self
   end

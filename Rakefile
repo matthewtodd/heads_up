@@ -2,7 +2,7 @@ require 'rake/clean'
 require 'erb'
 
 rule '.o' => ['.m'] do |task|
-  sh "/usr/bin/gcc-4.0 -c #{task.source} -o #{task.name}"
+  sh "/usr/bin/gcc-4.0 -x objective-c -arch i386 -pipe -Os -fvisibility=default -c #{task.source} -o #{task.name}"
 end; CLEAN.include('**/*.o')
 
 def bundle(name, options)
@@ -24,7 +24,7 @@ def bundle(name, options)
     mkdir_p frameworks_dir
     cp_r Dir.glob("#{source}/vendor/frameworks/*"), frameworks_dir
     mkdir_p mac_os_dir
-    sh "/usr/bin/gcc-4.0 -o %s %s %s %s %s" % [executable, "-F#{frameworks_dir}", frameworks.map { |name| "-framework #{name}" }.join(' '), link_flags.join(' '), object_file]
+    sh "/usr/bin/gcc-4.0 -o %s %s %s -arch i386 %s %s" % [executable, "-F#{frameworks_dir}", frameworks.map { |name| "-framework #{name}" }.join(' '), link_flags.join(' '), object_file]
     mkdir_p resources_dir
     cp_r Dir.glob("#{source}/lib/*"), resources_dir
     cp_r Dir.glob("#{source}/resources/*"), resources_dir

@@ -62,7 +62,7 @@ class HeadsUpWindow < OSX::NSWindow
       container = contentView.textContainer
       manager = contentView.layoutManager
 
-      manager.glyphRangeForTextContainer(container) # cause layout
+      manager.glyphRangeForTextContainer(container) # trigger layout; without this we just get 0,0 for dimensions
       rect = manager.usedRectForTextContainer(container)
       width, height = rect.width, rect.height
     else

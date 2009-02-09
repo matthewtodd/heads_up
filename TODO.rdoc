@@ -1,4 +1,3 @@
 * use Grancher to simplify gh-pages stuff? http://judofyr.github.com/grancher/
-* icon
 * must the helper app be in a sub-bundle? can't we package everything together instead?
 * figure out a better way to handle base href in website (don't want to paste /heads_up everywhere.)

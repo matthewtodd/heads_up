@@ -28,6 +28,7 @@ def bundle(name, options)
     mkdir_p resources_dir
     cp_r Dir.glob("#{source}/lib/*"), resources_dir
     cp_r Dir.glob("#{source}/resources/*"), resources_dir
+    cp_r Dir.glob("shared/resources/*"), resources_dir
   end
 end; CLEAN.include('release')
 

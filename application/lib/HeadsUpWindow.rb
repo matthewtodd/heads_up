@@ -13,6 +13,10 @@ class HeadsUpWindow < OSX::NSWindow
     setOpaque(false)
     setReleasedWhenClosed(true)
 
+    style = OSX::NSMutableParagraphStyle.alloc.init
+    style.setDefaultTabInterval(28.0)
+    style.setTabStops([])
+
     text = OSX::NSTextView.alloc.initWithFrame(contentView.frame)
     text.setAllowsUndo(false)
     text.setBackgroundColor(OSX::NSColor.clearColor)
@@ -20,6 +24,7 @@ class HeadsUpWindow < OSX::NSWindow
     text.setFieldEditor(false)
     text.setFont(OSX::NSFont.fontWithName_size('Monaco', 12.0))
     text.setHorizontallyResizable(false)
+    text.setDefaultParagraphStyle(style)
     text.setSelectable(false)
     text.setTextColor(OSX::NSColor.whiteColor.colorWithAlphaComponent(0.5))
     text.setVerticallyResizable(false)

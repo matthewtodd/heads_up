@@ -33,7 +33,7 @@ def bundle(name, options)
 end; CLEAN.include('release')
 
 class HeadsUp
-  SHORT_VERSION = '0.2.1'
+  SHORT_VERSION = '0.2.2'
   VERSION       = "#{SHORT_VERSION}.#{Time.now.utc.strftime('%Y%m%d%H%M%S')}.#{`git show-ref --hash=8 HEAD`.chomp}"
 
   def self.check_release

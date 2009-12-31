@@ -9,7 +9,7 @@ class HeadsUpWindow < OSX::NSWindow
     setBackgroundColor(OSX::NSColor.clearColor)
     setHasShadow(false)
     setIgnoresMouseEvents(true)
-    setLevel(OSX::KCGDesktopWindowLevel)
+    setLevel(OSX::CGWindowLevelForKey(OSX::KCGDesktopWindowLevelKey))
     setOpaque(false)
     setReleasedWhenClosed(true)
 

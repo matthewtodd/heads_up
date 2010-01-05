@@ -75,6 +75,7 @@ class HeadsUp
       file.puts "length: #{disk_image_size}"
       file.puts "signature: #{disk_image_signature}"
       file.puts "minimum_system_version: #{minimum_system_version}"
+      file.puts 'category: releases'
       file.puts '---'
       file.puts 'h3. Changelog'
       file.puts
@@ -133,7 +134,7 @@ class HeadsUp
   end
 
   def release_announcement
-    "website/_posts/releases/#{Date.today.strftime('%Y-%m-%d')}-version-#{SHORT_VERSION}.textile"
+    "website/_posts/#{Date.today.strftime('%Y-%m-%d')}-version-#{SHORT_VERSION}.textile"
   end
 
   def tags

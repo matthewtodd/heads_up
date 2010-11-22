@@ -11,8 +11,8 @@
 
 @implementation HeadsUpTextView
 
-- (id)initWithFrame:(NSRect)frameRect {
-	self = [super initWithFrame:frameRect];
+- (id)init {
+	self = [super initWithFrame:NSMakeRect(0, 0, 100, 100)];
 	
 	if (self) {
 		[self setAllowsUndo:FALSE];

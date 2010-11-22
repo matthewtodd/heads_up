@@ -1,5 +1,5 @@
 //
-//  HeadsUpWindow.h
+//  HeadsUpScreenRight.h
 //  HeadsUp
 //
 //  Created by Matthew Todd on 11/22/10.
@@ -7,11 +7,10 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "HeadsUpScreen.h"
 
+@interface HeadsUpScreenRight : NSObject <HeadsUpScreen> {
 
-@interface HeadsUpWindow : NSWindow {
 }
-
-- (id)initWithContentView:(NSView *)contentView;
 
 @end

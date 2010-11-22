@@ -11,6 +11,9 @@
 		256AC3DA0F4B6AC300CF3369 /* HeadsUpAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 256AC3D90F4B6AC300CF3369 /* HeadsUpAppDelegate.m */; };
 		34056958129A79B000B065FE /* HeadsUpWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 34056957129A79B000B065FE /* HeadsUpWindow.m */; };
 		340569BA129A8B6E00B065FE /* HeadsUpTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 340569B9129A8B6E00B065FE /* HeadsUpTextView.m */; };
+		340569DD129A942100B065FE /* HeadsUpWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 340569DC129A942100B065FE /* HeadsUpWindowController.m */; };
+		340569EE129A95C300B065FE /* HeadsUpScreenLeft.m in Sources */ = {isa = PBXBuildFile; fileRef = 340569ED129A95C300B065FE /* HeadsUpScreenLeft.m */; };
+		340569F3129A963300B065FE /* HeadsUpScreenRight.m in Sources */ = {isa = PBXBuildFile; fileRef = 340569F2129A963300B065FE /* HeadsUpScreenRight.m */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -31,6 +34,13 @@
 		34056957129A79B000B065FE /* HeadsUpWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeadsUpWindow.m; sourceTree = "<group>"; };
 		340569B8129A8B6E00B065FE /* HeadsUpTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeadsUpTextView.h; sourceTree = "<group>"; };
 		340569B9129A8B6E00B065FE /* HeadsUpTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeadsUpTextView.m; sourceTree = "<group>"; };
+		340569DB129A942100B065FE /* HeadsUpWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeadsUpWindowController.h; sourceTree = "<group>"; };
+		340569DC129A942100B065FE /* HeadsUpWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeadsUpWindowController.m; sourceTree = "<group>"; };
+		340569EC129A95C300B065FE /* HeadsUpScreenLeft.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeadsUpScreenLeft.h; sourceTree = "<group>"; };
+		340569ED129A95C300B065FE /* HeadsUpScreenLeft.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeadsUpScreenLeft.m; sourceTree = "<group>"; };
+		340569F1129A963300B065FE /* HeadsUpScreenRight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeadsUpScreenRight.h; sourceTree = "<group>"; };
+		340569F2129A963300B065FE /* HeadsUpScreenRight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeadsUpScreenRight.m; sourceTree = "<group>"; };
+		34056A04129A96BD00B065FE /* HeadsUpScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeadsUpScreen.h; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* HeadsUp-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "HeadsUp-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* HeadsUp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HeadsUp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -50,12 +60,19 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				340569F1129A963300B065FE /* HeadsUpScreenRight.h */,
+				340569F2129A963300B065FE /* HeadsUpScreenRight.m */,
 				256AC3D80F4B6AC300CF3369 /* HeadsUpAppDelegate.h */,
 				256AC3D90F4B6AC300CF3369 /* HeadsUpAppDelegate.m */,
 				34056956129A79B000B065FE /* HeadsUpWindow.h */,
 				34056957129A79B000B065FE /* HeadsUpWindow.m */,
 				340569B8129A8B6E00B065FE /* HeadsUpTextView.h */,
 				340569B9129A8B6E00B065FE /* HeadsUpTextView.m */,
+				340569DB129A942100B065FE /* HeadsUpWindowController.h */,
+				340569DC129A942100B065FE /* HeadsUpWindowController.m */,
+				340569EC129A95C300B065FE /* HeadsUpScreenLeft.h */,
+				340569ED129A95C300B065FE /* HeadsUpScreenLeft.m */,
+				34056A04129A96BD00B065FE /* HeadsUpScreen.h */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -192,6 +209,9 @@
 				256AC3DA0F4B6AC300CF3369 /* HeadsUpAppDelegate.m in Sources */,
 				34056958129A79B000B065FE /* HeadsUpWindow.m in Sources */,
 				340569BA129A8B6E00B065FE /* HeadsUpTextView.m in Sources */,
+				340569DD129A942100B065FE /* HeadsUpWindowController.m in Sources */,
+				340569EE129A95C300B065FE /* HeadsUpScreenLeft.m in Sources */,
+				340569F3129A963300B065FE /* HeadsUpScreenRight.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -3,6 +3,6 @@
 @interface HeadsUpWindowController : NSWindowController {
 }
 
-- (id)initWithWindow:(NSWindow *)window screen:(id <HeadsUpScreen>)screen;
+- (id)initWithWindow:(NSWindow *)window;
 
 @end

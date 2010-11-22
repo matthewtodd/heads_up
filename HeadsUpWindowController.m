@@ -2,10 +2,11 @@
 
 @implementation HeadsUpWindowController
 
-- (id)initWithWindow:(NSWindow *)window screen:(id <HeadsUpScreen>)screen {
+- (id)initWithWindow:(NSWindow *)window {
 	self = [super initWithWindow:window];
 
 	if (self) {
+//		[[self window] position];
 		[[self window] orderFront:self];
 	}
 

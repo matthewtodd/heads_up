@@ -9,11 +9,8 @@
 @synthesize window;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-	id <HeadsUpScreen> screenLeft  = [[HeadsUpScreenLeft alloc] init];
-	id <HeadsUpScreen> screenRight = [[HeadsUpScreenRight alloc] init];
-
-	left  = [[HeadsUpWindowController alloc] initWithWindow:[[HeadsUpWindow alloc] initWithContentView:[[HeadsUpTextView alloc] init]] screen:screenLeft];
-	right = [[HeadsUpWindowController alloc] initWithWindow:[[HeadsUpWindow alloc] initWithContentView:[[HeadsUpTextView alloc] init]] screen:screenRight];
+	left  = [[HeadsUpWindowController alloc] initWithWindow:[[HeadsUpWindow alloc] initWithContentView:[[HeadsUpTextView alloc] init] screen:[[HeadsUpScreenLeft alloc] init]]];
+	right = [[HeadsUpWindowController alloc] initWithWindow:[[HeadsUpWindow alloc] initWithContentView:[[HeadsUpTextView alloc] init] screen:[[HeadsUpScreenRight alloc] init]]];
 }
 
 @end

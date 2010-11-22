@@ -2,8 +2,8 @@
 
 @implementation HeadsUpWindow
 
-- (id)initWithContentView:(NSView *)contentView {
-	self = [super initWithContentRect:NSMakeRect(0,0,100,100) styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:FALSE];
+- (id)initWithContentView:(NSView *)contentView screen:(id <HeadsUpScreen>)screen {
+	self = [super initWithContentRect:[screen initialContentRect] styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:FALSE];
 
 	if (self) {
 		[self setAutodisplay:TRUE];

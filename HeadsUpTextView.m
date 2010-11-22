@@ -3,7 +3,7 @@
 @implementation HeadsUpTextView
 
 - (id)init {
-	self = [super initWithFrame:NSMakeRect(0, 0, 100, 100)];
+	self = [super initWithFrame:NSMakeRect(12, 12, 500, 100)];
 	
 	if (self) {
 		[self setAllowsUndo:FALSE];

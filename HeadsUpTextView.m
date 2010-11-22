@@ -3,18 +3,17 @@
 @implementation HeadsUpTextView
 
 - (id)init {
-	self = [super initWithFrame:NSMakeRect(12, 12, 500, 100)];
+	self = [super initWithFrame:NSMakeRect(0,0,100,100)];
 	
 	if (self) {
 		[self setAllowsUndo:FALSE];
-		[self setBackgroundColor: [NSColor clearColor]];
+//		[self setBackgroundColor: [NSColor clearColor]];
 		[self setEditable:FALSE];
 		[self setFieldEditor:FALSE];
-		[self setFont: [NSFont fontWithName:@"Menlo" size:12.0]];
+		[self setFont:[NSFont fontWithName:@"Menlo" size:12.0]];
 		[self setHorizontallyResizable:FALSE];
 		[self setSelectable:FALSE];
-		[self setString:@"Hello, World!"];
-		[self setTextColor: [[NSColor whiteColor] colorWithAlphaComponent:0.5]];
+//		[self setTextColor:[[NSColor whiteColor] colorWithAlphaComponent:0.5]];
 		[self setVerticallyResizable:FALSE];
 		
 		[[self textContainer] setHeightTracksTextView:FALSE];
@@ -22,6 +21,17 @@
 	}
 	
 	return self;
+}
+
+- (void)setString:(NSString *)string {
+	[super setString:string];
+}
+
+- (NSRect) usedRectForText {
+	// Trigger a layout; without this, we just get 0,0 for dimensions!?
+	[[self layoutManager] glyphRangeForTextContainer:[self textContainer]];
+	
+	return [[self layoutManager] usedRectForTextContainer:[self textContainer]];
 }
 
 @end

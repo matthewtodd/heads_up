@@ -30,7 +30,7 @@
 
 - (void)setString:(NSString *)string {
 	[[self contentView] setString:string];
-	[self setFrame:[[self headsUpScreen] windowFrameForTextRect:[[self headsUpContentView] usedRectForText]] display:TRUE];
+	[self setFrame:[[self headsUpScreen] windowFrameForTextRect:[[self headsUpContentView] usedTextRectangle]] display:TRUE];
 }
 
 @end

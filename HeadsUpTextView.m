@@ -27,7 +27,7 @@
 	[super setString:string];
 }
 
-- (NSRect) usedRectForText {
+- (NSRect) usedTextRectangle {
 	// Trigger a layout; without this, we just get 0,0 for dimensions!?
 	[[self layoutManager] glyphRangeForTextContainer:[self textContainer]];
 	

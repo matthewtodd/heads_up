@@ -4,5 +4,5 @@
 }
 
 - (void)setString:(NSString *)string;
-- (NSRect)usedRectForText;
+- (NSRect)usedTextRectangle;
 @end

@@ -1,6 +1,4 @@
-#import "HeadsUpTextView.h"
 #import "HeadsUpWindow.h"
-
 
 @implementation HeadsUpWindow
 

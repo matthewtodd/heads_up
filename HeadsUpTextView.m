@@ -1,6 +1,5 @@
 #import "HeadsUpTextView.h"
 
-
 @implementation HeadsUpTextView
 
 - (id)init {

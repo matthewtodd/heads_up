@@ -2,8 +2,11 @@
 
 @implementation HeadsUpTextView
 
-- (id)initWithFrame:(NSRect)frameRect {
-	self = [super initWithFrame:frameRect];
+- (id)init {
+	// Start with a HUGE frame that won't resize with the parent view.
+	// Our strategy is to squish the window around to properly position
+	// the text on the screen.
+	self = [super initWithFrame:NSMakeRect(0, 0, 10000, 10000)];
 	
 	if (self) {
 		[self setAllowsUndo:FALSE];

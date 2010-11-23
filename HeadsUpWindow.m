@@ -15,6 +15,9 @@
 		[self setIgnoresMouseEvents:TRUE];
 		[self setLevel:CGWindowLevelForKey(kCGDesktopWindowLevelKey)];
 		[self setOpaque:FALSE];
+
+		// Display the window.
+		[self orderFront:self];
 	}
 	
 	return self;

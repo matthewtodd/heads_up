@@ -1,4 +1,5 @@
 #import "HeadsUpWindowController.h"
+#import "HeadsUpWindow.h"
 
 @implementation HeadsUpWindowController
 
@@ -6,17 +7,11 @@
 	self = [super initWithWindow:[[HeadsUpWindow alloc] initWithHeadsUpScreen:screen]];
 
 	if (self) {
-		[[self headsUpWindow] setString:@"Loading..."];
-		[[self headsUpWindow] orderFront:self];
-
+		[self setString:@"Loading..."];
 		[self launchTask:@"/usr/bin/true"];
 	}
 
 	return self;
-}
-
-- (HeadsUpWindow *)headsUpWindow {
-	return (HeadsUpWindow *) [self window];
 }
 
 // TODO retain the task?
@@ -33,12 +28,16 @@
 	NSTask *task = [notification object];
 
 	if ([task terminationStatus] == 0) {
-		[[self headsUpWindow] setString:@"Success!"];
+		[self setString:@"Success!"];
 	} else {
-		[[self headsUpWindow] setString:@"Failure."];
+		[self setString:@"Failure."];
 	}
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSTaskDidTerminateNotification object:task];
+}
+
+- (void)setString:(NSString *)string {
+	[(HeadsUpWindow *) [self window] setString:string];
 }
 
 @end

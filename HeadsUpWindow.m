@@ -9,15 +9,12 @@
 	self = [super initWithContentRect:[theHeadsUpScreen initialContentRect] styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:FALSE];
 
 	if (self) {
-		[self setAutodisplay:TRUE];
 		[self setBackgroundColor: [NSColor clearColor]];
 		[self setContentView:[[HeadsUpTextView alloc] init]];
-		[self setHasShadow:FALSE];
 		[self setHeadsUpScreen:theHeadsUpScreen];
 		[self setIgnoresMouseEvents:TRUE];
 		[self setLevel:CGWindowLevelForKey(kCGDesktopWindowLevelKey)];
 		[self setOpaque:FALSE];
-		[self setReleasedWhenClosed:TRUE];
 	}
 	
 	return self;

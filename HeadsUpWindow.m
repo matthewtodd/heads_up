@@ -25,7 +25,7 @@
 
 - (void)setString:(NSString *)string {
 	[[self contentView] setString:string];
-	[self setFrame:[[self headsUpScreen] windowFrameForTextRect:[(HeadsUpTextView *) [self contentView] usedTextRectangle]] display:TRUE];
+	[self setFrame:[[self headsUpScreen] windowFrameForTextRect:[(HeadsUpTextView *) [self contentView] usedTextRect]] display:TRUE];
 }
 
 @end

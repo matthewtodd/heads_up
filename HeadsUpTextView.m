@@ -26,11 +26,7 @@
 	return self;
 }
 
-- (void)setString:(NSString *)string {
-	[super setString:string];
-}
-
-- (NSRect) usedTextRectangle {
+- (NSRect) usedTextRect {
 	// Trigger a layout; without this, we just get 0,0 for dimensions!?
 	[[self layoutManager] glyphRangeForTextContainer:[self textContainer]];
 	

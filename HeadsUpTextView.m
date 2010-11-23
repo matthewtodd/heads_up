@@ -27,6 +27,14 @@
 	return self;
 }
 
+- (void)setString:(NSString *)string {
+	NSInteger i = [string length];
+	while ([[NSCharacterSet whitespaceAndNewlineCharacterSet] characterIsMember:[string characterAtIndex:(i-1)]]) {
+		i--;
+	}
+	[super setString:[string substringToIndex:i]];
+}
+
 - (NSSize) textSize {
 	// Trigger a layout; without this, we just get 0,0 for dimensions!?
 	[[self layoutManager] glyphRangeForTextContainer:[self textContainer]];

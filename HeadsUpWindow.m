@@ -22,11 +22,7 @@
 }
 
 - (void)updateText:(NSString *)string {
-	NSInteger i = [string length];
-	while ([[NSCharacterSet whitespaceAndNewlineCharacterSet] characterIsMember:[string characterAtIndex:(i-1)]]) {
-		i--;
-	}
-	[[self contentView] setString:[string substringToIndex:i]];
+	[[self contentView] setString:string];
 }
 
 - (void)repositionOn:(id <HeadsUpScreen>)screen {

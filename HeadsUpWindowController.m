@@ -11,12 +11,13 @@
 	if (self) {
 		[self setHeadsUpScreen:screen];
 		[self setString:@"Launching..."];
-		[self launchTask:[[NSUserDefaults standardUserDefaults] stringForKey:[screen key]]];
+		[self launchTask:[screen command]];
 	}
 
 	return self;
 }
 
+// TODO private methods?
 // TODO retain the task? Run synchronously?
 - (void)launchTask:(NSString *)command {
 	if ([[command stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] == 0) {

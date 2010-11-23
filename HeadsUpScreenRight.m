@@ -9,8 +9,8 @@
 	return NSMakeRect(screenWidth - windowWidth - 12, 12, windowWidth, 100);
 }
 
-- (NSString *) key {
-	return @"bottom_right";
+- (NSString *) command {
+	return [[NSUserDefaults standardUserDefaults] stringForKey:@"bottom_right"];
 }
 
 - (NSRect) windowFrameWithSize:(NSSize)size {

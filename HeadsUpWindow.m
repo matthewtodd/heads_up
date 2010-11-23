@@ -18,7 +18,6 @@
 		[self setLevel:CGWindowLevelForKey(kCGDesktopWindowLevelKey)];
 		[self setOpaque:FALSE];
 		[self setReleasedWhenClosed:TRUE];
-		[self setString:@"Hello, World!"];
 	}
 	
 	return self;

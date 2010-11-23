@@ -7,7 +7,7 @@
 	self = [super initWithWindow:[[HeadsUpWindow alloc] initWithHeadsUpScreen:screen]];
 
 	if (self) {
-		[self launchTask:@"/bin/echo 'Welcome to HeadsUp!'"];
+		[self launchTask:[[NSUserDefaults standardUserDefaults] stringForKey:[screen key]]];
 	}
 
 	return self;

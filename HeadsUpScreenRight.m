@@ -9,6 +9,10 @@
 	return NSMakeRect(screenWidth - windowWidth - 12, 12, windowWidth, 100);
 }
 
+- (NSString *) key {
+	return @"bottom_right";
+}
+
 - (NSRect) windowFrameWithSize:(NSSize)size {
 	int screenWidth = [[NSScreen mainScreen] frame].size.width;
 

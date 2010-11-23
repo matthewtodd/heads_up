@@ -9,6 +9,10 @@
 	return NSMakeRect(12, 12, windowWidth, 100);
 }
 
+- (NSString *) key {
+	return @"bottom_left";
+}
+
 - (NSRect) windowFrameWithSize:(NSSize)size {
 	return NSMakeRect(12, 12, size.width, size.height);
 }

@@ -6,7 +6,8 @@
 @synthesize headsUpScreen;
 
 - (id)initWithHeadsUpScreen:(id <HeadsUpScreen>)screen {
-	self = [super initWithWindow:[[HeadsUpWindow alloc] initWithHeadsUpScreen:screen]];
+	// TODO retain window?
+	self = [super initWithWindow:[[HeadsUpWindow alloc] init]];
 
 	if (self) {
 		[self setHeadsUpScreen:screen];
@@ -55,7 +56,7 @@
 }
 
 - (void)setString:(NSString *)string {
-	[(HeadsUpWindow *) [self window] setString:string];
+	[(HeadsUpWindow *) [self window] setString:string andPositionOn:[self headsUpScreen]];
 }
 
 @end

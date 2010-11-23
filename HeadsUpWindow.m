@@ -23,9 +23,12 @@
 	return self;
 }
 
-// TODO probably just want to trim from the end of the string!
 - (void)setString:(NSString *)string {
-	[[self contentView] setString:[string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]];
+	NSInteger i = [string length];
+	while ([[NSCharacterSet whitespaceAndNewlineCharacterSet] characterIsMember:[string characterAtIndex:(i-1)]]) {
+		i--;
+	}
+	[[self contentView] setString:[string substringToIndex:i]];
 	[self setFrame:[[self headsUpScreen] windowFrameWithSize:[(HeadsUpTextView *) [self contentView] textSize]] display:TRUE];
 }
 

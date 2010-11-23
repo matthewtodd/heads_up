@@ -4,6 +4,6 @@
 }
 
 - (id)init;
-- (void)setString:(NSString *)string andPositionOn:(id <HeadsUpScreen>)screen;
+- (void)updateText:(NSString *)string andRepositionOn:(id <HeadsUpScreen>)screen;
 
 @end

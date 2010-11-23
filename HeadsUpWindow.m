@@ -21,7 +21,7 @@
 	return self;
 }
 
-- (void)setString:(NSString *)string andPositionOn:(id <HeadsUpScreen>)screen {
+- (void)updateText:(NSString *)string andRepositionOn:(id <HeadsUpScreen>)screen {
 	NSInteger i = [string length];
 	while ([[NSCharacterSet whitespaceAndNewlineCharacterSet] characterIsMember:[string characterAtIndex:(i-1)]]) {
 		i--;

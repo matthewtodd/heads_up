@@ -9,8 +9,8 @@
 	return NSMakeRect(12, 12, windowWidth, 100);
 }
 
-- (NSRect) windowFrameForTextRect:(NSRect)textRect {
-	return NSMakeRect(12, 12, textRect.size.width, textRect.size.height);
+- (NSRect) windowFrameWithSize:(NSSize)size {
+	return NSMakeRect(12, 12, size.width, size.height);
 }
 
 @end

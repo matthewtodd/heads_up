@@ -3,6 +3,6 @@
 @interface HeadsUpTextView : NSTextView {
 }
 
-- (NSRect)usedTextRect;
+- (NSSize)textSize;
 
 @end

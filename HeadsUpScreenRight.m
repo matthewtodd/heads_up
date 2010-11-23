@@ -9,11 +9,10 @@
 	return NSMakeRect(screenWidth - windowWidth - 12, 12, windowWidth, 100);
 }
 
-- (NSRect) windowFrameForTextRect:(NSRect)textRect {
+- (NSRect) windowFrameWithSize:(NSSize)size {
 	int screenWidth = [[NSScreen mainScreen] frame].size.width;
-	int windowWidth = textRect.size.width;
 
-	return NSMakeRect(screenWidth - windowWidth - 12, 12, windowWidth, textRect.size.height);
+	return NSMakeRect(screenWidth - size.width - 12, 12, size.width, size.height);
 }
 
 @end

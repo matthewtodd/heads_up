@@ -9,13 +9,13 @@
 
 	if (self) {
 		screen = theScreen;
-		timer = [NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(refresh:) userInfo:nil repeats:TRUE];
 
 		[self updateText:@"Launching..."];
-		[timer fire];
+		[self refresh:nil];
 
 		// TODO removeObserver
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refresh:) name:NSUserDefaultsDidChangeNotification object:nil];
+		[NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(refresh:) userInfo:nil repeats:TRUE];
 	}
 
 	return self;

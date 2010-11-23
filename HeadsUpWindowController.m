@@ -10,21 +10,26 @@
 
 	if (self) {
 		[self setHeadsUpScreen:screen];
+		[self setString:@"Launching..."];
 		[self launchTask:[[NSUserDefaults standardUserDefaults] stringForKey:[screen key]]];
 	}
 
 	return self;
 }
 
-// TODO retain the task?
+// TODO retain the task? Run synchronously?
 - (void)launchTask:(NSString *)command {
-	NSTask *task = [[NSTask alloc] init];
-	[task setLaunchPath:@"/bin/sh"];
-	[task setArguments:[NSArray arrayWithObjects:@"-c", command, nil]];
-	[task setStandardOutput:[NSPipe pipe]];
-	[task setStandardError:[NSPipe pipe]];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(taskDidTerminate:) name:NSTaskDidTerminateNotification object:task];
-	[task launch];
+	if ([[command stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] == 0) {
+		[self setString:@""];
+	} else {
+		NSTask *task = [[NSTask alloc] init];
+		[task setLaunchPath:@"/bin/sh"];
+		[task setArguments:[NSArray arrayWithObjects:@"-c", command, nil]];
+		[task setStandardOutput:[NSPipe pipe]];
+		[task setStandardError:[NSPipe pipe]];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(taskDidTerminate:) name:NSTaskDidTerminateNotification object:task];
+		[task launch];
+	}
 }
 
 // TODO is there a way to use a block form of task launching? (Blocks introduced in 10.6, I think...)

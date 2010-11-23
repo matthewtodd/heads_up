@@ -2,6 +2,7 @@
 
 @implementation HeadsUpTextView
 
+// TODO set up tab stops, as in RubyCocoa HeadsUp.
 - (id)init {
 	// Start with a HUGE frame that won't resize with the parent view.
 	// Our strategy is to squish the window around to properly position

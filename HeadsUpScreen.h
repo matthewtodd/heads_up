@@ -2,6 +2,5 @@
 
 @protocol HeadsUpScreen
 - (NSString *) command;
-- (NSRect)initialContentRect;
 - (NSRect)windowFrameWithSize:(NSSize)size;
 @end

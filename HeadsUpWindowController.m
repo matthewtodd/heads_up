@@ -13,9 +13,16 @@
 		[self setScreen:theScreen];
 		[self updateText:@"Launching..."];
 		[self launchTask:[theScreen command]];
+
+		// TODO removeObserver
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultsDidChange:) name:NSUserDefaultsDidChangeNotification object:nil];
 	}
 
 	return self;
+}
+
+- (void)defaultsDidChange:(NSNotification *)notification {
+	[self launchTask:[[self screen] command]];
 }
 
 // TODO private methods?

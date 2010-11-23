@@ -11,7 +11,7 @@
 
 	if (self) {
 		[self setHeadsUpScreen:screen];
-		[self setString:@"Launching..."];
+		[self updateText:@"Launching..."];
 		[self launchTask:[screen command]];
 	}
 
@@ -22,7 +22,7 @@
 // TODO retain the task? Run synchronously?
 - (void)launchTask:(NSString *)command {
 	if ([[command stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] == 0) {
-		[self setString:@""];
+		[self updateText:@""];
 	} else {
 		NSTask *task = [[NSTask alloc] init];
 		[task setLaunchPath:@"/bin/sh"];
@@ -39,9 +39,9 @@
 	NSTask *task = [notification object];
 
 	if ([task terminationStatus] == 0) {
-		[self setDataFromPipe:[task standardOutput]];
+		[self updateTextFromPipe:[task standardOutput]];
 	} else {
-		[self setDataFromPipe:[task standardError]];
+		[self updateTextFromPipe:[task standardError]];
 	}
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSTaskDidTerminateNotification object:task];
@@ -49,13 +49,13 @@
 
 // TODO how to read real string encoding?
 // TODO retain the string?
-- (void)setDataFromPipe:(NSPipe *)pipe {
+- (void)updateTextFromPipe:(NSPipe *)pipe {
 	NSData *data = [[pipe fileHandleForReading] readDataToEndOfFile];
 	NSString *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-	[self setString:string];
+	[self updateText:string];
 }
 
-- (void)setString:(NSString *)string {
+- (void)updateText:(NSString *)string {
 	[(HeadsUpWindow *) [self window] updateText:string andRepositionOn:[self headsUpScreen]];
 }
 

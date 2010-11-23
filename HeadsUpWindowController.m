@@ -2,15 +2,19 @@
 
 @implementation HeadsUpWindowController
 
-- (id)initWithWindow:(NSWindow *)window {
+- (id)initWithHeadsUpWindow:(HeadsUpWindow *)window {
 	self = [super initWithWindow:window];
 
 	if (self) {
-		[[self window] setString:@"Hello, World!"];
-		[[self window] orderFront:self];
+		[[self headsUpWindow] setString:@"Hello, World!"];
+		[[self headsUpWindow] orderFront:self];
 	}
 
 	return self;
+}
+
+- (HeadsUpWindow *)headsUpWindow {
+	return (HeadsUpWindow *) [self window];
 }
 
 @end

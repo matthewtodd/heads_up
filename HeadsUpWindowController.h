@@ -1,8 +1,9 @@
 #import "HeadsUpScreen.h"
+#import "HeadsUpWindow.h"
 
 @interface HeadsUpWindowController : NSWindowController {
 }
 
-- (id)initWithWindow:(NSWindow *)window;
-
+- (id)initWithHeadsUpWindow:(HeadsUpWindow *)window;
+- (HeadsUpWindow *)headsUpWindow;
 @end

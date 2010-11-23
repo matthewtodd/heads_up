@@ -8,8 +8,8 @@
 @synthesize window;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-	left  = [[HeadsUpWindowController alloc] initWithWindow:[[HeadsUpWindow alloc] initWithHeadsUpScreen:[[HeadsUpScreenLeft alloc] init]]];
-	right = [[HeadsUpWindowController alloc] initWithWindow:[[HeadsUpWindow alloc] initWithHeadsUpScreen:[[HeadsUpScreenRight alloc] init]]];
+	left  = [[HeadsUpWindowController alloc] initWithHeadsUpWindow:[[HeadsUpWindow alloc] initWithHeadsUpScreen:[[HeadsUpScreenLeft alloc] init]]];
+	right = [[HeadsUpWindowController alloc] initWithHeadsUpWindow:[[HeadsUpWindow alloc] initWithHeadsUpScreen:[[HeadsUpScreenRight alloc] init]]];
 }
 
 @end

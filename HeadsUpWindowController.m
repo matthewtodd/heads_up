@@ -3,16 +3,16 @@
 
 @implementation HeadsUpWindowController
 
-@synthesize headsUpScreen;
+@synthesize screen;
 
-- (id)initWithHeadsUpScreen:(id <HeadsUpScreen>)screen {
+- (id)initWithScreen:(id <HeadsUpScreen>)theScreen {
 	// TODO retain window?
 	self = [super initWithWindow:[[HeadsUpWindow alloc] init]];
 
 	if (self) {
-		[self setHeadsUpScreen:screen];
+		[self setScreen:theScreen];
 		[self updateText:@"Launching..."];
-		[self launchTask:[screen command]];
+		[self launchTask:[theScreen command]];
 	}
 
 	return self;
@@ -55,7 +55,7 @@
 
 - (void)updateText:(NSString *)string {
 	[(HeadsUpWindow *) [self window] updateText:string];
-	[(HeadsUpWindow *) [self window] repositionOn:[self headsUpScreen]];
+	[(HeadsUpWindow *) [self window] repositionOn:[self screen]];
 }
 
 @end

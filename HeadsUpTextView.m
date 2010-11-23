@@ -10,13 +10,13 @@
 	
 	if (self) {
 		[self setAllowsUndo:FALSE];
-//		[self setBackgroundColor: [NSColor clearColor]];
+		[self setBackgroundColor: [NSColor clearColor]];
 		[self setEditable:FALSE];
 		[self setFieldEditor:FALSE];
 		[self setFont:[NSFont fontWithName:@"Menlo" size:12.0]];
 		[self setHorizontallyResizable:FALSE];
 		[self setSelectable:FALSE];
-//		[self setTextColor:[[NSColor whiteColor] colorWithAlphaComponent:0.5]];
+		[self setTextColor:[[NSColor whiteColor] colorWithAlphaComponent:0.5]];
 		[self setVerticallyResizable:FALSE];
 		
 		[[self textContainer] setHeightTracksTextView:FALSE];

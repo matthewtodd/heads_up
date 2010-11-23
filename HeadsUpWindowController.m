@@ -39,9 +39,9 @@
 	NSTask *task = [notification object];
 
 	if ([task terminationStatus] == 0) {
-		[self updateTextFromPipe:[task standardOutput]];
+		[self updateText:[self readPipe:[task standardOutput]]];
 	} else {
-		[self updateTextFromPipe:[task standardError]];
+		[self updateText:[self readPipe:[task standardError]]];
 	}
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSTaskDidTerminateNotification object:task];
@@ -49,10 +49,8 @@
 
 // TODO how to read real string encoding?
 // TODO retain the string?
-- (void)updateTextFromPipe:(NSPipe *)pipe {
-	NSData *data = [[pipe fileHandleForReading] readDataToEndOfFile];
-	NSString *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-	[self updateText:string];
+- (NSString *)readPipe:(NSPipe *)pipe {
+	return [[NSString alloc] initWithData:[[pipe fileHandleForReading] readDataToEndOfFile] encoding:NSUTF8StringEncoding];
 }
 
 - (void)updateText:(NSString *)string {

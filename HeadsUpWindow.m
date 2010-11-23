@@ -21,12 +21,15 @@
 	return self;
 }
 
-- (void)updateText:(NSString *)string andRepositionOn:(id <HeadsUpScreen>)screen {
+- (void)updateText:(NSString *)string {
 	NSInteger i = [string length];
 	while ([[NSCharacterSet whitespaceAndNewlineCharacterSet] characterIsMember:[string characterAtIndex:(i-1)]]) {
 		i--;
 	}
 	[[self contentView] setString:[string substringToIndex:i]];
+}
+
+- (void)repositionOn:(id <HeadsUpScreen>)screen {
 	[self setFrame:[screen windowFrameWithSize:[(HeadsUpTextView *) [self contentView] textSize]] display:TRUE];
 }
 

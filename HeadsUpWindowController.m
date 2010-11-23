@@ -54,7 +54,8 @@
 }
 
 - (void)updateText:(NSString *)string {
-	[(HeadsUpWindow *) [self window] updateText:string andRepositionOn:[self headsUpScreen]];
+	[(HeadsUpWindow *) [self window] updateText:string];
+	[(HeadsUpWindow *) [self window] repositionOn:[self headsUpScreen]];
 }
 
 @end

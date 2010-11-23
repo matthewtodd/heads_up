@@ -28,6 +28,8 @@
 }
 
 - (void)setString:(NSString *)string {
+	// Strip trailing whitespace.
+	// TODO pull this into a category method on NSString?
 	NSInteger i = [string length];
 	while ([[NSCharacterSet whitespaceAndNewlineCharacterSet] characterIsMember:[string characterAtIndex:(i-1)]]) {
 		i--;
@@ -36,6 +38,7 @@
 }
 
 - (NSSize) textSize {
+	// TODO pull this into a private method
 	// Trigger a layout; without this, we just get 0,0 for dimensions!?
 	[[self layoutManager] glyphRangeForTextContainer:[self textContainer]];
 	

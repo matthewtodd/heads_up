@@ -3,26 +3,26 @@
 
 @implementation HeadsUpWindowController
 
-@synthesize screen;
-
 - (id)initWithScreen:(id <HeadsUpScreen>)theScreen {
 	// TODO retain window?
 	self = [super initWithWindow:[[HeadsUpWindow alloc] init]];
 
 	if (self) {
-		[self setScreen:theScreen];
+		screen = theScreen;
+		timer = [NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(refresh:) userInfo:nil repeats:TRUE];
+
 		[self updateText:@"Launching..."];
-		[self launchTask:[theScreen command]];
+		[timer fire];
 
 		// TODO removeObserver
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultsDidChange:) name:NSUserDefaultsDidChangeNotification object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refresh:) name:NSUserDefaultsDidChangeNotification object:nil];
 	}
 
 	return self;
 }
 
-- (void)defaultsDidChange:(NSNotification *)notification {
-	[self launchTask:[[self screen] command]];
+- (void)refresh:(NSNotification *)notification {
+	[self launchTask:[screen command]];
 }
 
 // TODO private methods?
@@ -62,7 +62,7 @@
 
 - (void)updateText:(NSString *)string {
 	[(HeadsUpWindow *) [self window] updateText:string];
-	[(HeadsUpWindow *) [self window] repositionOn:[self screen]];
+	[(HeadsUpWindow *) [self window] repositionOn:screen];
 }
 
 @end

@@ -2,9 +2,8 @@
 
 @interface HeadsUpWindowController : NSWindowController {
 	id <HeadsUpScreen> screen;
+	NSTimer *timer;
 }
-
-@property (assign) id <HeadsUpScreen> screen;
 
 - (id)initWithScreen:(id <HeadsUpScreen>)screen;
 - (void)launchTask:(NSString *)command;

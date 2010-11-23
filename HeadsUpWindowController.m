@@ -3,10 +3,13 @@
 
 @implementation HeadsUpWindowController
 
+@synthesize headsUpScreen;
+
 - (id)initWithHeadsUpScreen:(id <HeadsUpScreen>)screen {
 	self = [super initWithWindow:[[HeadsUpWindow alloc] initWithHeadsUpScreen:screen]];
 
 	if (self) {
+		[self setHeadsUpScreen:screen];
 		[self launchTask:[[NSUserDefaults standardUserDefaults] stringForKey:[screen key]]];
 	}
 

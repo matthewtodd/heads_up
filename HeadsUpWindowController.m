@@ -2,8 +2,8 @@
 
 @implementation HeadsUpWindowController
 
-- (id)initWithHeadsUpWindow:(HeadsUpWindow *)window {
-	self = [super initWithWindow:window];
+- (id)initWithHeadsUpScreen:(id <HeadsUpScreen>)screen {
+	self = [super initWithWindow:[[HeadsUpWindow alloc] initWithHeadsUpScreen:screen]];
 
 	if (self) {
 		[[self headsUpWindow] setString:@"Hello, World!"];

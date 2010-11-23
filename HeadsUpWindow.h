@@ -6,8 +6,7 @@
 
 @property (assign) id <HeadsUpScreen> headsUpScreen;
 
-- (id)initWithContentView:(NSView *)contentView headsUpScreen:(id <HeadsUpScreen>)theHeadsUpScreen;
-- (HeadsUpTextView *)headsUpContentView;
+- (id)initWithHeadsUpScreen:(id <HeadsUpScreen>)theHeadsUpScreen;
 - (void)setString:(NSString *)string;
 
 @end

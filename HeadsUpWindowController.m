@@ -23,13 +23,13 @@
 	return self;
 }
 
-- (void)runCommand:(NSNotification *)notification {
-	[[screen command] runAndNotify:self selector:@selector(display:)];
-}
-
 - (void)display:(NSString *)string {
 	[(HeadsUpWindow *) [self window] updateText:string];
 	[(HeadsUpWindow *) [self window] repositionOn:screen];
+}
+
+- (void)runCommand:(NSNotification *)notification {
+	[[screen command] runAndNotify:self selector:@selector(display:)];
 }
 
 @end

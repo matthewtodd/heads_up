@@ -28,7 +28,7 @@
 }
 
 // TODO private methods?
-// TODO retain the task? Run synchronously?
+// TODO retain the task?
 - (void)launchTask:(NSString *)command {
 	if ([[command stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] == 0) {
 		[self updateText:@""];
@@ -38,23 +38,15 @@
 		[task setArguments:[NSArray arrayWithObjects:@"-c", command, nil]];
 		[task setStandardOutput:[NSPipe pipe]];
 		[task setStandardError:[NSPipe pipe]];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(taskDidTerminate:) name:NSTaskDidTerminateNotification object:task];
 		[task launch];
+		[task waitUntilExit];
+		// TODO how to find real string encoding?
+		if ([task terminationStatus] == 0) {
+			[self updateText:[[task standardOutput] readStringToEndOfFileWithEncoding:NSUTF8StringEncoding]];
+		} else {
+			[self updateText:[[task standardError] readStringToEndOfFileWithEncoding:NSUTF8StringEncoding]];
+		}
 	}
-}
-
-// TODO is there a way to use a block form of task launching? (Blocks introduced in 10.6, I think...)
-- (void)taskDidTerminate:(NSNotification *)notification {
-	NSTask *task = [notification object];
-
-	// TODO how to find real string encoding?
-	if ([task terminationStatus] == 0) {
-		[self updateText:[[task standardOutput] readStringToEndOfFileWithEncoding:NSUTF8StringEncoding]];
-	} else {
-		[self updateText:[[task standardError] readStringToEndOfFileWithEncoding:NSUTF8StringEncoding]];
-	}
-
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSTaskDidTerminateNotification object:task];
 }
 
 - (void)updateText:(NSString *)string {

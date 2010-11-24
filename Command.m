@@ -32,7 +32,7 @@
 - (void)taskDidTerminate:(NSNotification *)notification {
 	NSTask *task = [notification object];
 
-	// TODO how to find real string encoding?
+	// TODO how to find real string encoding? At the Terminal, can use `locale charmap`.
 	if ([task terminationStatus] == 0) {
 		[observer performSelector:selector withObject:[[task standardOutput] readStringToEndOfFileWithEncoding:NSUTF8StringEncoding]];
 	} else {

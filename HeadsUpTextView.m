@@ -1,5 +1,4 @@
 #import "HeadsUpTextView.h"
-#import "NSString+Trimming.h"
 
 @implementation HeadsUpTextView
 
@@ -29,7 +28,7 @@
 }
 
 - (void)setString:(NSString *)string {
-	[super setString:[string stringByTrimmingTrailingCharactersInSet:[NSCharacterSet newlineCharacterSet]]];
+	[super setString:[string stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]]];
 }
 
 - (NSSize) textSize {

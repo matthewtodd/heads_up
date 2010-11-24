@@ -16,9 +16,8 @@
 
 		// TODO removeObserver
 		// TODO use an NSInvocation to DRY things up?
-		// TODO the HeadsUpScreen cares about the user defaults *and* the screen size -- maybe it should subscribe to these instead?
+		// TODO the HeadsUpScreen cares about the user defaults -- maybe it should subscribe instead?
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(runCommand:) name:NSUserDefaultsDidChangeNotification object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(runCommand:) name:NSApplicationDidChangeScreenParametersNotification object:nil];
 		[NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(runCommand:) userInfo:nil repeats:TRUE];
 	}
 

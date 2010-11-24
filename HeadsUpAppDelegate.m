@@ -10,4 +10,9 @@
 	right = [[HeadsUpWindowController alloc] initWithScreen:[[HeadsUpScreen alloc] initWithKey:@"bottom_right"]];
 }
 
+- (void)applicationDidChangeScreenParameters:(NSNotification *)notification {
+	[left runCommand:notification];
+	[right runCommand:notification];
+}
+
 @end

@@ -1,5 +1,3 @@
-#import "NSPipe+Reading.h"
-
 @implementation NSPipe ( Reading )
 
 // TODO retain the string?

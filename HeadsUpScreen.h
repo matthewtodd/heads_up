@@ -1,4 +1,3 @@
-#import <Cocoa/Cocoa.h>
 #import "Command.h"
 
 // TODO rename to (Window)Position

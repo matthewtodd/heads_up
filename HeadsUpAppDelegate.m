@@ -24,4 +24,8 @@
 	[right runCommand:notification];
 }
 
+- (void)applicationDidBecomeActive:(NSNotification *)notification {
+	[window makeKeyAndOrderFront:self];
+}
+
 @end

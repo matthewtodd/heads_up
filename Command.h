@@ -1,5 +1,7 @@
 @interface Command : NSObject {
 	NSString *string;
+	id observer;
+	SEL selector;
 }
 
 - (id)initWithString:(NSString *)string;

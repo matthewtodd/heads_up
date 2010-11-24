@@ -11,6 +11,7 @@
 	return self;
 }
 
+// TODO run asynchronously
 // TODO retain the task?
 - (void)runAndNotify:(id)observer selector:(SEL)selector {
 	if ([[string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] == 0) {

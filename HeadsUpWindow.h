@@ -5,6 +5,6 @@
 
 - (id)init;
 - (void)updateText:(NSString *)string;
-- (void)repositionOn:(id <HeadsUpScreen>)screen;
+- (void)repositionOn:(HeadsUpScreen *)screen;
 
 @end

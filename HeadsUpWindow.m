@@ -25,7 +25,7 @@
 	[[self contentView] setString:string];
 }
 
-- (void)repositionOn:(id <HeadsUpScreen>)screen {
+- (void)repositionOn:(HeadsUpScreen *)screen {
 	[self setFrame:[screen windowFrameWithSize:[(HeadsUpTextView *) [self contentView] textSize]] display:TRUE];
 }
 

@@ -1,9 +1,13 @@
 #import <Cocoa/Cocoa.h>
 #import "Command.h"
 
-// TODO make a class, not a protocol
 // TODO rename to (Window)Position
-@protocol HeadsUpScreen
-- (Command *) command;
+@interface HeadsUpScreen : NSObject {
+	NSString *key;
+}
+
+- (id)initWithKey:(NSString *)key;
+- (Command *)command;
 - (NSRect)windowFrameWithSize:(NSSize)size;
+
 @end

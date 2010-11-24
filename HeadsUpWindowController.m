@@ -4,7 +4,7 @@
 
 @implementation HeadsUpWindowController
 
-- (id)initWithScreen:(id <HeadsUpScreen>)theScreen {
+- (id)initWithScreen:(HeadsUpScreen *)theScreen {
 	// TODO retain window?
 	self = [super initWithWindow:[[HeadsUpWindow alloc] init]];
 

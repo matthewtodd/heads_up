@@ -29,7 +29,7 @@
 }
 
 - (void)setString:(NSString *)string {
-	[super setString:[string stringByTrimmingTrailingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]];
+	[super setString:[string stringByTrimmingTrailingCharactersInSet:[NSCharacterSet newlineCharacterSet]]];
 }
 
 - (NSSize) textSize {

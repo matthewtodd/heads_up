@@ -1,6 +1,6 @@
 #import "HeadsUpWindowController.h"
 #import "HeadsUpWindow.h"
-#import "NSPipe+Reading.h"
+#import "Command.h"
 
 @implementation HeadsUpWindowController
 
@@ -27,26 +27,9 @@
 	[self launchTask:[screen command]];
 }
 
-// TODO private methods?
-// TODO retain the task?
-- (void)launchTask:(NSString *)command {
-	if ([[command stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] == 0) {
-		[self updateText:@""];
-	} else {
-		NSTask *task = [[NSTask alloc] init];
-		[task setLaunchPath:@"/bin/sh"];
-		[task setArguments:[NSArray arrayWithObjects:@"-c", command, nil]];
-		[task setStandardOutput:[NSPipe pipe]];
-		[task setStandardError:[NSPipe pipe]];
-		[task launch];
-		[task waitUntilExit];
-		// TODO how to find real string encoding?
-		if ([task terminationStatus] == 0) {
-			[self updateText:[[task standardOutput] readStringToEndOfFileWithEncoding:NSUTF8StringEncoding]];
-		} else {
-			[self updateText:[[task standardError] readStringToEndOfFileWithEncoding:NSUTF8StringEncoding]];
-		}
-	}
+- (void)launchTask:(NSString *)string {
+	Command *command = [[Command alloc] initWithString:string];
+	[command runAndNotify:self selector:@selector(updateText:)];
 }
 
 - (void)updateText:(NSString *)string {

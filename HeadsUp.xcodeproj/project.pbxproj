@@ -13,6 +13,7 @@
 		340569BA129A8B6E00B065FE /* HeadsUpTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 340569B9129A8B6E00B065FE /* HeadsUpTextView.m */; };
 		340569DD129A942100B065FE /* HeadsUpWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 340569DC129A942100B065FE /* HeadsUpWindowController.m */; };
 		34062601129D0A1600B43A27 /* HeadsUpScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = 34062600129D0A1600B43A27 /* HeadsUpScreen.m */; };
+		34774A13129D191600A657D4 /* NSString+Predicates.m in Sources */ = {isa = PBXBuildFile; fileRef = 34774A12129D191600A657D4 /* NSString+Predicates.m */; };
 		347DE60E129CEFF500814115 /* NSPipe+Reading.m in Sources */ = {isa = PBXBuildFile; fileRef = 347DE60D129CEFF500814115 /* NSPipe+Reading.m */; };
 		347DE657129CFD2300814115 /* Command.m in Sources */ = {isa = PBXBuildFile; fileRef = 347DE656129CFD2300814115 /* Command.m */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
@@ -39,6 +40,8 @@
 		340569DC129A942100B065FE /* HeadsUpWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeadsUpWindowController.m; sourceTree = "<group>"; };
 		34056A04129A96BD00B065FE /* HeadsUpScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeadsUpScreen.h; sourceTree = "<group>"; };
 		34062600129D0A1600B43A27 /* HeadsUpScreen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeadsUpScreen.m; sourceTree = "<group>"; };
+		34774A11129D191600A657D4 /* NSString+Predicates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Predicates.h"; sourceTree = "<group>"; };
+		34774A12129D191600A657D4 /* NSString+Predicates.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Predicates.m"; sourceTree = "<group>"; };
 		347DE60C129CEFF500814115 /* NSPipe+Reading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSPipe+Reading.h"; sourceTree = "<group>"; };
 		347DE60D129CEFF500814115 /* NSPipe+Reading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSPipe+Reading.m"; sourceTree = "<group>"; };
 		347DE655129CFD2300814115 /* Command.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Command.h; sourceTree = "<group>"; };
@@ -76,6 +79,8 @@
 				347DE655129CFD2300814115 /* Command.h */,
 				347DE656129CFD2300814115 /* Command.m */,
 				34062600129D0A1600B43A27 /* HeadsUpScreen.m */,
+				34774A11129D191600A657D4 /* NSString+Predicates.h */,
+				34774A12129D191600A657D4 /* NSString+Predicates.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -216,6 +221,7 @@
 				347DE60E129CEFF500814115 /* NSPipe+Reading.m in Sources */,
 				347DE657129CFD2300814115 /* Command.m in Sources */,
 				34062601129D0A1600B43A27 /* HeadsUpScreen.m in Sources */,
+				34774A13129D191600A657D4 /* NSString+Predicates.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

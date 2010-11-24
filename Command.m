@@ -1,5 +1,6 @@
 #import "Command.h"
 #import "NSPipe+Reading.h"
+#import "NSString+Predicates.h"
 
 @implementation Command
 
@@ -14,9 +15,7 @@
 // TODO run asynchronously
 // TODO retain the task?
 - (void)runAndNotify:(id)observer selector:(SEL)selector {
-	if ([[string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] == 0) {
-		[observer performSelector:selector withObject:@""];
-	} else {
+	if ([string isPresent]) {
 		NSTask *task = [[NSTask alloc] init];
 		[task setLaunchPath:@"/bin/sh"];
 		[task setArguments:[NSArray arrayWithObjects:@"-c", string, nil]];
@@ -30,6 +29,8 @@
 		} else {
 			[observer performSelector:selector withObject:[[task standardError] readStringToEndOfFileWithEncoding:NSUTF8StringEncoding]];
 		}
+	} else {
+		[observer performSelector:selector withObject:@""];
 	}
 }
 

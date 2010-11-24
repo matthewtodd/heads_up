@@ -11,23 +11,23 @@
 	if (self) {
 		screen = theScreen;
 
-		[self updateText:@"Launching..."];
-		[self refresh:nil];
+		[self display:@"Launching..."];
+		[self runCommand:nil];
 
 		// TODO removeObserver
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refresh:) name:NSUserDefaultsDidChangeNotification object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refresh:) name:NSApplicationDidChangeScreenParametersNotification object:nil];
-		[NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(refresh:) userInfo:nil repeats:TRUE];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(runCommand:) name:NSUserDefaultsDidChangeNotification object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(runCommand:) name:NSApplicationDidChangeScreenParametersNotification object:nil];
+		[NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(runCommand:) userInfo:nil repeats:TRUE];
 	}
 
 	return self;
 }
 
-- (void)refresh:(NSNotification *)notification {
-	[[screen command] runAndNotify:self selector:@selector(updateText:)];
+- (void)runCommand:(NSNotification *)notification {
+	[[screen command] runAndNotify:self selector:@selector(display:)];
 }
 
-- (void)updateText:(NSString *)string {
+- (void)display:(NSString *)string {
 	[(HeadsUpWindow *) [self window] updateText:string];
 	[(HeadsUpWindow *) [self window] repositionOn:screen];
 }

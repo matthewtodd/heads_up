@@ -24,12 +24,7 @@
 }
 
 - (void)refresh:(NSNotification *)notification {
-	[self launchTask:[screen command]];
-}
-
-- (void)launchTask:(NSString *)string {
-	Command *command = [[Command alloc] initWithString:string];
-	[command runAndNotify:self selector:@selector(updateText:)];
+	[[screen command] runAndNotify:self selector:@selector(updateText:)];
 }
 
 - (void)updateText:(NSString *)string {

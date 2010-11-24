@@ -2,8 +2,9 @@
 
 @implementation HeadsUpScreenLeft
 
-- (NSString *) command {
-	return [[NSUserDefaults standardUserDefaults] stringForKey:@"bottom_left"];
+// TODO autorelease the command?
+- (Command *) command {
+	return [[Command alloc] initWithString:[[NSUserDefaults standardUserDefaults] stringForKey:@"bottom_left"]];
 }
 
 - (NSRect) windowFrameWithSize:(NSSize)size {

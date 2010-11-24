@@ -2,8 +2,9 @@
 
 @implementation HeadsUpScreenRight
 
-- (NSString *) command {
-	return [[NSUserDefaults standardUserDefaults] stringForKey:@"bottom_right"];
+// TODO autorelease the command?
+- (Command *) command {
+	return [[Command alloc] initWithString:[[NSUserDefaults standardUserDefaults] stringForKey:@"bottom_right"]];
 }
 
 - (NSRect) windowFrameWithSize:(NSSize)size {

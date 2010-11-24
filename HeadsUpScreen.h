@@ -1,6 +1,7 @@
 #import <Cocoa/Cocoa.h>
+#import "Command.h"
 
 @protocol HeadsUpScreen
-- (NSString *) command;
+- (Command *) command;
 - (NSRect)windowFrameWithSize:(NSSize)size;
 @end

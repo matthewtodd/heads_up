@@ -1,5 +1,6 @@
 #import "HeadsUpWindowController.h"
 #import "HeadsUpWindow.h"
+#import "NSPipe+Reading.h"
 
 @implementation HeadsUpWindowController
 
@@ -46,19 +47,14 @@
 - (void)taskDidTerminate:(NSNotification *)notification {
 	NSTask *task = [notification object];
 
+	// TODO how to find real string encoding?
 	if ([task terminationStatus] == 0) {
-		[self updateText:[self readPipe:[task standardOutput]]];
+		[self updateText:[[task standardOutput] readStringToEndOfFileWithEncoding:NSUTF8StringEncoding]];
 	} else {
-		[self updateText:[self readPipe:[task standardError]]];
+		[self updateText:[[task standardError] readStringToEndOfFileWithEncoding:NSUTF8StringEncoding]];
 	}
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSTaskDidTerminateNotification object:task];
-}
-
-// TODO how to read real string encoding?
-// TODO retain the string?
-- (NSString *)readPipe:(NSPipe *)pipe {
-	return [[NSString alloc] initWithData:[[pipe fileHandleForReading] readDataToEndOfFile] encoding:NSUTF8StringEncoding];
 }
 
 - (void)updateText:(NSString *)string {

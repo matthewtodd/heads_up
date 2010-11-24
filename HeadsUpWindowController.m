@@ -1,6 +1,5 @@
 #import "HeadsUpWindowController.h"
 #import "HeadsUpWindow.h"
-#import "Command.h"
 
 @implementation HeadsUpWindowController
 
@@ -31,7 +30,7 @@
 }
 
 - (void)runCommand:(NSNotification *)notification {
-	[[screen command] runAndNotify:self selector:@selector(display:)];
+	[screen runCommandAndNotify:self selector:@selector(display:)];
 }
 
 @end

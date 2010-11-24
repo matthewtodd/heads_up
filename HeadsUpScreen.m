@@ -1,4 +1,5 @@
 #import "HeadsUpScreen.h"
+#import "Command.h"
 
 @implementation HeadsUpScreen
 
@@ -11,8 +12,8 @@
 }
 
 // TODO autorelease the command?
-- (Command *) command {
-	return [[Command alloc] initWithString:[[NSUserDefaults standardUserDefaults] stringForKey:key]];
+- (void) runCommandAndNotify:(id)observer selector:(SEL)selector {
+	[[[Command alloc] initWithString:[[NSUserDefaults standardUserDefaults] stringForKey:key] observer:observer selector:selector] run];
 }
 
 - (NSRect) windowFrameWithSize:(NSSize)size {

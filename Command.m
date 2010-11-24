@@ -4,19 +4,18 @@
 
 @implementation Command
 
-- (id)initWithString:(NSString *)theString {
+- (id)initWithString:(NSString *)theString observer:(id)theObserver selector:(SEL)theSelector {
 	self = [super init];
 	if (self) {
 		string = theString;
+		observer = theObserver;
+		selector = theSelector;
 	}
 	return self;
 }
 
 // TODO retain the task?
-- (void)runAndNotify:(id)theObserver selector:(SEL)theSelector {
-	observer = theObserver;
-	selector = theSelector;
-
+- (void)run {
 	if ([string isPresent]) {
 		NSTask *task = [[NSTask alloc] init];
 		[task setLaunchPath:@"/bin/sh"];
@@ -41,8 +40,6 @@
 	}
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSTaskDidTerminateNotification object:task];
-	observer = nil;
-	selector = nil;
 }
 
 @end

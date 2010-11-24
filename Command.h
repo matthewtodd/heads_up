@@ -4,7 +4,7 @@
 	SEL selector;
 }
 
-- (id)initWithString:(NSString *)string;
-- (void)runAndNotify:(id)observer selector:(SEL)selector;
+- (id)initWithString:(NSString *)string observer:(id)observer selector:(SEL)selector;
+- (void)run;
 
 @end

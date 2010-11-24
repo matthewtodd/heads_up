@@ -1,4 +1,5 @@
 #import "HeadsUpTextView.h"
+#import "NSString+Trimming.h"
 
 @implementation HeadsUpTextView
 
@@ -28,13 +29,7 @@
 }
 
 - (void)setString:(NSString *)string {
-	// Strip trailing whitespace.
-	// TODO pull this into a category method on NSString?
-	NSInteger i = [string length];
-	while ([[NSCharacterSet whitespaceAndNewlineCharacterSet] characterIsMember:[string characterAtIndex:(i-1)]]) {
-		i--;
-	}
-	[super setString:[string substringToIndex:i]];
+	[super setString:[string stringByTrimmingTrailingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]];
 }
 
 - (NSSize) textSize {

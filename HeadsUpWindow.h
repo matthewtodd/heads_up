@@ -6,6 +6,5 @@
 }
 
 - (id)initWithPosition:(WindowPosition *)position;
-- (void)headsUpScreenDidUpdate:(NSNotification *)notification;
 
 @end

@@ -17,10 +17,10 @@
 // been registered before... weird.
 //
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-	leftCommand = [[Command alloc] initWithKey:@"bottom_left"];
-	leftWindow = [[Window alloc] initWithPosition:[Position bottomLeft] observing:leftCommand];
-
+	leftCommand  = [[Command alloc] initWithKey:@"bottom_left"];
 	rightCommand = [[Command alloc] initWithKey:@"bottom_right"];
+
+	leftWindow  = [[Window alloc] initWithPosition:[Position bottomLeft] observing:leftCommand];
 	rightWindow = [[Window alloc] initWithPosition:[Position bottomRight] observing:rightCommand];
 }
 

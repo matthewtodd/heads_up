@@ -21,6 +21,7 @@
 	[[NSNotificationCenter defaultCenter] addObserver:leftWindow selector:@selector(headsUpScreenDidUpdate:) name:HeadsUpScreenDidUpdateNotification object:leftScreen];
 	[[NSNotificationCenter defaultCenter] postNotificationName:HeadsUpScreenDidUpdateNotification object:leftScreen];
 	[leftScreen runCommand:nil];
+	[leftWindow orderFront:self];
 
 	rightScreen = [[HeadsUpScreen alloc] initWithKey:@"bottom_right"];
 	[NSTimer scheduledTimerWithTimeInterval:60 target:rightScreen selector:@selector(runCommand:) userInfo:nil repeats:TRUE];
@@ -28,6 +29,7 @@
 	[[NSNotificationCenter defaultCenter] addObserver:rightWindow selector:@selector(headsUpScreenDidUpdate:) name:HeadsUpScreenDidUpdateNotification object:rightScreen];
 	[[NSNotificationCenter defaultCenter] postNotificationName:HeadsUpScreenDidUpdateNotification object:rightScreen];
 	[rightScreen runCommand:nil];
+	[rightWindow orderFront:self];
 }
 
 - (void)applicationDidChangeScreenParameters:(NSNotification *)notification {

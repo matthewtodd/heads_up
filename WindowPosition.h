@@ -6,6 +6,7 @@
 + (id)bottomLeft;
 + (id)bottomRight;
 
+- (NSRect)windowFrame;
 - (NSRect)windowFrameWithSize:(NSSize)size;
 
 @end

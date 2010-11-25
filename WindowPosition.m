@@ -27,6 +27,10 @@
 	return margin;
 }
 
+- (NSRect)windowFrame {
+	return [self windowFrameWithSize:NSMakeSize(100,100)];
+}
+
 - (NSRect)windowFrameWithSize:(NSSize)size {
 	int x = [self x:size.width];
 	int y = [self y:size.height];

@@ -20,7 +20,6 @@
 	[NSTimer scheduledTimerWithTimeInterval:60 target:leftScreen selector:@selector(runCommand:) userInfo:nil repeats:TRUE];
 	leftWindow = [[HeadsUpWindow alloc] initWithPosition:[WindowPosition bottomLeft]];
 	[leftWindow observeScreen:leftScreen];
-	[[NSNotificationCenter defaultCenter] postNotificationName:HeadsUpScreenDidUpdateNotification object:leftScreen];
 	[leftScreen runCommand:nil];
 	[leftWindow orderFront:self];
 
@@ -28,7 +27,6 @@
 	[NSTimer scheduledTimerWithTimeInterval:60 target:rightScreen selector:@selector(runCommand:) userInfo:nil repeats:TRUE];
 	rightWindow = [[HeadsUpWindow alloc] initWithPosition:[WindowPosition bottomRight]];
 	[rightWindow observeScreen:rightScreen];
-	[[NSNotificationCenter defaultCenter] postNotificationName:HeadsUpScreenDidUpdateNotification object:rightScreen];
 	[rightScreen runCommand:nil];
 	[rightWindow orderFront:self];
 }

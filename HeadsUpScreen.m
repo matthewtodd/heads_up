@@ -30,7 +30,6 @@
 		[task launch];
 	} else {
 		[self setContents:@""];
-		[[NSNotificationCenter defaultCenter] postNotificationName:HeadsUpScreenDidUpdateNotification object:self];
 	}
 }
 
@@ -44,10 +43,7 @@
 		[self setContents:[[task standardError] readStringToEndOfFileWithEncoding:NSUTF8StringEncoding]];
 	}
 
-	[[NSNotificationCenter defaultCenter] postNotificationName:HeadsUpScreenDidUpdateNotification object:self];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSTaskDidTerminateNotification object:task];
 }
 
 @end
-
-NSString * const HeadsUpScreenDidUpdateNotification = @"HeadsUpScreenDidUpdateNotification";

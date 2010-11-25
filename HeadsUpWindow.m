@@ -9,18 +9,27 @@
 	if (self) {
 		position = thePosition;
 
+		HeadsUpTextView *view = [[HeadsUpTextView alloc] init];
+
 		[self setBackgroundColor: [NSColor clearColor]];
-		[self setContentView:[[HeadsUpTextView alloc] init]];
+		[self setContentView:view];
 		[self setIgnoresMouseEvents:TRUE];
 		[self setLevel:CGWindowLevelForKey(kCGDesktopWindowLevelKey)];
 		[self setOpaque:FALSE];
+
+		[view addObserver:self forKeyPath:@"string" options:0 context:nil];
 	}
 	
 	return self;
 }
 
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+	[self reposition];
+}
+
+// TODO fold this into the initializer
 - (void)observeScreen:(HeadsUpScreen *)screen {
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(headsUpScreenDidUpdate:) name:HeadsUpScreenDidUpdateNotification object:screen];
+	[[self contentView] bind:@"string" toObject:screen withKeyPath:@"contents" options:nil];
 }
 
 - (NSSize)size {
@@ -29,15 +38,6 @@
 
 - (void)reposition {
 	[self setFrame:[position windowFrameWithSize:[self size]] display:TRUE];
-}
-
-- (void)setString:(NSString *)string {
-	[[self contentView] setString:string];
-}
-
-- (void)headsUpScreenDidUpdate:(NSNotification *)notification {
-	[self setString:[[notification object] contents]];
-	[self reposition];
 }
 
 @end

@@ -10,5 +10,3 @@
 - (void)runCommand:(NSNotification *)notification;
 
 @end
-
-extern NSString * const HeadsUpScreenDidUpdateNotification;

@@ -14,8 +14,6 @@
 		[self setIgnoresMouseEvents:TRUE];
 		[self setLevel:CGWindowLevelForKey(kCGDesktopWindowLevelKey)];
 		[self setOpaque:FALSE];
-
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reposition) name:NSApplicationDidChangeScreenParametersNotification object:nil];
 	}
 	
 	return self;

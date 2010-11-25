@@ -6,5 +6,6 @@
 }
 
 - (id)initWithPosition:(WindowPosition *)position;
+- (void)reposition;
 
 @end

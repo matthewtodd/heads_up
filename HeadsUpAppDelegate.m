@@ -33,6 +33,11 @@
 	[rightWindow orderFront:self];
 }
 
+- (void)applicationDidChangeScreenParameters:(NSNotification *)notification {
+	[leftWindow reposition];
+	[rightWindow reposition];
+}
+
 - (void)applicationDidBecomeActive:(NSNotification *)notification {
 	[window makeKeyAndOrderFront:self];
 }

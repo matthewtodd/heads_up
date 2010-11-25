@@ -1,4 +1,5 @@
-#import "HeadsUpWindowController.h"
+#import "HeadsUpScreen.h"
+#import "HeadsUpWindow.h"
 
 // Though it doesn't appear this way when reading AppKit/NSApplication.h, it
 // seems the formal NSApplicationDelegate protocol was only introduced in the
@@ -9,8 +10,10 @@
 #else
 @interface HeadsUpAppDelegate : NSObject <NSApplicationDelegate> {
 #endif
-	HeadsUpWindowController *left;
-	HeadsUpWindowController *right;
+	HeadsUpScreen *leftScreen;
+	HeadsUpScreen *rightScreen;
+	HeadsUpWindow *leftWindow;
+	HeadsUpWindow *rightWindow;
     NSWindow *window;
 }
 

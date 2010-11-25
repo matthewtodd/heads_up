@@ -15,14 +15,24 @@
 // been registered before... weird.
 //
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-	left  = [[HeadsUpWindowController alloc] initWithScreen:[[HeadsUpScreen alloc] initWithKey:@"bottom_left"]];
-	right = [[HeadsUpWindowController alloc] initWithScreen:[[HeadsUpScreen alloc] initWithKey:@"bottom_right"]];
+	leftScreen = [[HeadsUpScreen alloc] initWithKey:@"bottom_left"];
+	[NSTimer scheduledTimerWithTimeInterval:60 target:leftScreen selector:@selector(runCommand:) userInfo:nil repeats:TRUE];
+	leftWindow = [[HeadsUpWindow alloc] init];
+	[[NSNotificationCenter defaultCenter] addObserver:leftWindow selector:@selector(headsUpScreenDidUpdate:) name:HeadsUpScreenDidUpdateNotification object:leftScreen];
+	[[NSNotificationCenter defaultCenter] postNotificationName:HeadsUpScreenDidUpdateNotification object:leftScreen];
+	[leftScreen runCommand:nil];
+
+	rightScreen = [[HeadsUpScreen alloc] initWithKey:@"bottom_right"];
+	[NSTimer scheduledTimerWithTimeInterval:60 target:rightScreen selector:@selector(runCommand:) userInfo:nil repeats:TRUE];
+	rightWindow = [[HeadsUpWindow alloc] init];
+	[[NSNotificationCenter defaultCenter] addObserver:rightWindow selector:@selector(headsUpScreenDidUpdate:) name:HeadsUpScreenDidUpdateNotification object:rightScreen];
+	[[NSNotificationCenter defaultCenter] postNotificationName:HeadsUpScreenDidUpdateNotification object:rightScreen];
+	[rightScreen runCommand:nil];
 }
 
-// TODO trigger the right thing here
 - (void)applicationDidChangeScreenParameters:(NSNotification *)notification {
-//	[left headsUpScreenDidUpdate:notification];
-//	[right headsUpScreenDidUpdate:notification];
+	[[NSNotificationCenter defaultCenter] postNotificationName:HeadsUpScreenDidUpdateNotification object:leftScreen];
+	[[NSNotificationCenter defaultCenter] postNotificationName:HeadsUpScreenDidUpdateNotification object:rightScreen];
 }
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification {

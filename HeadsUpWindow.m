@@ -23,15 +23,7 @@
 
 - (void)headsUpScreenDidUpdate:(NSNotification *)notification {
 	HeadsUpScreen *screen = [notification object];
-	[self updateText:[screen contents]];
-	[self repositionOn:screen];
-}
-
-- (void)updateText:(NSString *)string {
-	[[self contentView] setString:string];
-}
-
-- (void)repositionOn:(HeadsUpScreen *)screen {
+	[[self contentView] setString:[screen contents]];
 	[self setFrame:[screen windowFrameWithSize:[(HeadsUpTextView *) [self contentView] textSize]] display:TRUE];
 }
 

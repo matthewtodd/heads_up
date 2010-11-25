@@ -1,5 +1,5 @@
 #import "HeadsUpAppDelegate.h"
-#import "HeadsUpScreen.h"
+#import "Command.h"
 #import "WindowPosition.h"
 
 @implementation HeadsUpAppDelegate
@@ -16,16 +16,16 @@
 // been registered before... weird.
 //
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-	leftScreen = [[HeadsUpScreen alloc] initWithKey:@"bottom_left"];
-	[NSTimer scheduledTimerWithTimeInterval:60 target:leftScreen selector:@selector(runCommand:) userInfo:nil repeats:TRUE];
-	leftWindow = [[HeadsUpWindow alloc] initWithPosition:[WindowPosition bottomLeft] observing:leftScreen];
-	[leftScreen runCommand:nil];
+	leftCommand = [[Command alloc] initWithKey:@"bottom_left"];
+	[NSTimer scheduledTimerWithTimeInterval:60 target:leftCommand selector:@selector(runCommand:) userInfo:nil repeats:TRUE];
+	leftWindow = [[HeadsUpWindow alloc] initWithPosition:[WindowPosition bottomLeft] observing:leftCommand];
+	[leftCommand runCommand:nil];
 	[leftWindow orderFront:self];
 
-	rightScreen = [[HeadsUpScreen alloc] initWithKey:@"bottom_right"];
-	[NSTimer scheduledTimerWithTimeInterval:60 target:rightScreen selector:@selector(runCommand:) userInfo:nil repeats:TRUE];
-	rightWindow = [[HeadsUpWindow alloc] initWithPosition:[WindowPosition bottomRight] observing:rightScreen];
-	[rightScreen runCommand:nil];
+	rightCommand = [[Command alloc] initWithKey:@"bottom_right"];
+	[NSTimer scheduledTimerWithTimeInterval:60 target:rightCommand selector:@selector(runCommand:) userInfo:nil repeats:TRUE];
+	rightWindow = [[HeadsUpWindow alloc] initWithPosition:[WindowPosition bottomRight] observing:rightCommand];
+	[rightCommand runCommand:nil];
 	[rightWindow orderFront:self];
 }
 

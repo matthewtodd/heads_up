@@ -1,4 +1,4 @@
-@interface HeadsUpScreen : NSObject {
+@interface Command : NSObject {
 	NSString *key;
 	NSString *contents;
 }

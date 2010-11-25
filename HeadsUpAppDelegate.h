@@ -1,4 +1,4 @@
-#import "HeadsUpScreen.h"
+#import "Command.h"
 #import "HeadsUpWindow.h"
 
 // Though it doesn't appear this way when reading AppKit/NSApplication.h, it
@@ -10,8 +10,8 @@
 #else
 @interface HeadsUpAppDelegate : NSObject <NSApplicationDelegate> {
 #endif
-	HeadsUpScreen *leftScreen;
-	HeadsUpScreen *rightScreen;
+	Command *leftCommand;
+	Command *rightCommand;
 	HeadsUpWindow *leftWindow;
 	HeadsUpWindow *rightWindow;
     NSWindow *window;

@@ -1,8 +1,8 @@
-#import "HeadsUpScreen.h"
+#import "Command.h"
 #import "NSPipe+Reading.h"
 #import "NSString+Predicates.h"
 
-@implementation HeadsUpScreen
+@implementation Command
 
 @synthesize key;
 @synthesize contents;

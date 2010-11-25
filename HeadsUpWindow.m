@@ -5,7 +5,7 @@
 
 @synthesize position;
 
-- (id)initWithPosition:(WindowPosition *)thePosition observing:(HeadsUpScreen *)theScreen {
+- (id)initWithPosition:(WindowPosition *)thePosition observing:(Command *)theCommand {
 	self = [super initWithContentRect:[thePosition windowFrame] styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:FALSE];
 
 	if (self) {
@@ -17,7 +17,7 @@
 		[self setPosition:thePosition];
 
 		[[self contentView] addObserver:self forKeyPath:@"string" options:0 context:nil];
-		[[self contentView] bind:@"string" toObject:theScreen withKeyPath:@"contents" options:nil];
+		[[self contentView] bind:@"string" toObject:theCommand withKeyPath:@"contents" options:nil];
 	}
 	
 	return self;

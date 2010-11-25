@@ -1,4 +1,4 @@
-#import "HeadsUpScreen.h"
+#import "Command.h"
 #import "WindowPosition.h"
 
 @interface HeadsUpWindow : NSWindow {
@@ -7,7 +7,7 @@
 
 @property WindowPosition *position;
 
-- (id)initWithPosition:(WindowPosition *)position observing:(HeadsUpScreen *)screen;
+- (id)initWithPosition:(WindowPosition *)position observing:(Command *)command;
 - (void)reposition;
 
 @end

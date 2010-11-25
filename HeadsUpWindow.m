@@ -3,10 +3,12 @@
 
 @implementation HeadsUpWindow
 
-- (id)init {
-	self = [super initWithContentRect:NSMakeRect(0,0,100,100) styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:FALSE];
+- (id)initWithPosition:(WindowPosition *)thePosition {
+	self = [super initWithContentRect:[thePosition windowFrameWithSize:NSMakeSize(100, 100)] styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:FALSE];
 
 	if (self) {
+		position = thePosition;
+
 		[self setBackgroundColor: [NSColor clearColor]];
 		[self setContentView:[[HeadsUpTextView alloc] init]];
 		[self setIgnoresMouseEvents:TRUE];
@@ -20,7 +22,7 @@
 - (void)headsUpScreenDidUpdate:(NSNotification *)notification {
 	HeadsUpScreen *screen = [notification object];
 	[[self contentView] setString:[screen contents]];
-	[self setFrame:[screen windowFrameWithSize:[(HeadsUpTextView *) [self contentView] textSize]] display:TRUE];
+	[self setFrame:[position windowFrameWithSize:[(HeadsUpTextView *) [self contentView] textSize]] display:TRUE];
 }
 
 @end

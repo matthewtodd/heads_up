@@ -1,5 +1,6 @@
 #import "HeadsUpAppDelegate.h"
 #import "HeadsUpScreen.h"
+#import "WindowPosition.h"
 
 @implementation HeadsUpAppDelegate
 
@@ -17,7 +18,7 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	leftScreen = [[HeadsUpScreen alloc] initWithKey:@"bottom_left"];
 	[NSTimer scheduledTimerWithTimeInterval:60 target:leftScreen selector:@selector(runCommand:) userInfo:nil repeats:TRUE];
-	leftWindow = [[HeadsUpWindow alloc] init];
+	leftWindow = [[HeadsUpWindow alloc] initWithPosition:[WindowPosition bottomLeft]];
 	[[NSNotificationCenter defaultCenter] addObserver:leftWindow selector:@selector(headsUpScreenDidUpdate:) name:HeadsUpScreenDidUpdateNotification object:leftScreen];
 	[[NSNotificationCenter defaultCenter] postNotificationName:HeadsUpScreenDidUpdateNotification object:leftScreen];
 	[leftScreen runCommand:nil];
@@ -25,7 +26,7 @@
 
 	rightScreen = [[HeadsUpScreen alloc] initWithKey:@"bottom_right"];
 	[NSTimer scheduledTimerWithTimeInterval:60 target:rightScreen selector:@selector(runCommand:) userInfo:nil repeats:TRUE];
-	rightWindow = [[HeadsUpWindow alloc] init];
+	rightWindow = [[HeadsUpWindow alloc] initWithPosition:[WindowPosition bottomRight]];
 	[[NSNotificationCenter defaultCenter] addObserver:rightWindow selector:@selector(headsUpScreenDidUpdate:) name:HeadsUpScreenDidUpdateNotification object:rightScreen];
 	[[NSNotificationCenter defaultCenter] postNotificationName:HeadsUpScreenDidUpdateNotification object:rightScreen];
 	[rightScreen runCommand:nil];

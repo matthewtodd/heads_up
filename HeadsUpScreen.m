@@ -48,18 +48,6 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSTaskDidTerminateNotification object:task];
 }
 
-- (NSRect) windowFrameWithSize:(NSSize)size {
-	int left;
-	
-	if ([key rangeOfString:@"right"].location == NSNotFound) {
-		left = 12;
-	} else {
-		left = [[NSScreen mainScreen] frame].size.width - size.width - 12;
-	}
-	
-	return NSMakeRect(left, 12, size.width, size.height);
-}
-
 @end
 
 NSString * const HeadsUpScreenDidUpdateNotification = @"HeadsUpScreenDidUpdateNotification";

@@ -12,6 +12,7 @@
 	if (self) {
 		[self setKey:theKey];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(runCommand:) name:NSUserDefaultsDidChangeNotification object:nil];
+		[NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(runCommand:) userInfo:nil repeats:TRUE];
 	}
 	return self;
 }

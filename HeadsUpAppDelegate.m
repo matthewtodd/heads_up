@@ -17,13 +17,11 @@
 //
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	leftCommand = [[Command alloc] initWithKey:@"bottom_left"];
-	[NSTimer scheduledTimerWithTimeInterval:60 target:leftCommand selector:@selector(runCommand:) userInfo:nil repeats:TRUE];
 	leftWindow = [[HeadsUpWindow alloc] initWithPosition:[WindowPosition bottomLeft] observing:leftCommand];
 	[leftCommand runCommand:nil];
 	[leftWindow orderFront:self];
 
 	rightCommand = [[Command alloc] initWithKey:@"bottom_right"];
-	[NSTimer scheduledTimerWithTimeInterval:60 target:rightCommand selector:@selector(runCommand:) userInfo:nil repeats:TRUE];
 	rightWindow = [[HeadsUpWindow alloc] initWithPosition:[WindowPosition bottomRight] observing:rightCommand];
 	[rightCommand runCommand:nil];
 	[rightWindow orderFront:self];

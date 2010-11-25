@@ -22,13 +22,9 @@
 	return self;
 }
 
-- (void)headsUpScreenDidUpdate:(NSNotification *)notification {
-	[self display:[screen contents]];
-}
-
 // TODO feature envy? Just call the window directly. (But would need to pass screen as well...)
-- (void)display:(NSString *)string {
-	[(HeadsUpWindow *) [self window] updateText:string];
+- (void)headsUpScreenDidUpdate:(NSNotification *)notification {
+	[(HeadsUpWindow *) [self window] updateText:[screen contents]];
 	[(HeadsUpWindow *) [self window] repositionOn:screen];
 }
 

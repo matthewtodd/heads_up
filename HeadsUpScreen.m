@@ -4,14 +4,14 @@
 
 @implementation HeadsUpScreen
 
-// TODO can almost now set up contents for key-value observing???
+@synthesize key;
 @synthesize contents;
 
 - (id)initWithKey:(NSString *)theKey {
 	self = [super init];
 	if (self) {
-		key = theKey;
-		contents = @"Launching...";
+		[self setKey:theKey];
+		[self setContents:@"Launching..."];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(runCommand:) name:NSUserDefaultsDidChangeNotification object:nil];
 	}
 	return self;
@@ -29,7 +29,7 @@
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(taskDidTerminate:) name:NSTaskDidTerminateNotification object:task];
 		[task launch];
 	} else {
-		contents = @"";
+		[self setContents:@""];
 		[[NSNotificationCenter defaultCenter] postNotificationName:HeadsUpScreenDidUpdateNotification object:self];
 	}
 }
@@ -39,9 +39,9 @@
 
 	// TODO how to find real string encoding? At the Terminal, can use `locale charmap`.
 	if ([task terminationStatus] == 0) {
-		contents = [[task standardOutput] readStringToEndOfFileWithEncoding:NSUTF8StringEncoding];
+		[self setContents:[[task standardOutput] readStringToEndOfFileWithEncoding:NSUTF8StringEncoding]];
 	} else {
-		contents = [[task standardError] readStringToEndOfFileWithEncoding:NSUTF8StringEncoding];
+		[self setContents:[[task standardError] readStringToEndOfFileWithEncoding:NSUTF8StringEncoding]];
 	}
 
 	[[NSNotificationCenter defaultCenter] postNotificationName:HeadsUpScreenDidUpdateNotification object:self];

@@ -5,18 +5,17 @@
 
 @implementation Window
 
-@synthesize position;
-
 - (id)initWithPosition:(Position *)thePosition observing:(Command *)theCommand {
 	self = [super initWithContentRect:[thePosition windowFrame] styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:FALSE];
 
 	if (self) {
+		position = thePosition;
+
 		[self setBackgroundColor: [NSColor clearColor]];
 		[self setContentView:[[HeadsUpTextView alloc] init]];
 		[self setIgnoresMouseEvents:TRUE];
 		[self setLevel:CGWindowLevelForKey(kCGDesktopWindowLevelKey)];
 		[self setOpaque:FALSE];
-		[self setPosition:thePosition];
 
 		[[self contentView] addObserver:self forKeyPath:@"string" options:0 context:nil];
 		[[self contentView] bind:@"string" toObject:theCommand withKeyPath:@"output" options:nil];

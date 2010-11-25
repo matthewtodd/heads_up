@@ -12,6 +12,7 @@
 	if (self) {
 		key = theKey;
 		contents = nil;
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(runCommand:) name:NSUserDefaultsDidChangeNotification object:nil];
 	}
 	return self;
 }

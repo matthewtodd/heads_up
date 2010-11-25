@@ -19,6 +19,10 @@
 	return self;
 }
 
+- (void)observeScreen:(HeadsUpScreen *)screen {
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(headsUpScreenDidUpdate:) name:HeadsUpScreenDidUpdateNotification object:screen];
+}
+
 - (NSSize)size {
 	return [[self contentView] textSize];
 }

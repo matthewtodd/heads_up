@@ -14,7 +14,6 @@
 		34062601129D0A1600B43A27 /* Command.m in Sources */ = {isa = PBXBuildFile; fileRef = 34062600129D0A1600B43A27 /* Command.m */; };
 		341063B8129D333A00647A00 /* HeadsUp.icns in Resources */ = {isa = PBXBuildFile; fileRef = 341063B7129D333A00647A00 /* HeadsUp.icns */; };
 		342826F0129E65DF00D920AD /* WindowPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = 342826EF129E65DF00D920AD /* WindowPosition.m */; };
-		347DE60E129CEFF500814115 /* NSPipe+Reading.m in Sources */ = {isa = PBXBuildFile; fileRef = 347DE60D129CEFF500814115 /* NSPipe+Reading.m */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -40,8 +39,6 @@
 		341063B7129D333A00647A00 /* HeadsUp.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = HeadsUp.icns; sourceTree = "<group>"; };
 		342826EE129E65DF00D920AD /* WindowPosition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowPosition.h; sourceTree = "<group>"; };
 		342826EF129E65DF00D920AD /* WindowPosition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WindowPosition.m; sourceTree = "<group>"; };
-		347DE60C129CEFF500814115 /* NSPipe+Reading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSPipe+Reading.h"; sourceTree = "<group>"; };
-		347DE60D129CEFF500814115 /* NSPipe+Reading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSPipe+Reading.m"; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* HeadsUp-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "HeadsUp-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* HeadsUp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HeadsUp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -68,8 +65,6 @@
 				340569B8129A8B6E00B065FE /* HeadsUpTextView.h */,
 				340569B9129A8B6E00B065FE /* HeadsUpTextView.m */,
 				34056A04129A96BD00B065FE /* Command.h */,
-				347DE60C129CEFF500814115 /* NSPipe+Reading.h */,
-				347DE60D129CEFF500814115 /* NSPipe+Reading.m */,
 				34062600129D0A1600B43A27 /* Command.m */,
 				342826EE129E65DF00D920AD /* WindowPosition.h */,
 				342826EF129E65DF00D920AD /* WindowPosition.m */,
@@ -211,7 +206,6 @@
 				256AC3DA0F4B6AC300CF3369 /* HeadsUpAppDelegate.m in Sources */,
 				34056958129A79B000B065FE /* HeadsUpWindow.m in Sources */,
 				340569BA129A8B6E00B065FE /* HeadsUpTextView.m in Sources */,
-				347DE60E129CEFF500814115 /* NSPipe+Reading.m in Sources */,
 				34062601129D0A1600B43A27 /* Command.m in Sources */,
 				342826F0129E65DF00D920AD /* WindowPosition.m in Sources */,
 			);

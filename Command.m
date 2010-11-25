@@ -1,5 +1,4 @@
 #import "Command.h"
-#import "NSPipe+Reading.h"
 
 @implementation Command
 
@@ -9,6 +8,7 @@
 
 - (id)initWithKey:(NSString *)theKey {
 	self = [super init];
+
 	if (self) {
 		[self setKey:theKey];
 		[self setTimer:[NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(runCommand:) userInfo:nil repeats:TRUE]];
@@ -16,6 +16,7 @@
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(runCommand:) name:NSUserDefaultsDidChangeNotification object:nil];
 		[[self timer] fire];
 	}
+
 	return self;
 }
 
@@ -37,12 +38,16 @@
 	[task launch];
 }
 
+- (NSString *)readStringToEndOfPipe:(NSPipe *)pipe withEncoding:(NSStringEncoding)encoding {
+	return [[NSString alloc] initWithData:[[pipe fileHandleForReading] readDataToEndOfFile] encoding:encoding];
+}
+
 - (void)taskDidTerminate:(NSNotification *)notification {
 	NSTask *task = [notification object];
 	NSPipe *outputPipe = ([task terminationStatus] == 0) ? [task standardOutput] : [task standardError];
 
 	// TODO how to find real string encoding? At the Terminal, can use `locale charmap`.
-	[self setOutput:[outputPipe readStringToEndOfFileWithEncoding:NSUTF8StringEncoding]];
+	[self setOutput:[self readStringToEndOfPipe:outputPipe withEncoding:NSUTF8StringEncoding]];
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSTaskDidTerminateNotification object:task];
 }

@@ -16,7 +16,7 @@
 	return self;
 }
 
-- (void) runCommand {
+- (void) runCommand:(NSNotification *)notification {
 	NSString *command = [[NSUserDefaults standardUserDefaults] stringForKey:key];
 
 	if ([command isPresent]) {

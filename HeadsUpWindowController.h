@@ -6,6 +6,6 @@
 
 - (id)initWithScreen:(HeadsUpScreen *)screen;
 - (void)display:(NSString *)string;
-- (void)runCommand:(NSNotification *)notification;
+- (void)headsUpScreenDidUpdate:(NSNotification *)notification;
 
 @end

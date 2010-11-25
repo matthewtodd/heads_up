@@ -20,8 +20,8 @@
 }
 
 - (void)applicationDidChangeScreenParameters:(NSNotification *)notification {
-	[left runCommand:notification];
-	[right runCommand:notification];
+	[left headsUpScreenDidUpdate:notification];
+	[right headsUpScreenDidUpdate:notification];
 }
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification {

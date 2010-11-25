@@ -7,7 +7,7 @@
 @property (readonly) NSString *contents;
 
 - (id)initWithKey:(NSString *)key;
-- (void)runCommand;
+- (void)runCommand:(NSNotification *)notification;
 - (NSRect)windowFrameWithSize:(NSSize)size;
 
 @end

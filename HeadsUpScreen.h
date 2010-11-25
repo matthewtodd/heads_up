@@ -1,10 +1,15 @@
 // TODO rename to (Window)Position
 @interface HeadsUpScreen : NSObject {
 	NSString *key;
+	NSString *contents;
 }
 
+@property (readonly) NSString *contents;
+
 - (id)initWithKey:(NSString *)key;
-- (void)runCommandAndNotify:(id)observer selector:(SEL)selector;
+- (void)runCommand;
 - (NSRect)windowFrameWithSize:(NSSize)size;
 
 @end
+
+extern NSString * const HeadsUpScreenDidUpdateNotification;

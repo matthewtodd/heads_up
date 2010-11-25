@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
 		256AC3DA0F4B6AC300CF3369 /* HeadsUpAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 256AC3D90F4B6AC300CF3369 /* HeadsUpAppDelegate.m */; };
-		34056958129A79B000B065FE /* HeadsUpWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 34056957129A79B000B065FE /* HeadsUpWindow.m */; };
+		34056958129A79B000B065FE /* Window.m in Sources */ = {isa = PBXBuildFile; fileRef = 34056957129A79B000B065FE /* Window.m */; };
 		340569BA129A8B6E00B065FE /* HeadsUpTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 340569B9129A8B6E00B065FE /* HeadsUpTextView.m */; };
 		34062601129D0A1600B43A27 /* Command.m in Sources */ = {isa = PBXBuildFile; fileRef = 34062600129D0A1600B43A27 /* Command.m */; };
 		341063B8129D333A00647A00 /* HeadsUp.icns in Resources */ = {isa = PBXBuildFile; fileRef = 341063B7129D333A00647A00 /* HeadsUp.icns */; };
@@ -30,8 +30,8 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
-		34056956129A79B000B065FE /* HeadsUpWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeadsUpWindow.h; sourceTree = "<group>"; };
-		34056957129A79B000B065FE /* HeadsUpWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeadsUpWindow.m; sourceTree = "<group>"; };
+		34056956129A79B000B065FE /* Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Window.h; sourceTree = "<group>"; };
+		34056957129A79B000B065FE /* Window.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Window.m; sourceTree = "<group>"; };
 		340569B8129A8B6E00B065FE /* HeadsUpTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeadsUpTextView.h; sourceTree = "<group>"; };
 		340569B9129A8B6E00B065FE /* HeadsUpTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeadsUpTextView.m; sourceTree = "<group>"; };
 		34056A04129A96BD00B065FE /* Command.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Command.h; sourceTree = "<group>"; };
@@ -60,8 +60,8 @@
 			children = (
 				256AC3D80F4B6AC300CF3369 /* HeadsUpAppDelegate.h */,
 				256AC3D90F4B6AC300CF3369 /* HeadsUpAppDelegate.m */,
-				34056956129A79B000B065FE /* HeadsUpWindow.h */,
-				34056957129A79B000B065FE /* HeadsUpWindow.m */,
+				34056956129A79B000B065FE /* Window.h */,
+				34056957129A79B000B065FE /* Window.m */,
 				340569B8129A8B6E00B065FE /* HeadsUpTextView.h */,
 				340569B9129A8B6E00B065FE /* HeadsUpTextView.m */,
 				34056A04129A96BD00B065FE /* Command.h */,
@@ -204,7 +204,7 @@
 			files = (
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				256AC3DA0F4B6AC300CF3369 /* HeadsUpAppDelegate.m in Sources */,
-				34056958129A79B000B065FE /* HeadsUpWindow.m in Sources */,
+				34056958129A79B000B065FE /* Window.m in Sources */,
 				340569BA129A8B6E00B065FE /* HeadsUpTextView.m in Sources */,
 				34062601129D0A1600B43A27 /* Command.m in Sources */,
 				342826F0129E65DF00D920AD /* WindowPosition.m in Sources */,

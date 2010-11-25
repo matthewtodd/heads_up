@@ -1,4 +1,4 @@
-@class Command, HeadsUpWindow;
+@class Command, Window;
 
 // Though it doesn't appear this way when reading AppKit/NSApplication.h, it
 // seems the formal NSApplicationDelegate protocol was only introduced in the
@@ -11,8 +11,8 @@
 #endif
 	Command *leftCommand;
 	Command *rightCommand;
-	HeadsUpWindow *leftWindow;
-	HeadsUpWindow *rightWindow;
+	Window *leftWindow;
+	Window *rightWindow;
     NSWindow *window;
 }
 

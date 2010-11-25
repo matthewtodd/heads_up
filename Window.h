@@ -1,6 +1,6 @@
 @class Command, WindowPosition;
 
-@interface HeadsUpWindow : NSWindow {
+@interface Window : NSWindow {
 	WindowPosition *position;
 }
 

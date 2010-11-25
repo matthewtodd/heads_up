@@ -1,9 +1,9 @@
 #import "Command.h"
 #import "HeadsUpTextView.h"
-#import "HeadsUpWindow.h"
+#import "Window.h"
 #import "WindowPosition.h"
 
-@implementation HeadsUpWindow
+@implementation Window
 
 @synthesize position;
 

@@ -1,6 +1,5 @@
 #import "Command.h"
 #import "NSPipe+Reading.h"
-#import "NSString+Predicates.h"
 
 @implementation Command
 
@@ -17,20 +16,22 @@
 	return self;
 }
 
-- (void) runCommand:(NSNotification *)notification {
-	NSString *command = [[NSUserDefaults standardUserDefaults] stringForKey:key];
-
-	if ([command isPresent]) {
-		NSTask *task = [[NSTask alloc] init];
-		[task setLaunchPath:@"/bin/sh"];
-		[task setArguments:[NSArray arrayWithObjects:@"-c", command, nil]];
-		[task setStandardOutput:[NSPipe pipe]];
-		[task setStandardError:[NSPipe pipe]];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(taskDidTerminate:) name:NSTaskDidTerminateNotification object:task];
-		[task launch];
-	} else {
-		[self setOutput:@""];
+- (NSString *)command {
+	NSString *result = [[NSUserDefaults standardUserDefaults] stringForKey:key];
+	if (result == nil) {
+		result = @"# Not really running anything.";
 	}
+	return result;
+}
+
+- (void) runCommand:(NSNotification *)notification {
+	NSTask *task = [[NSTask alloc] init];
+	[task setLaunchPath:@"/bin/sh"];
+	[task setArguments:[NSArray arrayWithObjects:@"-c", [self command], nil]];
+	[task setStandardOutput:[NSPipe pipe]];
+	[task setStandardError:[NSPipe pipe]];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(taskDidTerminate:) name:NSTaskDidTerminateNotification object:task];
+	[task launch];
 }
 
 - (void)taskDidTerminate:(NSNotification *)notification {

@@ -1,7 +1,7 @@
 #import "Command.h"
 #import "HeadsUpAppDelegate.h"
 #import "Window.h"
-#import "WindowPosition.h"
+#import "Position.h"
 
 @implementation HeadsUpAppDelegate
 
@@ -18,10 +18,10 @@
 //
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	leftCommand = [[Command alloc] initWithKey:@"bottom_left"];
-	leftWindow = [[Window alloc] initWithPosition:[WindowPosition bottomLeft] observing:leftCommand];
+	leftWindow = [[Window alloc] initWithPosition:[Position bottomLeft] observing:leftCommand];
 
 	rightCommand = [[Command alloc] initWithKey:@"bottom_right"];
-	rightWindow = [[Window alloc] initWithPosition:[WindowPosition bottomRight] observing:rightCommand];
+	rightWindow = [[Window alloc] initWithPosition:[Position bottomRight] observing:rightCommand];
 }
 
 - (void)applicationDidChangeScreenParameters:(NSNotification *)notification {

@@ -1,6 +1,6 @@
-#import "WindowPosition.h"
+#import "Position.h"
 
-@implementation WindowPosition
+@implementation Position
 
 - (id)initWithIsLeft:(BOOL)yesOrNo {
 	self = [super init];

@@ -1,4 +1,4 @@
-@interface WindowPosition : NSObject {
+@interface Position : NSObject {
 	BOOL isLeft;
 	CGFloat margin;
 }

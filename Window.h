@@ -1,12 +1,12 @@
-@class Command, WindowPosition;
+@class Command, Position;
 
 @interface Window : NSWindow {
-	WindowPosition *position;
+	Position *position;
 }
 
-@property WindowPosition *position;
+@property Position *position;
 
-- (id)initWithPosition:(WindowPosition *)position observing:(Command *)command;
+- (id)initWithPosition:(Position *)position observing:(Command *)command;
 - (void)reposition;
 
 @end

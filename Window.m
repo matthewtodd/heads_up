@@ -1,13 +1,13 @@
 #import "Command.h"
 #import "HeadsUpTextView.h"
 #import "Window.h"
-#import "WindowPosition.h"
+#import "Position.h"
 
 @implementation Window
 
 @synthesize position;
 
-- (id)initWithPosition:(WindowPosition *)thePosition observing:(Command *)theCommand {
+- (id)initWithPosition:(Position *)thePosition observing:(Command *)theCommand {
 	self = [super initWithContentRect:[thePosition windowFrame] styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:FALSE];
 
 	if (self) {

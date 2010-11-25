@@ -10,8 +10,7 @@
 	if (self) {
 		screen = theScreen;
 
-		// TODO perhaps the screen would handle this string?
-		[self display:@"Launching..."];
+		[self headsUpScreenDidUpdate:nil];
 		[screen runCommand:nil];
 
 		// TODO removeObserver

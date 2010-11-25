@@ -21,6 +21,12 @@
 	return self;
 }
 
+- (void)headsUpScreenDidUpdate:(NSNotification *)notification {
+	HeadsUpScreen *screen = [notification object];
+	[self updateText:[screen contents]];
+	[self repositionOn:screen];
+}
+
 - (void)updateText:(NSString *)string {
 	[[self contentView] setString:string];
 }

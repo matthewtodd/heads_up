@@ -19,9 +19,10 @@
 	right = [[HeadsUpWindowController alloc] initWithScreen:[[HeadsUpScreen alloc] initWithKey:@"bottom_right"]];
 }
 
+// TODO trigger the right thing here
 - (void)applicationDidChangeScreenParameters:(NSNotification *)notification {
-	[left headsUpScreenDidUpdate:notification];
-	[right headsUpScreenDidUpdate:notification];
+//	[left headsUpScreenDidUpdate:notification];
+//	[right headsUpScreenDidUpdate:notification];
 }
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification {

@@ -5,6 +5,5 @@
 }
 
 - (id)initWithScreen:(HeadsUpScreen *)screen;
-- (void)headsUpScreenDidUpdate:(NSNotification *)notification;
 
 @end

@@ -5,10 +5,15 @@
 @implementation Window
 
 - (void)buildViewObserving:(Command *)theCommand {
+	NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+	[style setDefaultTabInterval:28.0];
+	[style setTabStops:[NSArray array]];
+
 	NSTextView *view = [[NSTextView alloc] initWithFrame:NSMakeRect(0, 0, 10000, 10000)];
 	
 	[view setAllowsUndo:FALSE];
 	[view setBackgroundColor: [NSColor clearColor]];
+	[view setDefaultParagraphStyle:style];
 	[view setEditable:FALSE];
 	[view setFieldEditor:FALSE];
 	[view setFont:[NSFont fontWithName:@"Menlo" size:12.0]];

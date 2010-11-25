@@ -3,22 +3,21 @@
 
 @implementation HeadsUpWindow
 
+@synthesize position;
+
 - (id)initWithPosition:(WindowPosition *)thePosition observing:(HeadsUpScreen *)theScreen {
 	self = [super initWithContentRect:[thePosition windowFrame] styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:FALSE];
 
 	if (self) {
-		position = thePosition;
-
-		HeadsUpTextView *view = [[HeadsUpTextView alloc] init];
-
 		[self setBackgroundColor: [NSColor clearColor]];
-		[self setContentView:view];
+		[self setContentView:[[HeadsUpTextView alloc] init]];
 		[self setIgnoresMouseEvents:TRUE];
 		[self setLevel:CGWindowLevelForKey(kCGDesktopWindowLevelKey)];
 		[self setOpaque:FALSE];
+		[self setPosition:thePosition];
 
-		[view addObserver:self forKeyPath:@"string" options:0 context:nil];
-		[view bind:@"string" toObject:theScreen withKeyPath:@"contents" options:nil];
+		[[self contentView] addObserver:self forKeyPath:@"string" options:0 context:nil];
+		[[self contentView] bind:@"string" toObject:theScreen withKeyPath:@"contents" options:nil];
 	}
 	
 	return self;

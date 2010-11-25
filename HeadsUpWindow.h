@@ -5,6 +5,8 @@
 	WindowPosition *position;
 }
 
+@property WindowPosition *position;
+
 - (id)initWithPosition:(WindowPosition *)position observing:(HeadsUpScreen *)screen;
 - (void)reposition;
 

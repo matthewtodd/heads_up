@@ -1,6 +1,6 @@
 #import "Command.h"
-#import "Window.h"
 #import "Position.h"
+#import "Window.h"
 
 @implementation Window
 

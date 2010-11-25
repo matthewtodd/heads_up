@@ -1,7 +1,7 @@
 #import "Command.h"
 #import "HeadsUpAppDelegate.h"
-#import "Window.h"
 #import "Position.h"
+#import "Window.h"
 
 @implementation HeadsUpAppDelegate
 

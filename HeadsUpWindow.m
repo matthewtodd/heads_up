@@ -24,7 +24,9 @@
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-	[self reposition];
+	if ([object isEqualTo:[self contentView]] && [keyPath isEqualToString:@"string"]) {
+		[self reposition];
+	}
 }
 
 - (NSSize)size {

@@ -3,7 +3,7 @@
 
 @implementation HeadsUpWindow
 
-- (id)initWithPosition:(WindowPosition *)thePosition {
+- (id)initWithPosition:(WindowPosition *)thePosition observing:(HeadsUpScreen *)theScreen {
 	self = [super initWithContentRect:[thePosition windowFrame] styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:FALSE];
 
 	if (self) {
@@ -18,6 +18,7 @@
 		[self setOpaque:FALSE];
 
 		[view addObserver:self forKeyPath:@"string" options:0 context:nil];
+		[view bind:@"string" toObject:theScreen withKeyPath:@"contents" options:nil];
 	}
 	
 	return self;
@@ -25,11 +26,6 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
 	[self reposition];
-}
-
-// TODO fold this into the initializer
-- (void)observeScreen:(HeadsUpScreen *)screen {
-	[[self contentView] bind:@"string" toObject:screen withKeyPath:@"contents" options:nil];
 }
 
 - (NSSize)size {

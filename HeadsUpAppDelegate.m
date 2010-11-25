@@ -18,15 +18,13 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	leftScreen = [[HeadsUpScreen alloc] initWithKey:@"bottom_left"];
 	[NSTimer scheduledTimerWithTimeInterval:60 target:leftScreen selector:@selector(runCommand:) userInfo:nil repeats:TRUE];
-	leftWindow = [[HeadsUpWindow alloc] initWithPosition:[WindowPosition bottomLeft]];
-	[leftWindow observeScreen:leftScreen];
+	leftWindow = [[HeadsUpWindow alloc] initWithPosition:[WindowPosition bottomLeft] observing:leftScreen];
 	[leftScreen runCommand:nil];
 	[leftWindow orderFront:self];
 
 	rightScreen = [[HeadsUpScreen alloc] initWithKey:@"bottom_right"];
 	[NSTimer scheduledTimerWithTimeInterval:60 target:rightScreen selector:@selector(runCommand:) userInfo:nil repeats:TRUE];
-	rightWindow = [[HeadsUpWindow alloc] initWithPosition:[WindowPosition bottomRight]];
-	[rightWindow observeScreen:rightScreen];
+	rightWindow = [[HeadsUpWindow alloc] initWithPosition:[WindowPosition bottomRight] observing:rightScreen];
 	[rightScreen runCommand:nil];
 	[rightWindow orderFront:self];
 }

@@ -33,11 +33,6 @@
 	[rightWindow orderFront:self];
 }
 
-- (void)applicationDidChangeScreenParameters:(NSNotification *)notification {
-	[[NSNotificationCenter defaultCenter] postNotificationName:HeadsUpScreenDidUpdateNotification object:leftScreen];
-	[[NSNotificationCenter defaultCenter] postNotificationName:HeadsUpScreenDidUpdateNotification object:rightScreen];
-}
-
 - (void)applicationDidBecomeActive:(NSNotification *)notification {
 	[window makeKeyAndOrderFront:self];
 }

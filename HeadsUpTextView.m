@@ -27,10 +27,6 @@
 	return self;
 }
 
-- (void)setString:(NSString *)string {
-	[super setString:[string stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]]];
-}
-
 - (NSSize) textSize {
 	// Trigger a layout, otherwise we just get 0,0 for dimensions!?
 	[[self layoutManager] glyphRangeForTextContainer:[self textContainer]];

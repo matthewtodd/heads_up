@@ -45,7 +45,7 @@
 	NSPipe *outputPipe = ([task terminationStatus] == 0) ? [task standardOutput] : [task standardError];
 
 	// TODO how to find real string encoding? At the Terminal, can use `locale charmap`.
-	[self setOutput:[self readStringToEndOfPipe:outputPipe withEncoding:NSUTF8StringEncoding]];
+	[self setOutput:[[self readStringToEndOfPipe:outputPipe withEncoding:NSUTF8StringEncoding] stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]]];
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSTaskDidTerminateNotification object:task];
 }

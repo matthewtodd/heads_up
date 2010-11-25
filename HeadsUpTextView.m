@@ -32,10 +32,8 @@
 }
 
 - (NSSize) textSize {
-	// TODO pull this into a private method
-	// Trigger a layout; without this, we just get 0,0 for dimensions!?
+	// Trigger a layout, otherwise we just get 0,0 for dimensions!?
 	[[self layoutManager] glyphRangeForTextContainer:[self textContainer]];
-	
 	return [[self layoutManager] usedRectForTextContainer:[self textContainer]].size;
 }
 

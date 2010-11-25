@@ -1,5 +1,4 @@
-#import "Command.h"
-#import "WindowPosition.h"
+@class Command, WindowPosition;
 
 @interface HeadsUpWindow : NSWindow {
 	WindowPosition *position;

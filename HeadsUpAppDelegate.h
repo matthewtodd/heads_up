@@ -1,5 +1,4 @@
-#import "Command.h"
-#import "HeadsUpWindow.h"
+@class Command, HeadsUpWindow;
 
 // Though it doesn't appear this way when reading AppKit/NSApplication.h, it
 // seems the formal NSApplicationDelegate protocol was only introduced in the

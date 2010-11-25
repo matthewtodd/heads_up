@@ -1,5 +1,7 @@
+#import "Command.h"
 #import "HeadsUpTextView.h"
 #import "HeadsUpWindow.h"
+#import "WindowPosition.h"
 
 @implementation HeadsUpWindow
 

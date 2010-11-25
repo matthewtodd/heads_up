@@ -12,6 +12,7 @@
 	if (self) {
 		[self setKey:theKey];
 		[self setTimer:[NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(runCommand:) userInfo:nil repeats:TRUE]];
+
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(runCommand:) name:NSUserDefaultsDidChangeNotification object:nil];
 		[[self timer] fire];
 	}
@@ -38,13 +39,10 @@
 
 - (void)taskDidTerminate:(NSNotification *)notification {
 	NSTask *task = [notification object];
+	NSPipe *outputPipe = ([task terminationStatus] == 0) ? [task standardOutput] : [task standardError];
 
 	// TODO how to find real string encoding? At the Terminal, can use `locale charmap`.
-	if ([task terminationStatus] == 0) {
-		[self setOutput:[[task standardOutput] readStringToEndOfFileWithEncoding:NSUTF8StringEncoding]];
-	} else {
-		[self setOutput:[[task standardError] readStringToEndOfFileWithEncoding:NSUTF8StringEncoding]];
-	}
+	[self setOutput:[outputPipe readStringToEndOfFileWithEncoding:NSUTF8StringEncoding]];
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSTaskDidTerminateNotification object:task];
 }

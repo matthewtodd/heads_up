@@ -11,9 +11,9 @@
 
 	if (self) {
 		[self setKey:theKey];
-		[self setTimer:[NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(runCommand:) userInfo:nil repeats:TRUE]];
+		[self setTimer:[NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(trigger:) userInfo:nil repeats:TRUE]];
 
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(runCommand:) name:NSUserDefaultsDidChangeNotification object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(trigger:) name:NSUserDefaultsDidChangeNotification object:nil];
 		[[self timer] fire];
 	}
 
@@ -28,7 +28,7 @@
 	return result;
 }
 
-- (void) runCommand:(NSNotification *)notification {
+- (void) trigger:(NSNotification *)notification {
 	NSTask *task = [[NSTask alloc] init];
 	[task setLaunchPath:@"/bin/sh"];
 	[task setArguments:[NSArray arrayWithObjects:@"-c", [self command], nil]];

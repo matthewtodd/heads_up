@@ -9,6 +9,6 @@
 @property NSTimer *timer;
 
 - (id)initWithKey:(NSString *)key;
-- (void)runCommand:(NSNotification *)notification;
+- (void)trigger:(NSNotification *)notification;
 
 @end

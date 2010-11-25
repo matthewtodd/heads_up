@@ -18,11 +18,9 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	leftCommand = [[Command alloc] initWithKey:@"bottom_left"];
 	leftWindow = [[HeadsUpWindow alloc] initWithPosition:[WindowPosition bottomLeft] observing:leftCommand];
-	[leftCommand runCommand:nil];
 
 	rightCommand = [[Command alloc] initWithKey:@"bottom_right"];
 	rightWindow = [[HeadsUpWindow alloc] initWithPosition:[WindowPosition bottomRight] observing:rightCommand];
-	[rightCommand runCommand:nil];
 }
 
 - (void)applicationDidChangeScreenParameters:(NSNotification *)notification {

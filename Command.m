@@ -5,13 +5,15 @@
 
 @synthesize key;
 @synthesize output;
+@synthesize timer;
 
 - (id)initWithKey:(NSString *)theKey {
 	self = [super init];
 	if (self) {
 		[self setKey:theKey];
+		[self setTimer:[NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(runCommand:) userInfo:nil repeats:TRUE]];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(runCommand:) name:NSUserDefaultsDidChangeNotification object:nil];
-		[NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(runCommand:) userInfo:nil repeats:TRUE];
+		[[self timer] fire];
 	}
 	return self;
 }

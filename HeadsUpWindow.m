@@ -18,6 +18,7 @@
 
 		[[self contentView] addObserver:self forKeyPath:@"string" options:0 context:nil];
 		[[self contentView] bind:@"string" toObject:theCommand withKeyPath:@"output" options:nil];
+		[[self contentView] setString:@"Launching..."];
 	}
 	
 	return self;

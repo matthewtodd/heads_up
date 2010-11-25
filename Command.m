@@ -11,7 +11,6 @@
 	self = [super init];
 	if (self) {
 		[self setKey:theKey];
-		[self setOutput:@"Launching..."];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(runCommand:) name:NSUserDefaultsDidChangeNotification object:nil];
 	}
 	return self;

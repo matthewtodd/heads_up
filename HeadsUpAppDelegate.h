@@ -13,6 +13,8 @@
 	Command *rightCommand;
 	Window *leftWindow;
 	Window *rightWindow;
+
+	NSStatusItem *item;
     NSWindow *window;
 }
 

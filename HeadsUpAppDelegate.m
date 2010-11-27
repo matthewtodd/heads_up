@@ -16,8 +16,14 @@
 	}
 }
 
+- (void)createStatusItem {
+	item = [[NSStatusBar systemStatusBar] statusItemWithLength:NSSquareStatusItemLength];
+	[item setTitle:@"#!"];
+}
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	[self registerDefaultCommands];
+	[self createStatusItem];
 
 	leftCommand  = [[Command alloc] initWithKey:@"bottom_left"];
 	rightCommand = [[Command alloc] initWithKey:@"bottom_right"];

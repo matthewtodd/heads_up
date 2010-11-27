@@ -8,10 +8,8 @@
 
 	NSStatusItem *item;
 	NSMenu *menu;
-    NSWindow *window;
 }
 
 @property (assign) IBOutlet NSMenu *menu;
-@property (assign) IBOutlet NSWindow *window;
 
 @end

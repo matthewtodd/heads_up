@@ -5,7 +5,7 @@
 
 @implementation HeadsUpAppDelegate
 
-@synthesize menu;
+@synthesize menu, preferences;
 
 - (void)registerDefaultCommands {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -33,9 +33,17 @@
 	rightWindow = [[Window alloc] initWithPosition:[Position bottomRight] observing:rightCommand];
 }
 
+- (void)applicationDidBecomeActive:(NSNotification *)notification {
+	[self showPreferences:self];
+}
+
 - (void)applicationDidChangeScreenParameters:(NSNotification *)notification {
 	[leftWindow reposition];
 	[rightWindow reposition];
+}
+
+- (IBAction)showPreferences:(id)sender {
+	[preferences makeKeyAndOrderFront:sender];
 }
 
 @end

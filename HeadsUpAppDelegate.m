@@ -5,7 +5,7 @@
 
 @implementation HeadsUpAppDelegate
 
-@synthesize window;
+@synthesize menu, window;
 
 - (void)registerDefaultCommands {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -19,6 +19,7 @@
 - (void)createStatusItem {
 	item = [[NSStatusBar systemStatusBar] statusItemWithLength:NSSquareStatusItemLength];
 	[item setTitle:@"#!"];
+	[item setMenu:menu];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {

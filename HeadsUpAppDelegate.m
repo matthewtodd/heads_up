@@ -7,16 +7,18 @@
 
 @synthesize window;
 
-// TODO set up some default commands?
-//
-// Not as simple as it would seem, because values passed to
-// NSUserDefaults.registerDefaults are returned when the keys
-// have been set back to nil, as they are when the user clears
-// out one of the boxes in the preferences window. So, I need
-// some way to register the defaults only if they've never
-// been registered before... weird.
-//
+- (void)registerDefaultCommands {
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+	if (![[defaults persistentDomainNames] containsObject:[[NSBundle mainBundle] bundleIdentifier]]) {
+		[defaults setValue:@"ruby -retc -e 'name = Etc.getpwnam(Etc.getlogin).gecos; first = name.split(/\\s/).first; puts \"Welcome to HeadsUp, #{first}!\"'" forKey:@"bottom_left"];
+		[defaults setValue:@"echo \"Now, blow away these settings and run whatever you like...\\n- Commands refresh every minute: $(date)\\n- PATH=$PATH\"" forKey:@"bottom_right"];
+	}
+}
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+	[self registerDefaultCommands];
+
 	leftCommand  = [[Command alloc] initWithKey:@"bottom_left"];
 	rightCommand = [[Command alloc] initWithKey:@"bottom_right"];
 

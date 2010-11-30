@@ -44,6 +44,7 @@
 }
 
 - (IBAction)showPreferences:(id)sender {
+	[[NSApplication sharedApplication] activateIgnoringOtherApps:TRUE];
 	[preferences makeKeyAndOrderFront:sender];
 }
 

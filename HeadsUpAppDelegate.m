@@ -18,7 +18,7 @@
 
 - (void)createStatusItem {
 	item = [[NSStatusBar systemStatusBar] statusItemWithLength:NSSquareStatusItemLength];
-	[item setTitle:@"#!"];
+	[item setTitle:@"✓"];
 	[item setHighlightMode:TRUE];
 	[item setMenu:menu];
 }

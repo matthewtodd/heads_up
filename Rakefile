@@ -18,8 +18,8 @@ class HeadsUp
   end
 
   def create_release
-    die("Current directory has uncommitted changes.") if unclean?
-    die("Version #{SHORT_VERSION} has already been released.\nUpdate CFBundleShortVersionString in HeadsUp-Info.plist.") if tags.include?(SHORT_VERSION)
+    abort("Current directory has uncommitted changes.") if unclean?
+    abort("Version #{SHORT_VERSION} has already been released.\nUpdate CFBundleShortVersionString in HeadsUp-Info.plist.") if tags.include?(SHORT_VERSION)
 
     FileUtils.mkdir_p('website/releases')
     FileUtils.cp(disk_image, 'website/releases')
@@ -59,11 +59,6 @@ class HeadsUp
   def commits
     range = (tags.last.to_s.empty?) ? '' : "#{tags.last}.."
     `git log --pretty=format:%s #{range}`.split(/\n/)
-  end
-
-  def die(message)
-    puts message
-    exit 1
   end
 
   def disk_image

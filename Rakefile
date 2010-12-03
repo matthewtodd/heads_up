@@ -5,27 +5,66 @@ Bundler.require
 
 class Git
   class << self
+    def commits
+      `git log --pretty=format:%s #{tags.last}..`.strip.split("\n")
+    end
+
     def dirty?
       `git status`.grep(/working directory clean/).empty?
     end
 
     def has_tag?(tag)
-      `git tag`.split("\n").include?(tag)
+      tags.include?(tag)
+    end
+
+    private
+
+    def tags
+      `git tag`.strip.split("\n")
+    end
+  end
+end
+
+class Crypto
+  class << self
+    def signature(path)
+      `openssl dgst -sha1 -binary < "#{path}" | openssl dgst -dss1 -sign "#{private_key}" | openssl enc -base64`.strip
+    end
+
+    private
+
+    def private_key
+      "#{ENV['HOME']}/.signing_keys/dsa_priv.pem"
     end
   end
 end
 
 class Project
   class << self
+    def disk_image_path
+      "HeadsUp-#{marketing_version}.dmg"
+    end
+
     def marketing_version
       `agvtool mvers -terse1`.strip
+    end
+
+    def minimum_system_version
+      settings = `grep MACOSX_DEPLOYMENT_TARGET HeadsUp.xcodeproj/project.pbxproj`
+      versions = settings.scan(/[.0-9]+/).sort.uniq
+      abort("Multiple versions specified:\n#{settings}") if versions.size > 1
+      versions.first
+    end
+
+    def version
+      `agvtool vers -terse`.strip
     end
   end
 end
 
 class HeadsUp
   SHORT_VERSION = Project.marketing_version
-  VERSION       = `agvtool vers  -terse`.strip
+  VERSION       = Project.version
 
   def self.create_release
     new.create_release
@@ -40,26 +79,6 @@ class HeadsUp
   end
 
   def create_release
-    FileUtils.mkdir_p(File.dirname(release_announcement))
-
-    File.open(release_announcement, 'w') do |file|
-      file.puts '---'
-      file.puts "title: HeadsUp #{SHORT_VERSION}"
-      file.puts "layout: default"
-      file.puts "dmg: #{disk_image_url}"
-      file.puts "dmg_name: #{disk_image}"
-      file.puts "version: #{VERSION}"
-      file.puts "short_version: #{SHORT_VERSION}"
-      file.puts "length: #{disk_image_size}"
-      file.puts "signature: #{disk_image_signature}"
-      file.puts "minimum_system_version: #{minimum_system_version}"
-      file.puts 'category: releases'
-      file.puts '---'
-      file.puts 'h3. Changelog'
-      file.puts
-      commits.each { |commit| file.puts "* #{commit}" } # TODO include dates? include authors? include links to commits on github?
-    end
-
     FileUtils.mkdir_p('website/_includes')
     File.open(download_latest, 'w') do |file|
       file.puts %Q{<a href="#{disk_image_url}" class="download"><img src="/heads_up/images/dmg.png" class="icon" />#{disk_image}</a>}
@@ -73,21 +92,8 @@ class HeadsUp
 
   private
 
-  def commits
-    range = (tags.last.to_s.empty?) ? '' : "#{tags.last}.."
-    `git log --pretty=format:%s #{range}`.split(/\n/)
-  end
-
   def disk_image
     self.class.disk_image
-  end
-
-  def disk_image_signature
-    `openssl dgst -sha1 -binary < "#{disk_image}" | openssl dgst -dss1 -sign "#{private_key}" | openssl enc -base64`.chomp
-  end
-
-  def disk_image_size
-    File.size(disk_image)
   end
 
   def disk_image_url
@@ -96,25 +102,6 @@ class HeadsUp
 
   def download_latest
     "website/_includes/download.html"
-  end
-
-  def minimum_system_version
-    settings = `grep MACOSX_DEPLOYMENT_TARGET HeadsUp.xcodeproj/project.pbxproj`
-    versions = settings.scan(/[.0-9]+/).sort.uniq
-    abort("Multiple versions specified:\n#{settings}") if versions.size > 1
-    versions.first
-  end
-
-  def private_key
-    "#{ENV['HOME']}/.signing_keys/dsa_priv.pem"
-  end
-
-  def release_announcement
-    "website/_posts/#{Date.today.strftime('%Y-%m-%d')}-version-#{SHORT_VERSION}.textile"
-  end
-
-  def tags
-    @tags ||= `git tag`.split(/\n/)
   end
 
   class Screenshot
@@ -198,6 +185,30 @@ namespace :release do
       :repos => 'heads_up',
       :file => HeadsUp.disk_image
     )
+  end
+
+  task :announcement do
+    path = "website/_posts/#{Date.today.strftime('%Y-%m-%d')}-version-#{Project.marketing_version}.textile"
+
+    FileUtils.mkdir_p(File.dirname(path))
+
+    File.open(path, 'w') do |file|
+      file.puts '---'
+      file.puts "title: HeadsUp #{Project.marketing_version}"
+      file.puts "layout: default"
+      file.puts "dmg: https://github.com/downloads/matthewtodd/heads_up/#{Project.disk_image_path}"
+      file.puts "dmg_name: #{Project.disk_image_path}"
+      file.puts "version: #{Project.version}"
+      file.puts "short_version: #{Project.marketing_version}"
+      file.puts "length: #{File.stat(Project.disk_image_path).size}"
+      file.puts "signature: #{Crypto.signature(Project.disk_image_path)}"
+      file.puts "minimum_system_version: #{Project.minimum_system_version}"
+      file.puts 'category: releases'
+      file.puts '---'
+      file.puts 'h3. Changelog'
+      file.puts
+      Git.commits.each { |commit| file.puts "* #{commit}" }
+    end
   end
 end
 

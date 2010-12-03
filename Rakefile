@@ -1,5 +1,7 @@
-require 'osx/cocoa'
+require 'bundler'
 require 'tempfile'
+
+Bundler.require
 
 class HeadsUp
   SHORT_VERSION = `agvtool mvers -terse1`.strip
@@ -21,8 +23,14 @@ class HeadsUp
     abort("Current directory has uncommitted changes.") if unclean?
     abort("Version #{SHORT_VERSION} has already been released.\nUpdate CFBundleShortVersionString in HeadsUp-Info.plist.") if tags.include?(SHORT_VERSION)
 
-    FileUtils.mkdir_p('website/releases')
-    FileUtils.cp(disk_image, 'website/releases')
+    Net::GitHub::Upload.new(
+      :login => `git config github.user`.chomp,
+      :token => `git config github.token`.chomp
+    ).upload(
+      :repos => 'heads_up',
+      :file => disk_image
+    )
+
     FileUtils.mkdir_p(File.dirname(release_announcement))
 
     File.open(release_announcement, 'w') do |file|
@@ -45,7 +53,7 @@ class HeadsUp
 
     FileUtils.mkdir_p('website/_includes')
     File.open(download_latest, 'w') do |file|
-      file.puts %Q{<a href="/heads_up#{disk_image_url}" class="download"><img src="/heads_up/images/dmg.png" class="icon" />#{disk_image}</a>}
+      file.puts %Q{<a href="#{disk_image_url}" class="download"><img src="/heads_up/images/dmg.png" class="icon" />#{disk_image}</a>}
     end
 
     FileUtils.mkdir_p('website/images')
@@ -74,7 +82,7 @@ class HeadsUp
   end
 
   def disk_image_url
-    "/releases/#{disk_image}"
+    "https://github.com/downloads/matthewtodd/heads_up/#{disk_image}"
   end
 
   def download_latest
@@ -130,6 +138,7 @@ class HeadsUp
     private
 
     def current_frame
+      require 'osx/cocoa'
       frame = OSX::NSScreen.mainScreen.frame
       [frame.width.to_i, frame.height.to_i]
     end

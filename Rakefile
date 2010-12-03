@@ -45,6 +45,10 @@ class Project
       "HeadsUp-#{marketing_version}.dmg"
     end
 
+    def disk_image_url
+      "https://github.com/downloads/matthewtodd/heads_up/#{disk_image_path}"
+    end
+
     def marketing_version
       `agvtool mvers -terse1`.strip
     end
@@ -62,86 +66,43 @@ class Project
   end
 end
 
-class HeadsUp
-  SHORT_VERSION = Project.marketing_version
-  VERSION       = Project.version
-
-  def self.create_release
-    new.create_release
+class Screenshot
+  def self.take(path)
+    new.take(path)
   end
 
-  def self.disk_image
-    "HeadsUp-#{SHORT_VERSION}.dmg"
-  end
+  def take(path)
+    original_frame = current_frame
 
-  def self.volume_name
-    'HeadsUp'
-  end
+    script('tell application "System Preferences" to quit')
+    script('tell application "Finder" to open home')
+    script('tell application "Finder" to set visible of every process whose name is not "Finder" to false')
+    resize(1024, 768)
+    script('tell application "System Preferences" to activate')
+    script('tell application "System Preferences" to set current pane to pane "org.matthewtodd.HeadsUp.preferences"')
+    script('tell application "Finder" to set visible of every process whose name is not "System Preferences" to false')
 
-  def create_release
-    FileUtils.mkdir_p('website/_includes')
-    File.open(download_latest, 'w') do |file|
-      file.puts %Q{<a href="#{disk_image_url}" class="download"><img src="/heads_up/images/dmg.png" class="icon" />#{disk_image}</a>}
-    end
+    `screencapture -m -tjpg #{path}/screenshot.jpg`
+    `convert -resize 300x #{path}/screenshot.jpg #{path}/screenshot-small.jpg`
 
-    FileUtils.mkdir_p('website/images')
-    Screenshot.take('website/images')
-
-    puts "Now, tweak the release notes, commit the website, commit the project, tag #{SHORT_VERSION}, and push."
+    resize(*original_frame)
+    script('tell application "System Preferences" to quit')
   end
 
   private
 
-  def disk_image
-    self.class.disk_image
+  def current_frame
+    require 'osx/cocoa'
+    frame = OSX::NSScreen.mainScreen.frame
+    [frame.width.to_i, frame.height.to_i]
   end
 
-  def disk_image_url
-    "https://github.com/downloads/matthewtodd/heads_up/#{disk_image}"
+  def resize(width, height)
+    `utilities/cscreen.exe -x #{width} -y #{height}`
   end
 
-  def download_latest
-    "website/_includes/download.html"
-  end
-
-  class Screenshot
-    def self.take(path)
-      new.take(path)
-    end
-
-    def take(path)
-      original_frame = current_frame
-
-      script('tell application "System Preferences" to quit')
-      script('tell application "Finder" to open home')
-      script('tell application "Finder" to set visible of every process whose name is not "Finder" to false')
-      resize(1024, 768)
-      script('tell application "System Preferences" to activate')
-      script('tell application "System Preferences" to set current pane to pane "org.matthewtodd.HeadsUp.preferences"')
-      script('tell application "Finder" to set visible of every process whose name is not "System Preferences" to false')
-
-      `screencapture -m -tjpg #{path}/screenshot.jpg`
-      `convert -resize 300x #{path}/screenshot.jpg #{path}/screenshot-small.jpg`
-
-      resize(*original_frame)
-      script('tell application "System Preferences" to quit')
-    end
-
-    private
-
-    def current_frame
-      require 'osx/cocoa'
-      frame = OSX::NSScreen.mainScreen.frame
-      [frame.width.to_i, frame.height.to_i]
-    end
-
-    def resize(width, height)
-      `utilities/cscreen.exe -x #{width} -y #{height}`
-    end
-
-    def script(string)
-      `osascript -e '#{string}'`
-    end
+  def script(string)
+    `osascript -e '#{string}'`
   end
 end
 
@@ -168,7 +129,9 @@ desc 'Release HeadsUp.dmg.'
 task :release => 'release:safeguard' do
   Rake::Task['package'].invoke
   Rake::Task['release:upload'].invoke
-  HeadsUp.create_release
+  Rake::Task['release:announce'].invoke
+  Rake::Task['release:shoot'].invoke
+  puts "Now, tweak the release notes, commit the website, commit the project, tag #{Project.marketing_version} and push."
 end
 
 namespace :release do
@@ -183,11 +146,21 @@ namespace :release do
       :token => `git config github.token`.chomp
     ).upload(
       :repos => 'heads_up',
-      :file => HeadsUp.disk_image
+      :file => Project.disk_image_path
     )
   end
 
-  task :announcement do
+  task :publish do
+    path = 'website/_includes/download.html'
+
+    FileUtils.mkdir_p(File.dirname(path))
+
+    File.open(path, 'w') do |file|
+      file.puts %Q{<a href="#{Project.disk_image_path}" class="download"><img src="/heads_up/images/dmg.png" class="icon" />#{Project.disk_image_path}</a>}
+    end
+  end
+
+  task :announce do
     path = "website/_posts/#{Date.today.strftime('%Y-%m-%d')}-version-#{Project.marketing_version}.textile"
 
     FileUtils.mkdir_p(File.dirname(path))
@@ -196,7 +169,7 @@ namespace :release do
       file.puts '---'
       file.puts "title: HeadsUp #{Project.marketing_version}"
       file.puts "layout: default"
-      file.puts "dmg: https://github.com/downloads/matthewtodd/heads_up/#{Project.disk_image_path}"
+      file.puts "dmg: #{Project.disk_image_url}"
       file.puts "dmg_name: #{Project.disk_image_path}"
       file.puts "version: #{Project.version}"
       file.puts "short_version: #{Project.marketing_version}"
@@ -209,6 +182,10 @@ namespace :release do
       file.puts
       Git.commits.each { |commit| file.puts "* #{commit}" }
     end
+  end
+
+  task :shoot do
+    Screenshot.take('website/images')
   end
 end
 

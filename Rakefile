@@ -144,12 +144,12 @@ end
 
 desc 'Build HeadsUp.app'
 task :build do
-  sh 'xcodebuild -configuration Release build'
+  sh 'xcodebuild build'
 end
 
 desc 'Remove generated artifacts.'
 task :clean do
-  sh 'xcodebuild -configuration Release clean'
+  sh 'xcodebuild clean'
   sh 'rm -rf *.dmg public'
 end
 

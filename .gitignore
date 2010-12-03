@@ -1,5 +1,5 @@
-public
 *.dmg
 *.mode1v3
 *.pbxuser
 build
+public

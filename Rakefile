@@ -168,23 +168,14 @@ task :release => :package do
   HeadsUp.create_release
 end
 
-namespace :website do
-  desc 'Build the website.'
-  task :build do
-    sh 'jekyll website public/heads_up'
+desc 'See how the GitHub Pages will look.'
+task :website do
+  fork do
+    sleep 2
+    exec 'open', 'http://localhost:3000/heads_up/'
   end
 
-  desc 'Delete generated website files.'
-  task :clean do
-    sh 'rm -rf public'
-  end
-
-  desc 'Serve the website.'
-  task :serve => :build do
-    require 'webrick'
-    server = WEBrick::HTTPServer.new(:Port => 3000, :DocumentRoot => 'public')
-    thread = Thread.new { server.start }
-    trap('INT') { server.shutdown }
-    thread.join
+  Dir.mktmpdir do |path|
+    exec 'bundle', 'exec', 'jekyll', 'website', path, '--auto', '--base-url', '/heads_up', '--server', '3000'
   end
 end

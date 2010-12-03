@@ -1,5 +1,6 @@
 *.dmg
 *.mode1v3
 *.pbxuser
+.bundle
 build
 public

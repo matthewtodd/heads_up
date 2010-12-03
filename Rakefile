@@ -82,9 +82,11 @@ class HeadsUp
     "website/_includes/download.html"
   end
 
-  # TODO is there a way to get this value without first building the app?
   def minimum_system_version
-    OSX::NSBundle.bundleWithPath(File.expand_path('build/Release/HeadsUp.app')).objectForInfoDictionaryKey('LSMinimumSystemVersion')
+    settings = `grep MACOSX_DEPLOYMENT_TARGET HeadsUp.xcodeproj/project.pbxproj`
+    versions = settings.scan(/[.0-9]+/).sort.uniq
+    abort("Multiple versions specified:\n#{settings}") if versions.size > 1
+    versions.first
   end
 
   def private_key

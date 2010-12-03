@@ -41,8 +41,12 @@ end
 
 class Project
   class << self
+    def artifact
+      "build/Release/#{name}.app"
+    end
+
     def disk_image_path
-      "HeadsUp-#{marketing_version}.dmg"
+      "#{name}-#{marketing_version}.dmg"
     end
 
     def disk_image_url
@@ -54,10 +58,15 @@ class Project
     end
 
     def minimum_system_version
-      settings = `grep MACOSX_DEPLOYMENT_TARGET HeadsUp.xcodeproj/project.pbxproj`
+      settings = `grep MACOSX_DEPLOYMENT_TARGET #{name}.xcodeproj/project.pbxproj`
       versions = settings.scan(/[.0-9]+/).sort.uniq
       abort("Multiple versions specified:\n#{settings}") if versions.size > 1
       versions.first
+    end
+
+    # TODO read name from XCode config?
+    def name
+      'HeadsUp'
     end
 
     def version
@@ -106,21 +115,15 @@ class Screenshot
   end
 end
 
-desc 'Build HeadsUp.app'
-task :build do
+file Project.artifact do
   sh 'xcodebuild'
 end
 
-desc 'Remove generated artifacts.'
-task :clean do
-  sh 'xcodebuild clean'
-end
-
-desc 'Package HeadsUp.dmg.'
-task :package => [:clean, :build] do
+file Project.disk_image_path => Project.artifact do |task|
   Dir.mktmpdir do |path|
-    FileUtils.cp_r 'build/Release/HeadsUp.app', path
-    sh "hdiutil create -volname #{HeadsUp.volume_name} -srcfolder #{path} #{HeadsUp.disk_image}"
+    FileUtils.rm_r task.name, :force => true
+    FileUtils.cp_r task.prerequisites, path
+    sh "hdiutil create -volname #{Project.name} -srcfolder #{path} #{task.name}"
   end
 end
 

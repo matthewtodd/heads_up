@@ -1,37 +1,6 @@
 require 'rake/clean'
 require 'erb'
 
-rule '.o' => ['.m'] do |task|
-  sh "/usr/bin/gcc-4.0 -x objective-c -arch i386 -pipe -Os -fvisibility=default -c #{task.source} -o #{task.name}"
-end; CLEAN.include('**/*.o')
-
-def bundle(name, options)
-  link_flags     = options[:link_flags] || []
-  frameworks     = options[:link_frameworks] || []
-  prefix         = options[:prefix] || ''
-  source         = options[:source] || raise('source is required')
-  contents_dir   = File.expand_path("release/#{prefix}/#{name}/Contents")
-  frameworks_dir = "#{contents_dir}/Frameworks"
-  mac_os_dir     = "#{contents_dir}/MacOS"
-  resources_dir  = "#{contents_dir}/Resources"
-  executable     = "#{mac_os_dir}/#{name.pathmap('%n')}" # pathmap is from Rake; %n is basename without extension
-  object_file    = "#{source}/ext/main.o"
-
-  task name => object_file do
-    mkdir_p contents_dir
-    File.open("#{contents_dir}/Info.plist", 'w') { |file| file.write(ERB.new(File.read("#{source}/Info.plist")).result) }
-    rm_rf frameworks_dir # HACK: FileUtils.cp_r blows up instead of overwriting symlinks, even with :remove_destination => true
-    mkdir_p frameworks_dir
-    cp_r Dir.glob("#{source}/vendor/frameworks/*"), frameworks_dir
-    mkdir_p mac_os_dir
-    sh "/usr/bin/gcc-4.0 -o %s %s %s -arch i386 %s %s" % [executable, "-F#{frameworks_dir}", frameworks.map { |name| "-framework #{name}" }.join(' '), link_flags.join(' '), object_file]
-    mkdir_p resources_dir
-    cp_r Dir.glob("#{source}/lib/*"), resources_dir
-    cp_r Dir.glob("#{source}/resources/*"), resources_dir
-    cp_r Dir.glob("shared/resources/*"), resources_dir
-  end
-end; CLEAN.include('release')
-
 class HeadsUp
   SHORT_VERSION = '0.2.3'
   VERSION       = "#{SHORT_VERSION}.#{Time.now.utc.strftime('%Y%m%d%H%M%S')}.#{`git show-ref --hash=8 HEAD`.chomp}"
@@ -188,17 +157,19 @@ end
 
 task :default => :open
 
-desc 'Build HeadsUp.prefPane'
-task :build => ['HeadsUp.prefPane', 'HeadsUp.app']
+desc 'Build HeadsUp.app'
+task :build do
+  sh 'xcodebuild -configuration Release build'
+end
 
-desc 'Edit the HeadsUp Preference Pane NIB.'
+desc 'Edit the HeadsUp XIB.'
 task :edit do
-  sh 'open preference_pane/resources/English.lproj/HeadsUpPreferencePane.nib'
+  sh 'open English.lproj/MainMenu.xib'
 end
 
 desc 'Open HeadsUp.prefPane.'
 task :open => :build do
-  sh 'open release/HeadsUp.prefPane'
+  sh 'open build/Release/HeadsUp.app'
 end
 
 desc 'Package HeadsUp.dmg.'
@@ -214,9 +185,6 @@ end
 task :check_release do
   HeadsUp.check_release
 end
-
-bundle 'HeadsUp.prefPane', :source => 'preference_pane', :link_frameworks => ['Cocoa', 'RubyCocoa', 'AppKit', 'PreferencePanes'], :link_flags => ['-bundle']
-bundle 'HeadsUp.app',      :source => 'application',     :link_frameworks => ['Cocoa', 'RubyCocoa'], :prefix => 'HeadsUp.prefPane/Contents/Resources'
 
 namespace :website do
   desc 'Build the website.'

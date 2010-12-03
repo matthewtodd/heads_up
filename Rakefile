@@ -1,4 +1,3 @@
-require 'rake/clean'
 require 'erb'
 require 'tempfile'
 
@@ -163,6 +162,12 @@ task :build do
   sh 'xcodebuild -configuration Release build'
 end
 
+desc 'Remove generated artifacts.'
+task :clean do
+  sh 'xcodebuild -configuration Release clean'
+  sh 'rm -rf *.dmg public'
+end
+
 desc 'Edit the HeadsUp XIB.'
 task :edit do
   sh 'open English.lproj/MainMenu.xib'
@@ -179,7 +184,7 @@ task :package => [:clean, :build] do
     FileUtils.cp_r 'build/Release/HeadsUp.app', path
     sh "hdiutil create -volname #{HeadsUp.volume_name} -srcfolder #{path} #{HeadsUp.disk_image}"
   end
-end; CLEAN.include('*.dmg')
+end
 
 desc 'Release HeadsUp.dmg.'
 task :release => [:check_release, :package] do
@@ -209,4 +214,4 @@ namespace :website do
     trap('INT') { server.shutdown }
     thread.join
   end
-end; CLEAN.include('public')
+end

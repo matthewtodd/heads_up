@@ -2,7 +2,7 @@ require 'rake/clean'
 require 'erb'
 
 class HeadsUp
-  SHORT_VERSION = '0.2.3'
+  SHORT_VERSION = `agvtool mvers -terse1`.strip
   VERSION       = "#{SHORT_VERSION}.#{Time.now.utc.strftime('%Y%m%d%H%M%S')}.#{`git show-ref --hash=8 HEAD`.chomp}"
 
   def self.check_release
@@ -23,7 +23,7 @@ class HeadsUp
 
   def check_release
     die("Current directory has uncommitted changes.") if unclean?
-    die("Version #{SHORT_VERSION} has already been released.\nUpdate HeadsUp::SHORT_VERSION in the Rakefile.") if tags.include?(SHORT_VERSION)
+    die("Version #{SHORT_VERSION} has already been released.\nUpdate CFBundleShortVersionString in HeadsUp-Info.plist.") if tags.include?(SHORT_VERSION)
   end
 
   def create_release

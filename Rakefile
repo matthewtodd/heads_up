@@ -3,8 +3,28 @@ require 'tempfile'
 
 Bundler.require
 
+class Git
+  class << self
+    def dirty?
+      `git status`.grep(/working directory clean/).empty?
+    end
+
+    def has_tag?(tag)
+      `git tag`.split("\n").include?(tag)
+    end
+  end
+end
+
+class Project
+  class << self
+    def marketing_version
+      `agvtool mvers -terse1`.strip
+    end
+  end
+end
+
 class HeadsUp
-  SHORT_VERSION = `agvtool mvers -terse1`.strip
+  SHORT_VERSION = Project.marketing_version
   VERSION       = `agvtool vers  -terse`.strip
 
   def self.create_release
@@ -20,7 +40,7 @@ class HeadsUp
   end
 
   def create_release
-    abort("Current directory has uncommitted changes.") if unclean?
+    abort("Current directory has uncommitted changes.") if Git.dirty?
     abort("Version #{SHORT_VERSION} has already been released.\nRun `agvtool new-marketing-version VERSION` to set a new version number.") if tags.include?(SHORT_VERSION)
 
     Net::GitHub::Upload.new(
@@ -108,10 +128,6 @@ class HeadsUp
     @tags ||= `git tag`.split(/\n/)
   end
 
-  def unclean?
-    `git status`.grep(/working directory clean/).empty?
-  end
-
   class Screenshot
     def self.take(path)
       new.take(path)
@@ -175,6 +191,13 @@ end
 desc 'Release HeadsUp.dmg.'
 task :release => :package do
   HeadsUp.create_release
+end
+
+namespace :release do
+  task :safeguard do
+    abort("Current directory has uncommitted changes.") if Git.dirty?
+    abort("Version #{Project.marketing_version} has already been released.\nRun `agvtool new-marketing-version VERSION` to set a new version number.") if Git.has_tag?(Project.marketing_version)
+  end
 end
 
 desc 'See how the GitHub Pages will look.'

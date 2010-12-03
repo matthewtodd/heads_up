@@ -155,8 +155,6 @@ class HeadsUp
   end
 end
 
-task :default => :open
-
 desc 'Build HeadsUp.app'
 task :build do
   sh 'xcodebuild -configuration Release build'
@@ -166,16 +164,6 @@ desc 'Remove generated artifacts.'
 task :clean do
   sh 'xcodebuild -configuration Release clean'
   sh 'rm -rf *.dmg public'
-end
-
-desc 'Edit the HeadsUp XIB.'
-task :edit do
-  sh 'open English.lproj/MainMenu.xib'
-end
-
-desc 'Open HeadsUp.prefPane.'
-task :open => :build do
-  sh 'open build/Release/HeadsUp.app'
 end
 
 desc 'Package HeadsUp.dmg.'

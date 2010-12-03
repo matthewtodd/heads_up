@@ -1,5 +1,6 @@
 require 'rake/clean'
 require 'erb'
+require 'tempfile'
 
 class HeadsUp
   SHORT_VERSION = `agvtool mvers -terse1`.strip
@@ -174,7 +175,10 @@ end
 
 desc 'Package HeadsUp.dmg.'
 task :package => [:clean, :build] do
-  sh "hdiutil create -volname #{HeadsUp.volume_name} -srcfolder release #{HeadsUp.disk_image}"
+  Dir.mktmpdir do |path|
+    FileUtils.cp_r 'build/Release/HeadsUp.app', path
+    sh "hdiutil create -volname #{HeadsUp.volume_name} -srcfolder #{path} #{HeadsUp.disk_image}"
+  end
 end; CLEAN.include('*.dmg')
 
 desc 'Release HeadsUp.dmg.'

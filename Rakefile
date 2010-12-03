@@ -144,7 +144,7 @@ end
 
 desc 'Build HeadsUp.app'
 task :build do
-  sh 'xcodebuild build'
+  sh 'xcodebuild'
 end
 
 desc 'Remove generated artifacts.'

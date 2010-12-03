@@ -127,21 +127,29 @@ file Project.disk_image_path => Project.artifact do |task|
   end
 end
 
-desc 'Release HeadsUp.dmg.'
-task :release => 'release:safeguard' do
-  Rake::Task['package'].invoke
-  Rake::Task['release:upload'].invoke
-  Rake::Task['release:announce'].invoke
-  Rake::Task['release:shoot'].invoke
-  puts "Now, tweak the release notes, commit the website, commit the project, tag #{Project.marketing_version} and push."
+desc 'Remove generated artifacts.'
+task :clean do
+  sh 'xcodebuild clean'
+  FileUtils.rm Dir['*.dmg']
+end
+
+desc "Build #{Project.disk_image_path}"
+task :default => Project.disk_image_path
+
+unless Git.dirty? || Git.has_tag?(Project.marketing_version)
+  desc "Release #{Project.name} #{Project.marketing_version}"
+  task :release do
+    Rake::Task['clean'].invoke
+    Rake::Task[Project.disk_image_path].invoke
+    Rake::Task['release:upload'].invoke
+    Rake::Task['release:publish'].invoke
+    Rake::Task['release:announce'].invoke
+    Rake::Task['release:shoot'].invoke
+    puts "Now, tweak the release notes, commit the website, commit the project, tag #{Project.marketing_version} and push."
+  end
 end
 
 namespace :release do
-  task :safeguard do
-    abort("Current directory has uncommitted changes.") if Git.dirty?
-    abort("Version #{Project.marketing_version} has already been released.\nRun `agvtool new-marketing-version VERSION` to set a new version number.") if Git.has_tag?(Project.marketing_version)
-  end
-
   task :upload do
     Net::GitHub::Upload.new(
       :login => `git config github.user`.chomp,

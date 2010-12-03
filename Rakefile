@@ -40,17 +40,6 @@ class HeadsUp
   end
 
   def create_release
-    abort("Current directory has uncommitted changes.") if Git.dirty?
-    abort("Version #{SHORT_VERSION} has already been released.\nRun `agvtool new-marketing-version VERSION` to set a new version number.") if tags.include?(SHORT_VERSION)
-
-    Net::GitHub::Upload.new(
-      :login => `git config github.user`.chomp,
-      :token => `git config github.token`.chomp
-    ).upload(
-      :repos => 'heads_up',
-      :file => disk_image
-    )
-
     FileUtils.mkdir_p(File.dirname(release_announcement))
 
     File.open(release_announcement, 'w') do |file|
@@ -189,7 +178,9 @@ task :package => [:clean, :build] do
 end
 
 desc 'Release HeadsUp.dmg.'
-task :release => :package do
+task :release => 'release:safeguard' do
+  Rake::Task['package'].invoke
+  Rake::Task['release:upload'].invoke
   HeadsUp.create_release
 end
 
@@ -197,6 +188,16 @@ namespace :release do
   task :safeguard do
     abort("Current directory has uncommitted changes.") if Git.dirty?
     abort("Version #{Project.marketing_version} has already been released.\nRun `agvtool new-marketing-version VERSION` to set a new version number.") if Git.has_tag?(Project.marketing_version)
+  end
+
+  task :upload do
+    Net::GitHub::Upload.new(
+      :login => `git config github.user`.chomp,
+      :token => `git config github.token`.chomp
+    ).upload(
+      :repos => 'heads_up',
+      :file => HeadsUp.disk_image
+    )
   end
 end
 

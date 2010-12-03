@@ -1,4 +1,5 @@
 require 'erb'
+require 'osx/cocoa'
 require 'tempfile'
 
 class HeadsUp
@@ -81,8 +82,9 @@ class HeadsUp
     "website/_includes/download.html"
   end
 
+  # TODO is there a way to get this value without first building the app?
   def minimum_system_version
-    '10.4.11'
+    OSX::NSBundle.bundleWithPath(File.expand_path('build/Release/HeadsUp.app')).objectForInfoDictionaryKey('LSMinimumSystemVersion')
   end
 
   def private_key
@@ -127,7 +129,6 @@ class HeadsUp
     private
 
     def current_frame
-      require 'osx/cocoa'
       frame = OSX::NSScreen.mainScreen.frame
       [frame.width.to_i, frame.height.to_i]
     end

@@ -1,4 +1,3 @@
-require 'erb'
 require 'osx/cocoa'
 require 'tempfile'
 

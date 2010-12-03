@@ -5,7 +5,7 @@ Bundler.require
 
 class HeadsUp
   SHORT_VERSION = `agvtool mvers -terse1`.strip
-  VERSION       = "#{SHORT_VERSION}.#{Time.now.utc.strftime('%Y%m%d%H%M%S')}.#{`git show-ref --hash=8 HEAD`.chomp}"
+  VERSION       = `agvtool vers  -terse`.strip
 
   def self.create_release
     new.create_release
@@ -21,7 +21,7 @@ class HeadsUp
 
   def create_release
     abort("Current directory has uncommitted changes.") if unclean?
-    abort("Version #{SHORT_VERSION} has already been released.\nUpdate CFBundleShortVersionString in HeadsUp-Info.plist.") if tags.include?(SHORT_VERSION)
+    abort("Version #{SHORT_VERSION} has already been released.\nRun `agvtool new-marketing-version VERSION` to set a new version number.") if tags.include?(SHORT_VERSION)
 
     Net::GitHub::Upload.new(
       :login => `git config github.user`.chomp,

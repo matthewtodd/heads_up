@@ -5,10 +5,6 @@ class HeadsUp
   SHORT_VERSION = `agvtool mvers -terse1`.strip
   VERSION       = "#{SHORT_VERSION}.#{Time.now.utc.strftime('%Y%m%d%H%M%S')}.#{`git show-ref --hash=8 HEAD`.chomp}"
 
-  def self.check_release
-    new.check_release
-  end
-
   def self.create_release
     new.create_release
   end
@@ -21,13 +17,9 @@ class HeadsUp
     'HeadsUp'
   end
 
-  def check_release
+  def create_release
     die("Current directory has uncommitted changes.") if unclean?
     die("Version #{SHORT_VERSION} has already been released.\nUpdate CFBundleShortVersionString in HeadsUp-Info.plist.") if tags.include?(SHORT_VERSION)
-  end
-
-  def create_release
-    self.check_release
 
     FileUtils.mkdir_p('website/releases')
     FileUtils.cp(disk_image, 'website/releases')
@@ -175,12 +167,8 @@ task :package => [:clean, :build] do
 end
 
 desc 'Release HeadsUp.dmg.'
-task :release => [:check_release, :package] do
+task :release => :package do
   HeadsUp.create_release
-end
-
-task :check_release do
-  HeadsUp.check_release
 end
 
 namespace :website do

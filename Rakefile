@@ -114,7 +114,6 @@ end
 desc 'Remove generated artifacts.'
 task :clean do
   sh 'xcodebuild clean'
-  sh 'rm -rf *.dmg public'
 end
 
 desc 'Package HeadsUp.dmg.'

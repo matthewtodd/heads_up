@@ -49,6 +49,7 @@ class Project
       "#{name}-#{marketing_version}.dmg"
     end
 
+    # TODO determine download url from somewhere?
     def disk_image_url
       "https://github.com/downloads/matthewtodd/heads_up/#{disk_image_path}"
     end
@@ -67,6 +68,11 @@ class Project
     # TODO read name from XCode config?
     def name
       'HeadsUp'
+    end
+
+    # TODO determine this unix_name automatically?
+    def unix_name
+      'heads_up'
     end
 
     def version
@@ -144,7 +150,7 @@ unless Git.dirty? || Git.has_tag?(Project.marketing_version)
     Rake::Task['release:upload'].invoke
     Rake::Task['release:publish'].invoke
     Rake::Task['release:announce'].invoke
-    Rake::Task['release:shoot'].invoke
+    Rake::Task['release:screenshot'].invoke
     puts "Now, tweak the release notes, commit the website, commit the project, tag #{Project.marketing_version} and push."
   end
 end
@@ -155,7 +161,7 @@ namespace :release do
       :login => `git config github.user`.chomp,
       :token => `git config github.token`.chomp
     ).upload(
-      :repos => 'heads_up',
+      :repos => Project.unix_name,
       :file => Project.disk_image_path
     )
   end
@@ -165,6 +171,7 @@ namespace :release do
 
     FileUtils.mkdir_p(File.dirname(path))
 
+    # TODO set site properties in a YAML file instead?
     File.open(path, 'w') do |file|
       file.puts %Q{<a href="#{Project.disk_image_path}" class="download"><img src="/heads_up/images/dmg.png" class="icon" />#{Project.disk_image_path}</a>}
     end
@@ -177,7 +184,7 @@ namespace :release do
 
     File.open(path, 'w') do |file|
       file.puts '---'
-      file.puts "title: HeadsUp #{Project.marketing_version}"
+      file.puts "title: #{Project.name} #{Project.marketing_version}"
       file.puts "layout: default"
       file.puts "dmg: #{Project.disk_image_url}"
       file.puts "dmg_name: #{Project.disk_image_path}"
@@ -203,10 +210,10 @@ desc 'See how the GitHub Pages will look.'
 task :website do
   fork do
     sleep 2
-    exec 'open', 'http://localhost:3000/heads_up/'
+    exec 'open', "http://localhost:3000/#{Project.unix_name}/"
   end
 
   Dir.mktmpdir do |path|
-    exec 'bundle', 'exec', 'jekyll', 'website', path, '--auto', '--base-url', '/heads_up', '--server', '3000'
+    exec 'bundle', 'exec', 'jekyll', 'website', path, '--auto', '--base-url', "/#{Project.unix_name}", '--server', '3000'
   end
 end

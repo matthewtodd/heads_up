@@ -89,37 +89,38 @@ class Screen
     end
   end
 
-  def initialize
-    frame = OSX::NSScreen.mainScreen.frame
-    @original_dimensions = [frame.width.to_i, frame.height.to_i]
+  def initialize(screen = OSX::CGMainDisplayID())
+    @screen = screen
+    @mode   = OSX::CGDisplayCopyDisplayMode(@screen)
   end
 
   def resize(width, height, &block)
-    set_mode(best_mode(width, height))
+    configure(best_mode(width, height))
     block.call
-    sleep 10
   ensure
-    set_mode(best_mode(*@original_dimensions))
+    configure(@mode)
   end
 
   private
 
   def best_mode(width, height)
-    OSX::CGDisplayBestModeForParameters(OSX::CGMainDisplayID(), 32, width, height, nil)
+    # TODO CGDisplayBestModeForParameters is deprecated in 10.6.
+    #
+    # Looks like we'll have to loop through CGDisplayCopyAllDisplayModes and
+    # call CGDisplayModeGetWidth and CGDisplayModeGetHeight to find a good
+    # match.  This may mean checking CGDisplayModeIsUsableForDesktopGUI or even
+    # figuring the color depth from CGDisplayModeCopyPixelEncoding.
+    #
+    OSX::CGDisplayBestModeForParameters(@screen, 32, width, height, nil)
   end
 
-  def current_dimensions
-    frame = OSX::NSScreen.mainScreen.frame
-    [frame.width.to_i, frame.height.to_i]
-  end
-
-  def set_mode(mode)
+  def configure(mode)
     result, config = OSX::CGBeginDisplayConfiguration()
     if result == OSX::KCGErrorSuccess
-      OSX::CGConfigureDisplayMode(config, OSX::CGMainDisplayID(), mode)
+      OSX::CGConfigureDisplayWithDisplayMode(config, @screen, mode, nil)
       OSX::CGCompleteDisplayConfiguration(config, OSX::KCGConfigureForSession)
     else
-      raise "Something went wrong: #{result}"
+      raise "I have no clue what just happened: #{result}"
     end
   end
 end

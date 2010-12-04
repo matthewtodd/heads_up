@@ -1,3 +1,9 @@
+= Features
+* sparkle updates -- how to keep prefpane users from upgrading to app?
+* preference to disable status item. (show help text like SizeUp.)
+* preference to start at login.
+
+== Tooling
 * when to bump development version? (use git describe?)
-* adjust sparkle strategy -- how to keep prefpane users from upgrading to app?
+* clean up ruby cocoa thread warnings from rake.
 * use a standard wallpaper when taking screenshots?

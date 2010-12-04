@@ -298,12 +298,16 @@ end
 
 desc 'See how the GitHub Pages will look.'
 task :website do
-  fork do
-    sleep 2
-    exec 'open', "http://localhost:3000/#{Project.unix_name}/"
+  pid = fork do
+    Dir.mktmpdir do |path|
+      exec 'jekyll', 'website', path, '--auto', '--base-url', "/#{Project.unix_name}", '--server', '3000'
+    end
   end
 
-  Dir.mktmpdir do |path|
-    exec 'bundle', 'exec', 'jekyll', 'website', path, '--auto', '--base-url', "/#{Project.unix_name}", '--server', '3000'
+  begin
+    sleep 2
+    sh 'open', '-Wn', "http://localhost:3000/#{Project.unix_name}/"
+  ensure
+    Process.kill('KILL', pid)
   end
 end

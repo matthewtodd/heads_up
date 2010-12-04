@@ -4,28 +4,6 @@ require 'tempfile'
 
 Bundler.require
 
-class Git
-  class << self
-    def commits
-      `git log --pretty=format:%s #{tags.last}..`.strip.split("\n")
-    end
-
-    def dirty?
-      `git status`.grep(/working directory clean/).empty?
-    end
-
-    def has_tag?(tag)
-      tags.include?(tag)
-    end
-
-    private
-
-    def tags
-      `git tag`.strip.split("\n")
-    end
-  end
-end
-
 class Crypto
   class << self
     def signature(path)
@@ -70,22 +48,42 @@ class FinderPreferences
   end
 end
 
+class Git
+  class << self
+    def commits
+      `git log --pretty=format:%s #{tags.last}..`.strip.split("\n")
+    end
+
+    def dirty?
+      `git status`.grep(/working directory clean/).empty?
+    end
+
+    def has_tag?(tag)
+      tags.include?(tag)
+    end
+
+    private
+
+    def tags
+      `git tag`.strip.split("\n")
+    end
+  end
+end
+
 class Project
   class << self
     def artifact
       "build/Release/#{name}.app"
     end
 
-    def demo(*options)
-      pid = fork do
-        exec "#{artifact}/Contents/MacOS/#{name}", *options
-      end
-
+    def demo(*options, &block)
+      pid = fork { exec "#{artifact}/Contents/MacOS/#{name}", *options }
       sleep 2
       Appscript.app(name).activate
       sleep 2
-
-      at_exit { Process.kill('KILL', pid) }
+      block.call
+    ensure
+      Process.kill('KILL', pid)
     end
 
     def disk_image_path
@@ -188,6 +186,26 @@ class SystemEvents
   end
 end
 
+class Website
+  class << self
+    def download_link_path
+      'website/_includes/download.html'
+    end
+
+    def release_announcement_path
+      "website/_posts/#{Date.today.strftime('%Y-%m-%d')}-version-#{Project.marketing_version}.textile"
+    end
+
+    def screenshot_path
+      'website/images/screenshot.jpg'
+    end
+
+    def small_screenshot_path
+      'website/images/screenshot-small.jpg'
+    end
+  end
+end
+
 file Project.artifact do
   sh 'xcodebuild'
 end
@@ -200,6 +218,52 @@ file Project.disk_image_path => Project.artifact do |task|
   end
 end
 
+directory File.dirname(Website.download_link_path)
+file Website.download_link_path => [File.dirname(Website.download_link_path), Project.disk_image_path] do |task|
+  # TODO set site properties in a YAML file instead?
+  File.open(task.name, 'w') do |file|
+    file.puts %Q{<a href="#{Project.disk_image_path}" class="download"><img src="/heads_up/images/dmg.png" class="icon" />#{Project.disk_image_path}</a>}
+  end
+end
+
+directory File.dirname(Website.release_announcement_path)
+file Website.release_announcement_path => [File.dirname(Website.release_announcement_path), Project.disk_image_path] do |task|
+  File.open(task.name, 'w') do |file|
+    file.puts '---'
+    file.puts "title: #{Project.name} #{Project.marketing_version}"
+    file.puts "layout: default"
+    file.puts "dmg: #{Project.disk_image_url}"
+    file.puts "dmg_name: #{Project.disk_image_path}"
+    file.puts "version: #{Project.version}"
+    file.puts "short_version: #{Project.marketing_version}"
+    file.puts "length: #{File.stat(Project.disk_image_path).size}"
+    file.puts "signature: #{Crypto.signature(Project.disk_image_path)}"
+    file.puts "minimum_system_version: #{Project.minimum_system_version}"
+    file.puts 'category: releases'
+    file.puts '---'
+    file.puts 'h3. Changelog'
+    file.puts
+    Git.commits.each { |commit| file.puts "* #{commit}" }
+  end
+end
+
+directory File.dirname(Website.screenshot_path)
+file Website.screenshot_path => [Project.artifact, File.dirname(Website.screenshot_path)] do |task|
+  SystemEvents.hide_others('Finder') do
+    Screen.resize(1024, 768) do
+      FinderPreferences.hide_desktop_items do
+        Project.demo('-bottom_left', 'echo "This is HeadsUp!"', '-bottom_right', 'cal') do
+          sh "screencapture -m -tjpg #{task.name}"
+        end
+      end
+    end
+  end
+end
+
+file Website.small_screenshot_path => Website.screenshot_path do |task|
+  sh "convert -resize 300x #{task.prerequisites} #{task.name}"
+end
+
 desc 'Remove generated artifacts.'
 task :clean do
   sh 'xcodebuild clean'
@@ -210,19 +274,20 @@ desc "Build #{Project.disk_image_path}"
 task :default => Project.disk_image_path
 
 unless Git.dirty? || Git.has_tag?(Project.marketing_version)
-  desc "Release #{Project.name} #{Project.marketing_version}"
-  task :release do
-    Rake::Task['clean'].invoke
-    Rake::Task[Project.disk_image_path].invoke
-    Rake::Task['release:upload'].invoke
-    Rake::Task['release:publish'].invoke
-    Rake::Task['release:announce'].invoke
-    puts "Now, tweak the release notes, commit the website, commit the project, tag #{Project.marketing_version} and push."
+  desc "Prepare to release #{Project.name} #{Project.marketing_version}"
+  task :prepare_release => [
+    :clean,
+    Project.disk_image_path,
+    Website.download_link_path,
+    Website.release_announcement_path,
+    Website.screenshot_path,
+    Website.small_screenshot_path
+  ] do
+    puts "Now, tweak the release notes, upload the disk image, commit the website, commit the project, tag #{Project.marketing_version} and push."
   end
-end
 
-namespace :release do
-  task :upload do
+  desc "Upload the disk image to GitHub."
+  task :upload => Project.disk_image_path do
     Net::GitHub::Upload.new(
       :login => `git config github.user`.chomp,
       :token => `git config github.token`.chomp
@@ -230,41 +295,6 @@ namespace :release do
       :repos => Project.unix_name,
       :file => Project.disk_image_path
     )
-  end
-
-  task :publish do
-    path = 'website/_includes/download.html'
-
-    FileUtils.mkdir_p(File.dirname(path))
-
-    # TODO set site properties in a YAML file instead?
-    File.open(path, 'w') do |file|
-      file.puts %Q{<a href="#{Project.disk_image_path}" class="download"><img src="/heads_up/images/dmg.png" class="icon" />#{Project.disk_image_path}</a>}
-    end
-  end
-
-  task :announce do
-    path = "website/_posts/#{Date.today.strftime('%Y-%m-%d')}-version-#{Project.marketing_version}.textile"
-
-    FileUtils.mkdir_p(File.dirname(path))
-
-    File.open(path, 'w') do |file|
-      file.puts '---'
-      file.puts "title: #{Project.name} #{Project.marketing_version}"
-      file.puts "layout: default"
-      file.puts "dmg: #{Project.disk_image_url}"
-      file.puts "dmg_name: #{Project.disk_image_path}"
-      file.puts "version: #{Project.version}"
-      file.puts "short_version: #{Project.marketing_version}"
-      file.puts "length: #{File.stat(Project.disk_image_path).size}"
-      file.puts "signature: #{Crypto.signature(Project.disk_image_path)}"
-      file.puts "minimum_system_version: #{Project.minimum_system_version}"
-      file.puts 'category: releases'
-      file.puts '---'
-      file.puts 'h3. Changelog'
-      file.puts
-      Git.commits.each { |commit| file.puts "* #{commit}" }
-    end
   end
 end
 
@@ -278,25 +308,4 @@ task :website do
   Dir.mktmpdir do |path|
     exec 'bundle', 'exec', 'jekyll', 'website', path, '--auto', '--base-url', "/#{Project.unix_name}", '--server', '3000'
   end
-end
-
-directory 'website/images'
-
-file 'website/images/screenshot.jpg' => [Project.artifact, 'website/images'] do |task|
-  SystemEvents.hide_others('Finder') do
-    Screen.resize(1024, 768) do
-      FinderPreferences.hide_desktop_items do
-        Project.demo(
-          '-bottom_left',  'echo "This is HeadsUp!"',
-          '-bottom_right', 'cal'
-        )
-
-        sh "screencapture -m -tjpg #{task.name}"
-      end
-    end
-  end
-end
-
-file 'website/images/screenshot-small.jpg' => 'website/images/screenshot.jpg' do |task|
-  sh "convert -resize 300x #{task.prerequisites} #{task.name}"
 end

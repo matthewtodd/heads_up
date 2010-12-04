@@ -188,8 +188,14 @@ end
 
 class Website
   class << self
-    def download_link_path
-      'website/_includes/download.html'
+    def configuration_path
+      'website/_config.yml'
+    end
+
+    def configure(options)
+      File.open(configuration_path, 'w') do |file|
+        file.write(configuration.merge(options).to_yaml)
+      end
     end
 
     def release_announcement_path
@@ -202,6 +208,12 @@ class Website
 
     def small_screenshot_path
       'website/images/screenshot-small.jpg'
+    end
+
+    private
+
+    def configuration
+      YAML.load_file(configuration_path)
     end
   end
 end
@@ -219,11 +231,11 @@ file Project.disk_image_path => Project.artifact do |task|
   end
 end
 
-file Website.download_link_path => Project.disk_image_path do |task|
-  # TODO set site properties in a YAML file instead?
-  File.open(task.name, 'w') do |file|
-    file.puts %Q{<a href="#{Project.disk_image_url}" class="download"><img src="/heads_up/images/dmg.png" class="icon" />#{Project.disk_image_path}</a>}
-  end
+file Website.configuration_path do
+  Website.configure(
+    'latest_disk_image_url'  => Project.disk_image_url,
+    'latest_disk_image_name' => Project.disk_image_path
+  )
 end
 
 file Website.release_announcement_path => Project.disk_image_path do |task|
@@ -276,7 +288,7 @@ unless Git.dirty? || Git.has_tag?(Project.marketing_version)
   task :prepare_release => [
     :clean,
     Project.disk_image_path,
-    Website.download_link_path,
+    Website.configuration_path,
     Website.release_announcement_path,
     Website.screenshot_path,
     Website.small_screenshot_path,

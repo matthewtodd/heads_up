@@ -3,6 +3,4 @@
 * can we get undo to work?
 * remove keyboard shortcuts from status menu
 * adjust sparkle strategy -- how to keep prefpane users from upgrading to app?
-
-* use Grancher to simplify gh-pages stuff? http://judofyr.github.com/grancher/
-* figure out a better way to handle base href in website (don't want to paste /heads_up everywhere.)
+* use a standard wallpaper when taking screenshots?

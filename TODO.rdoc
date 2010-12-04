@@ -1,6 +1,3 @@
 * when to bump development version? (use git describe?)
-* reintroduce items from MainMenu, so we can handle common keyboard shortcuts
-* can we get undo to work?
-* remove keyboard shortcuts from status menu
 * adjust sparkle strategy -- how to keep prefpane users from upgrading to app?
 * use a standard wallpaper when taking screenshots?

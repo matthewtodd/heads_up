@@ -214,6 +214,7 @@ file Project.disk_image_path => Project.artifact do |task|
   Dir.mktmpdir do |path|
     FileUtils.rm_r task.name, :force => true
     FileUtils.cp_r task.prerequisites, path
+    FileUtils.ln_s '/Applications', "#{path}/Applications"
     sh "hdiutil create -volname #{Project.name} -srcfolder #{path} #{task.name}"
   end
 end

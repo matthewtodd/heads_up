@@ -313,13 +313,13 @@ desc 'See how the GitHub Pages will look.'
 task :website do
   pid = fork do
     Dir.mktmpdir do |path|
-      exec 'jekyll', 'website', path, '--auto', '--base-url', "/#{Project.unix_name}", '--server', '3000'
+      exec 'jekyll', 'website', path, '--auto', '--server', '3000', '--url', 'http://localhost:3000'
     end
   end
 
   begin
     sleep 2
-    sh 'open', '-Wn', "http://localhost:3000/#{Project.unix_name}/"
+    sh 'open', '-Wn', "http://localhost:3000/"
   ensure
     Process.kill('KILL', pid)
   end

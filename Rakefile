@@ -47,7 +47,7 @@ class FinderPreferences
     desktop_shows_hard_disks
     desktop_shows_external_hard_disks
     desktop_shows_removable_media
-    desktop_shows_connected_server
+    desktop_shows_connected_servers
   )
 
   class << self
@@ -58,7 +58,6 @@ class FinderPreferences
 
   def initialize
     finder = app('Finder').Finder_preferences
-
     @preferences = KEYS.collect { |key| finder.send(key) }.
                      inject({}) { |hash, key| hash[key] = key.get; hash }
   end
@@ -75,6 +74,18 @@ class Project
   class << self
     def artifact
       "build/Release/#{name}.app"
+    end
+
+    def demo(*options)
+      pid = fork do
+        exec "#{artifact}/Contents/MacOS/#{name}", *options
+      end
+
+      sleep 2
+      Appscript.app(name).activate
+      sleep 2
+
+      at_exit { Process.kill('KILL', pid) }
     end
 
     def disk_image_path
@@ -151,45 +162,6 @@ class Screen
     else
       raise "I have no clue what just happened: #{result}"
     end
-  end
-end
-
-class Screenshot
-  def self.take(path)
-    new.take(path)
-  end
-
-  def take(path)
-    original_frame = current_frame
-
-    script('tell application "Finder" to open home')
-    script('tell application "Finder" to set visible of every process whose name is not "Finder" to false')
-    resize(1024, 768)
-    script('tell application "System Preferences" to activate')
-    script('tell application "System Preferences" to set current pane to pane "org.matthewtodd.HeadsUp.preferences"')
-    script('tell application "Finder" to set visible of every process whose name is not "System Preferences" to false')
-
-    `screencapture -m -tjpg #{path}/screenshot.jpg`
-    `convert -resize 300x #{path}/screenshot.jpg #{path}/screenshot-small.jpg`
-
-    resize(*original_frame)
-    script('tell application "System Preferences" to quit')
-  end
-
-  private
-
-  def current_frame
-    require 'osx/cocoa'
-    frame = OSX::NSScreen.mainScreen.frame
-    [frame.width.to_i, frame.height.to_i]
-  end
-
-  def resize(width, height)
-    `utilities/cscreen.exe -x #{width} -y #{height}`
-  end
-
-  def script(string)
-    `osascript -e '#{string}'`
   end
 end
 
@@ -308,19 +280,23 @@ task :website do
   end
 end
 
-task :screenshot do
+directory 'website/images'
+
+file 'website/images/screenshot.jpg' => [Project.artifact, 'website/images'] do |task|
   SystemEvents.hide_others('Finder') do
     Screen.resize(1024, 768) do
-      fork do
-        exec "#{Project.artifact}/Contents/MacOS/#{Project.name}",
+      FinderPreferences.hide_desktop_items do
+        Project.demo(
           '-bottom_left',  'echo "This is HeadsUp!"',
           '-bottom_right', 'cal'
-      end
+        )
 
-      FinderPreferences.hide_desktop_items do
-        Appscript.app(Project.name).activate
-        sleep 10
+        sh "screencapture -m -tjpg #{task.name}"
       end
     end
   end
+end
+
+file 'website/images/screenshot-small.jpg' => 'website/images/screenshot.jpg' do |task|
+  sh "convert -resize 300x #{task.prerequisites} #{task.name}"
 end

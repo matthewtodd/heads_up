@@ -1,4 +1,5 @@
 require 'bundler'
+require 'osx/cocoa'
 require 'tempfile'
 
 Bundler.require
@@ -81,6 +82,48 @@ class Project
   end
 end
 
+class Screen
+  class << self
+    def resize(width, height, &block)
+      new.resize(width, height, &block)
+    end
+  end
+
+  def initialize
+    frame = OSX::NSScreen.mainScreen.frame
+    @original_dimensions = [frame.width.to_i, frame.height.to_i]
+  end
+
+  def resize(width, height, &block)
+    set_mode(best_mode(width, height))
+    block.call
+    sleep 10
+  ensure
+    set_mode(best_mode(*@original_dimensions))
+  end
+
+  private
+
+  def best_mode(width, height)
+    OSX::CGDisplayBestModeForParameters(OSX::CGMainDisplayID(), 32, width, height, nil)
+  end
+
+  def current_dimensions
+    frame = OSX::NSScreen.mainScreen.frame
+    [frame.width.to_i, frame.height.to_i]
+  end
+
+  def set_mode(mode)
+    result, config = OSX::CGBeginDisplayConfiguration()
+    if result == OSX::KCGErrorSuccess
+      OSX::CGConfigureDisplayMode(config, OSX::CGMainDisplayID(), mode)
+      OSX::CGCompleteDisplayConfiguration(config, OSX::KCGConfigureForSession)
+    else
+      raise "Something went wrong: #{result}"
+    end
+  end
+end
+
 class Screenshot
   def self.take(path)
     new.take(path)
@@ -89,7 +132,6 @@ class Screenshot
   def take(path)
     original_frame = current_frame
 
-    script('tell application "System Preferences" to quit')
     script('tell application "Finder" to open home')
     script('tell application "Finder" to set visible of every process whose name is not "Finder" to false')
     resize(1024, 768)
@@ -150,7 +192,6 @@ unless Git.dirty? || Git.has_tag?(Project.marketing_version)
     Rake::Task['release:upload'].invoke
     Rake::Task['release:publish'].invoke
     Rake::Task['release:announce'].invoke
-    Rake::Task['release:screenshot'].invoke
     puts "Now, tweak the release notes, commit the website, commit the project, tag #{Project.marketing_version} and push."
   end
 end
@@ -200,10 +241,6 @@ namespace :release do
       Git.commits.each { |commit| file.puts "* #{commit}" }
     end
   end
-
-  task :shoot do
-    Screenshot.take('website/images')
-  end
 end
 
 desc 'See how the GitHub Pages will look.'
@@ -215,5 +252,17 @@ task :website do
 
   Dir.mktmpdir do |path|
     exec 'bundle', 'exec', 'jekyll', 'website', path, '--auto', '--base-url', "/#{Project.unix_name}", '--server', '3000'
+  end
+end
+
+task :screenshot do
+  Appscript.app('Finder').activate
+  Appscript.app('System Events').processes[Appscript.its.name.ne('Finder')].visible.set(false)
+
+  Screen.resize(1024, 768) do
+    fork do
+      exec"#{Project.artifact}/Contents/MacOS/#{Project.name}", '-bottom_left', 'echo "This is HeadsUp!"', '-bottom_right', 'cal'
+    end
+    `osascript -e 'tell application "#{Project.name}" to activate'`
   end
 end

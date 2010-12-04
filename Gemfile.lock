@@ -25,6 +25,7 @@ GEM
       json
       nokogiri (>= 1.4.0)
     nokogiri (1.4.4)
+    rb-appscript (0.5.3)
     syntax (1.0.0)
 
 PLATFORMS
@@ -34,3 +35,4 @@ DEPENDENCIES
   RedCloth
   jekyll
   net-github-upload
+  rb-appscript

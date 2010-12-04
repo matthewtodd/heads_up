@@ -40,6 +40,37 @@ class Crypto
   end
 end
 
+class FinderPreferences
+  include Appscript
+
+  KEYS = %w(
+    desktop_shows_hard_disks
+    desktop_shows_external_hard_disks
+    desktop_shows_removable_media
+    desktop_shows_connected_server
+  )
+
+  class << self
+    def hide_desktop_items(&block)
+      new.hide_desktop_items(&block)
+    end
+  end
+
+  def initialize
+    finder = app('Finder').Finder_preferences
+
+    @preferences = KEYS.collect { |key| finder.send(key) }.
+                     inject({}) { |hash, key| hash[key] = key.get; hash }
+  end
+
+  def hide_desktop_items(&block)
+    @preferences.each { |preference, initial_value| preference.set(false) }
+    block.call
+  ensure
+    @preferences.each { |preference, initial_value| preference.set(initial_value) }
+  end
+end
+
 class Project
   class << self
     def artifact
@@ -104,14 +135,12 @@ class Screen
   private
 
   def best_mode(width, height)
-    # TODO CGDisplayBestModeForParameters is deprecated in 10.6.
-    #
-    # Looks like we'll have to loop through CGDisplayCopyAllDisplayModes and
-    # call CGDisplayModeGetWidth and CGDisplayModeGetHeight to find a good
-    # match.  This may mean checking CGDisplayModeIsUsableForDesktopGUI or even
-    # figuring the color depth from CGDisplayModeCopyPixelEncoding.
-    #
-    OSX::CGDisplayBestModeForParameters(@screen, 32, width, height, nil)
+    # TODO Try to figure out color depth from CGDisplayModeCopyPixelEncoding?
+    OSX::CGDisplayCopyAllDisplayModes(@screen, nil).detect do |mode|
+      OSX::CGDisplayModeGetWidth(mode) == width &&
+      OSX::CGDisplayModeGetHeight(mode) == height &&
+      OSX::CGDisplayModeIsUsableForDesktopGUI(mode)
+    end
   end
 
   def configure(mode)
@@ -161,6 +190,29 @@ class Screenshot
 
   def script(string)
     `osascript -e '#{string}'`
+  end
+end
+
+class SystemEvents
+  include Appscript
+
+  class << self
+    def hide_others(name, &block)
+      new(name).hide_others(&block)
+    end
+  end
+
+  def initialize(name)
+    @target = app(name)
+    @others = app('System Events').processes[its.name.ne(name).and(its.visible.eq(true))].get
+  end
+
+  def hide_others(&block)
+    @target.activate
+    @others.each { |p| p.visible.set(false) }
+    block.call
+  ensure
+    @others.each { |p| p.visible.set(true) }
   end
 end
 
@@ -257,13 +309,18 @@ task :website do
 end
 
 task :screenshot do
-  Appscript.app('Finder').activate
-  Appscript.app('System Events').processes[Appscript.its.name.ne('Finder')].visible.set(false)
+  SystemEvents.hide_others('Finder') do
+    Screen.resize(1024, 768) do
+      fork do
+        exec "#{Project.artifact}/Contents/MacOS/#{Project.name}",
+          '-bottom_left',  'echo "This is HeadsUp!"',
+          '-bottom_right', 'cal'
+      end
 
-  Screen.resize(1024, 768) do
-    fork do
-      exec"#{Project.artifact}/Contents/MacOS/#{Project.name}", '-bottom_left', 'echo "This is HeadsUp!"', '-bottom_right', 'cal'
+      FinderPreferences.hide_desktop_items do
+        Appscript.app(Project.name).activate
+        sleep 10
+      end
     end
-    `osascript -e 'tell application "#{Project.name}" to activate'`
   end
 end

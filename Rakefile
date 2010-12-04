@@ -218,16 +218,14 @@ file Project.disk_image_path => Project.artifact do |task|
   end
 end
 
-directory File.dirname(Website.download_link_path)
-file Website.download_link_path => [File.dirname(Website.download_link_path), Project.disk_image_path] do |task|
+file Website.download_link_path => Project.disk_image_path do |task|
   # TODO set site properties in a YAML file instead?
   File.open(task.name, 'w') do |file|
-    file.puts %Q{<a href="#{Project.disk_image_path}" class="download"><img src="/heads_up/images/dmg.png" class="icon" />#{Project.disk_image_path}</a>}
+    file.puts %Q{<a href="#{Project.disk_image_url}" class="download"><img src="/heads_up/images/dmg.png" class="icon" />#{Project.disk_image_path}</a>}
   end
 end
 
-directory File.dirname(Website.release_announcement_path)
-file Website.release_announcement_path => [File.dirname(Website.release_announcement_path), Project.disk_image_path] do |task|
+file Website.release_announcement_path => Project.disk_image_path do |task|
   File.open(task.name, 'w') do |file|
     file.puts '---'
     file.puts "title: #{Project.name} #{Project.marketing_version}"
@@ -247,8 +245,7 @@ file Website.release_announcement_path => [File.dirname(Website.release_announce
   end
 end
 
-directory File.dirname(Website.screenshot_path)
-file Website.screenshot_path => [Project.artifact, File.dirname(Website.screenshot_path)] do |task|
+file Website.screenshot_path => Project.artifact do |task|
   SystemEvents.hide_others('Finder') do
     Screen.resize(1024, 768) do
       FinderPreferences.hide_desktop_items do
@@ -281,7 +278,8 @@ unless Git.dirty? || Git.has_tag?(Project.marketing_version)
     Website.download_link_path,
     Website.release_announcement_path,
     Website.screenshot_path,
-    Website.small_screenshot_path
+    Website.small_screenshot_path,
+    :website
   ] do
     puts "Now, tweak the release notes, upload the disk image, commit the website, commit the project, tag #{Project.marketing_version} and push."
   end

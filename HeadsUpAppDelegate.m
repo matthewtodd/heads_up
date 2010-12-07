@@ -30,8 +30,11 @@
 	leftCommand  = [[Command alloc] initWithKey:@"bottom_left"];
 	rightCommand = [[Command alloc] initWithKey:@"bottom_right"];
 
-	leftWindow  = [[Window alloc] initWithPosition:[Position bottomLeft] observing:leftCommand];
-	rightWindow = [[Window alloc] initWithPosition:[Position bottomRight] observing:rightCommand];
+	leftWindow  = [[Window alloc] initWithPosition:[Position bottomLeft]];
+	[[leftWindow contentView] bind:@"string" toObject:leftCommand withKeyPath:@"output" options:nil];
+
+	rightWindow = [[Window alloc] initWithPosition:[Position bottomRight]];
+	[[rightWindow contentView] bind:@"string" toObject:rightCommand withKeyPath:@"output" options:nil];
 }
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification {

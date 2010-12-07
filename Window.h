@@ -4,7 +4,7 @@
 	Position *position;
 }
 
-- (id)initWithPosition:(Position *)position observing:(Command *)command;
+- (id)initWithPosition:(Position *)position;
 - (void)reposition;
 
 @end

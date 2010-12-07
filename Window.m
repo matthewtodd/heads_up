@@ -5,7 +5,7 @@
 
 @implementation Window
 
-- (id)initWithPosition:(Position *)thePosition observing:(Command *)theCommand {
+- (id)initWithPosition:(Position *)thePosition {
 	self = [super initWithContentRect:[thePosition windowFrame] styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:FALSE];
 
 	if (self) {
@@ -18,7 +18,6 @@
 		[self setOpaque:FALSE];
 
 		[[self contentView] addObserver:self forKeyPath:@"string" options:0 context:nil];
-		[[self contentView] bind:@"string" toObject:theCommand withKeyPath:@"output" options:nil];
 
 		[self orderFront:self];
 	}

@@ -1,30 +1,13 @@
 #import "Command.h"
+#import "ContentSizedTextView.h"
 #import "Position.h"
 #import "Window.h"
 
 @implementation Window
 
 - (void)buildViewObserving:(Command *)theCommand {
-	NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-	[style setDefaultTabInterval:28.0];
-	[style setTabStops:[NSArray array]];
+	ContentSizedTextView *view = [[ContentSizedTextView alloc] initWithFrame:NSMakeRect(0, 0, 10000, 10000)];
 
-	NSTextView *view = [[NSTextView alloc] initWithFrame:NSMakeRect(0, 0, 10000, 10000)];
-	
-	[view setAllowsUndo:FALSE];
-	[view setBackgroundColor: [NSColor clearColor]];
-	[view setDefaultParagraphStyle:style];
-	[view setEditable:FALSE];
-	[view setFieldEditor:FALSE];
-	[view setFont:[NSFont fontWithName:@"Menlo" size:12.0]];
-	[view setHorizontallyResizable:FALSE];
-	[view setSelectable:FALSE];
-	[view setTextColor:[[NSColor whiteColor] colorWithAlphaComponent:0.5]];
-	[view setVerticallyResizable:FALSE];
-	
-	[[view textContainer] setHeightTracksTextView:FALSE];
-	[[view textContainer] setWidthTracksTextView:FALSE];
-	
 	[self setContentView:view];
 	
 	[view addObserver:self forKeyPath:@"string" options:0 context:nil];

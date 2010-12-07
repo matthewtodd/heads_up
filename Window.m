@@ -32,9 +32,7 @@
 }
 
 - (NSSize)size {
-	// Trigger a layout, otherwise we just get 0,0 for dimensions!?
-	[[[self contentView] layoutManager] glyphRangeForTextContainer:[[self contentView] textContainer]];
-	return [[[self contentView] layoutManager] usedRectForTextContainer:[[self contentView] textContainer]].size;
+	return [[self contentView] textSize];
 }
 
 - (void)reposition {

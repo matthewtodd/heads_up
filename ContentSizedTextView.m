@@ -28,4 +28,10 @@
 	return self;
 }
 
+- (NSSize)textSize {
+	// Trigger a layout, otherwise we just get 0,0 for dimensions!?
+	[[self layoutManager] glyphRangeForTextContainer:[self textContainer]];
+	return [[self layoutManager] usedRectForTextContainer:[self textContainer]].size;	
+}
+
 @end

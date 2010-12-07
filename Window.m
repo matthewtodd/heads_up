@@ -31,12 +31,8 @@
 	}
 }
 
-- (NSSize)size {
-	return [[self contentView] textSize];
-}
-
 - (void)reposition {
-	[self setFrame:[position windowFrameWithSize:[self size]] display:TRUE];
+	[self setFrame:[position windowFrameWithSize:[[self contentView] textSize]] display:TRUE];
 }
 
 @end

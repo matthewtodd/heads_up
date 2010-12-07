@@ -5,15 +5,6 @@
 
 @implementation Window
 
-- (void)buildViewObserving:(Command *)theCommand {
-	ContentSizedTextView *view = [[ContentSizedTextView alloc] initWithFrame:NSMakeRect(0, 0, 10000, 10000)];
-
-	[self setContentView:view];
-	
-	[view addObserver:self forKeyPath:@"string" options:0 context:nil];
-	[view bind:@"string" toObject:theCommand withKeyPath:@"output" options:nil];
-}
-
 - (id)initWithPosition:(Position *)thePosition observing:(Command *)theCommand {
 	self = [super initWithContentRect:[thePosition windowFrame] styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:FALSE];
 
@@ -21,10 +12,13 @@
 		position = thePosition;
 
 		[self setBackgroundColor: [NSColor clearColor]];
+		[self setContentView:[[ContentSizedTextView alloc] initWithFrame:NSMakeRect(0, 0, 10000, 10000)]];
 		[self setIgnoresMouseEvents:TRUE];
 		[self setLevel:CGWindowLevelForKey(kCGDesktopWindowLevelKey)];
 		[self setOpaque:FALSE];
-		[self buildViewObserving:theCommand];
+
+		[[self contentView] addObserver:self forKeyPath:@"string" options:0 context:nil];
+		[[self contentView] bind:@"string" toObject:theCommand withKeyPath:@"output" options:nil];
 
 		[self orderFront:self];
 	}

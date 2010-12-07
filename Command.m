@@ -9,6 +9,7 @@
 
 	if (self) {
 		key = theKey;
+		output = @"Launching...";
 		timer = [NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(trigger:) userInfo:nil repeats:TRUE];
 
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(trigger:) name:NSUserDefaultsDidChangeNotification object:nil];

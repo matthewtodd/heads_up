@@ -12,7 +12,6 @@
 	
 	[view addObserver:self forKeyPath:@"string" options:0 context:nil];
 	[view bind:@"string" toObject:theCommand withKeyPath:@"output" options:nil];
-	[view setString:@"Launching..."];
 }
 
 - (id)initWithPosition:(Position *)thePosition observing:(Command *)theCommand {

@@ -58,10 +58,6 @@ class Git
       `git describe --tags`.strip
     end
 
-    def dirty?
-      `git status`.grep(/working directory clean/).empty?
-    end
-
     def has_tag?(tag)
       tags.include?(tag)
     end
@@ -288,7 +284,7 @@ end
 desc "Build #{Project.disk_image_path}"
 task :default => Project.disk_image_path
 
-unless Git.dirty? || Git.has_tag?(Project.marketing_version)
+unless Git.has_tag?(Project.marketing_version)
   desc "Prepare to release #{Project.name} #{Project.marketing_version}"
   task :prepare_release => [
     :clean,

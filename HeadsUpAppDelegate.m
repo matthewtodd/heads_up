@@ -46,6 +46,10 @@
 	[rightWindow reposition];
 }
 
+- (NSString *)marketingVersion {
+	return [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+}
+
 - (IBAction)showPreferences:(id)sender {
 	[[NSApplication sharedApplication] activateIgnoringOtherApps:TRUE];
 	[preferences makeKeyAndOrderFront:sender];

@@ -11,6 +11,7 @@
 	NSWindow *preferences;
 }
 
+@property (readonly) NSString *marketingVersion;
 @property (assign) IBOutlet NSMenu *menu;
 @property (assign) IBOutlet NSWindow *preferences;
 

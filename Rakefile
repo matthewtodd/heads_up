@@ -54,6 +54,10 @@ class Git
       `git log --pretty=format:%s #{tags.last}..`.strip.split("\n")
     end
 
+    def describe
+      `git describe --tags`.strip
+    end
+
     def dirty?
       `git status`.grep(/working directory clean/).empty?
     end
@@ -308,6 +312,17 @@ unless Git.dirty? || Git.has_tag?(Project.marketing_version)
       :file => Project.disk_image_path
     )
   end
+end
+
+desc 'Show current version numbers.'
+task :versions do
+  puts
+  puts "     git describe: #{Git.describe}"
+  puts "marketing version: #{Project.marketing_version}"
+  puts "          version: #{Project.version}"
+  puts
+  puts "To set marketing version, use `agvtool new-marketing-version VERSION`."
+  puts "To set version, use `agvtool new-version VERSION` or `agvtool bump`."
 end
 
 desc 'See how the GitHub Pages will look.'

@@ -12,12 +12,27 @@
 		34056958129A79B000B065FE /* Window.m in Sources */ = {isa = PBXBuildFile; fileRef = 34056957129A79B000B065FE /* Window.m */; };
 		34062601129D0A1600B43A27 /* Command.m in Sources */ = {isa = PBXBuildFile; fileRef = 34062600129D0A1600B43A27 /* Command.m */; };
 		341063B8129D333A00647A00 /* HeadsUp.icns in Resources */ = {isa = PBXBuildFile; fileRef = 341063B7129D333A00647A00 /* HeadsUp.icns */; };
+		3413A2D112AF9CE9004EC835 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3413A2D012AF9CE9004EC835 /* Sparkle.framework */; };
+		3413A2F312AF9D4A004EC835 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3413A2D012AF9CE9004EC835 /* Sparkle.framework */; };
 		342826F0129E65DF00D920AD /* Position.m in Sources */ = {isa = PBXBuildFile; fileRef = 342826EF129E65DF00D920AD /* Position.m */; };
 		3435C15312AE50A300287AC9 /* ContentSizedTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3435C15212AE50A300287AC9 /* ContentSizedTextView.m */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		3413A2F012AF9D1B004EC835 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				3413A2F312AF9D4A004EC835 /* Sparkle.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -35,6 +50,7 @@
 		34056A04129A96BD00B065FE /* Command.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Command.h; sourceTree = "<group>"; };
 		34062600129D0A1600B43A27 /* Command.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Command.m; sourceTree = "<group>"; };
 		341063B7129D333A00647A00 /* HeadsUp.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = HeadsUp.icns; sourceTree = "<group>"; };
+		3413A2D012AF9CE9004EC835 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 		342826EE129E65DF00D920AD /* Position.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Position.h; sourceTree = "<group>"; };
 		342826EF129E65DF00D920AD /* Position.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Position.m; sourceTree = "<group>"; };
 		3435C15112AE50A300287AC9 /* ContentSizedTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentSizedTextView.h; sourceTree = "<group>"; };
@@ -49,6 +65,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
+				3413A2D112AF9CE9004EC835 /* Sparkle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -75,6 +92,7 @@
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3413A2D012AF9CE9004EC835 /* Sparkle.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
 			);
 			name = "Linked Frameworks";
@@ -149,6 +167,7 @@
 				8D1107290486CEB800E47090 /* Resources */,
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
+				3413A2F012AF9D1B004EC835 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -238,6 +257,10 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
@@ -255,6 +278,10 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = HeadsUp_Prefix.pch;

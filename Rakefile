@@ -231,7 +231,7 @@ file Project.disk_image_path => Project.artifact do |task|
   end
 end
 
-file Website.configuration_path do
+file Website.configuration_path => Project.artifact do
   Website.configure(
     'latest_disk_image_url'  => Project.disk_image_url,
     'latest_disk_image_name' => Project.disk_image_path

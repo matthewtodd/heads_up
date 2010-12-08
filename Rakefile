@@ -83,7 +83,7 @@ class Project
     def demo(*options, &block)
       pid = fork { exec "#{artifact}/Contents/MacOS/#{name}", *options }
       sleep 2
-      Appscript.app(name).activate
+      fork { exec 'open', artifact }
       sleep 2
       block.call
     ensure

@@ -267,7 +267,7 @@ file Website.screenshot_path => Project.artifact do |task|
   SystemEvents.hide_others('Finder') do
     Screen.resize(1024, 768) do
       FinderPreferences.hide_desktop_items do
-        Project.demo('-bottom_left', 'echo "Welcome to HeadsUp!"', '-bottom_right', 'cal') do
+        Project.demo('-bottom_left', 'date', '-bottom_right', 'netstat -p tcp') do
           sh "screencapture -m -tjpg #{task.name}"
         end
       end

@@ -87,7 +87,7 @@ class Project
       sleep 2
       block.call
     ensure
-      Process.kill('KILL', pid)
+      Process.kill('TERM', pid)
     end
 
     def disk_image_path

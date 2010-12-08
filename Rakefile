@@ -213,7 +213,7 @@ class Website
     private
 
     def configuration
-      YAML.load_file(configuration_path)
+      YAML.load_file(configuration_path) || {}
     end
   end
 end

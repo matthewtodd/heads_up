@@ -251,6 +251,7 @@ file Website.release_announcement_path => Project.disk_image_path do |task|
     file.puts "signature: #{Crypto.signature(Project.disk_image_path)}"
     file.puts "minimum_system_version: #{Project.minimum_system_version}"
     file.puts 'category: releases'
+    file.puts 'tag: app'
     file.puts '---'
     file.puts 'h3. Changelog'
     file.puts

@@ -1,6 +1,7 @@
 require 'bundler'
 require 'osx/cocoa'
 require 'tempfile'
+require 'uri'
 
 Bundler.require
 
@@ -92,7 +93,7 @@ class Project
 
     # TODO determine download url from somewhere?
     def disk_image_url
-      "https://github.com/downloads/matthewtodd/heads_up/#{disk_image_path}"
+      "https://matthewtodd.org/downloads/#{disk_image_path}"
     end
 
     def marketing_version
@@ -298,15 +299,14 @@ unless Git.has_tag?(Project.marketing_version)
     puts "Now, tweak the release notes, upload the disk image, commit the website, commit the project, tag #{Project.marketing_version} and push."
   end
 
-  desc "Upload the disk image to GitHub."
+  desc "Upload the disk image."
   task :upload => Project.disk_image_path do
-    Net::GitHub::Upload.new(
-      :login => `git config github.user`.chomp,
-      :token => `git config github.token`.chomp
-    ).upload(
-      :repos => Project.unix_name,
-      :file => Project.disk_image_path
-    )
+    uri_path    = URI.parse(Project.disk_image_url).path
+    remote_path = File.join('web/public', uri_path)
+
+    Net::SFTP.start('college') do |sftp|
+      sftp.upload! Project.disk_image_path, remote_path
+    end
   end
 end
 

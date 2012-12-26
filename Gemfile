@@ -1,6 +1,6 @@
 source :rubygems
 
 gem 'jekyll'
-gem 'net-github-upload', :require => 'net/github-upload'
+gem 'net-sftp', :require => 'net/sftp'
 gem 'rb-appscript', :require => 'appscript'
 gem 'RedCloth'

@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>{{ page.title }}</title>
+    <link rel="alternate" type="application/rss+xml" href="{{ site.url }}/feed.xml" />
+    <link rel="stylesheet" type="text/css" href="{{ site.url }}/stylesheets/screen.css" />
+    <link rel="icon" href="{{ site.url }}/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="{{ site.url }}/favicon.ico" type="image/x-icon" />
+  </head>
+
+  <body>
+    <div id="page">
+      <div id="sidebar">
+        <h2>Download</h2>
+        <div><a href="{{ site.latest_disk_image_url }}" class="download"><img src="{{ site.url }}/images/dmg.png" class="icon" />{{ site.latest_disk_image_name }}</a></div>
+
+        <h2>Screenshot</h2>
+        <div><a href="{{ site.url }}/images/screenshot.jpg"><img src="{{ site.url }}/images/screenshot-small.jpg" class="screenshot" /></a></div>
+      </div>
+
+      <div id="content">
+        {% if page.home %}
+          <h1>HeadsUp</h1>
+        {% else %}
+          <h1><a href="{{ site.url }}">HeadsUp</a></h1>
+        {% endif %}
+
+        <div id="about">
+          {% include about.html %}
+        </div>
+
+        <div id="posts">
+          {% if page.home %}
+            {% for post in site.posts limit:5 %}
+              <div class="post">
+                <h2><a href="{{ site.url }}{{ post.url }}">{{ post.title }}</a></h2>
+                <div class="tagline date">{{ post.date | date: "%A, %B %e, %Y." }}</div>
+                <div class="body">
+                  {% if post.categories contains 'releases' %}
+                    <p><a href="{{ post.dmg }}">Download {{ post.dmg_name }}</a>.</p>
+                  {% endif %}
+                  {{ post.content }}
+                </div>
+                <div class="comments">
+                  <p><a href="{{ site.url }}{{ post.url }}#disqus_thread">View Comments</a></p>
+                </div>
+              </div>
+            {% endfor %}
+          {% else %}
+            <div class="post">
+              <h2>{{ page.title }}</h2>
+              <div class="tagline date">{{ page.date | date: "%A, %B %e, %Y." }}</div>
+              <div class="body">
+                {% if page.categories contains 'releases' %}
+                  <p><a href="{{ site.url }}{{ page.dmg }}">Download {{ page.dmg_name }}</a>.</p>
+                {% endif %}
+                {{ content }}
+              </div>
+              <div class="comments">
+                <h3>Comments</h3>
+                <div id="disqus_thread"></div>
+                <script type="text/javascript" src="http://disqus.com/forums/heads-up/embed.js"></script>
+                <noscript><a href="http://heads-up.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+              </div>
+            </div>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+    //<![CDATA[
+    (function() {
+      var links = document.getElementsByTagName('a');
+      var query = '?';
+      for(var i = 0; i < links.length; i++) {
+        if(links[i].href.indexOf('#disqus_thread') >= 0) {
+          query += 'url' + i + '=' + encodeURIComponent(links[i].href) + '&';
+        }
+      }
+      document.write('<script charset="utf-8" type="text/javascript" src="http://disqus.com/forums/heads-up/get_num_replies.js' + query + '"></' + 'script>');
+    })();
+    //]]>
+    </script>
+  </body>
+</html>

@@ -1,0 +1,25 @@
+---
+title: HeadsUp 0.1.0
+layout: default
+dmg: http://matthewtodd.org/downloads/HeadsUp-0.1.0.dmg
+dmg_name: HeadsUp-0.1.0.dmg
+version: 0.1.0.20090129093126.d91f99af6fa5bdf488fa8b6d51bab733fcbbd5eb
+short_version: 0.1.0
+length: 292052
+signature: MCwCFCbk+W/hjHa8v1IMnuwW7nqLeqL+AhRHcf4AkvvEkR4Sgbx5GtS+D0/a/g==
+minimum_system_version: 10.4.11
+category: releases
+tag: prefPane
+---
+
+Gosh, I've had a lot of fun getting this first release out. I'd love to hear if you decide to give it a try!
+
+h3. Features
+
+* Two transparent, desktop-level windows to display text.
+* Update windows every minute.
+* Re-position windows when display resolution changes.
+* Preference pane for settings.
+* Start/Stop windowing app from preference pane.
+* Start at Login option.
+* Sparkle-enabled updates.

@@ -1,0 +1,21 @@
+---
+title: HeadsUp 0.2.2
+layout: default
+dmg: http://matthewtodd.org/downloads/HeadsUp-0.2.2.dmg
+dmg_name: HeadsUp-0.2.2.dmg
+version: 0.2.2.20090225063838.2f95b9fc
+short_version: 0.2.2
+length: 352663
+signature: MC0CFFWhTyIv9wfcP++xAZWiid0uhN2DAhUAufy38R23giyIRJcJpflSri7mzPU=
+minimum_system_version: 10.4.11
+category: releases
+tag: prefPane
+---
+I made an icon!
+
+And strings containing tabs should be displayed properly now, without awkward line-wrapping.
+
+h3. Features
+
+* An icon!
+* Handle tabs gracefully.

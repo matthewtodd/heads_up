@@ -1,0 +1,34 @@
+---
+layout: nil
+---
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"  xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>HeadsUp</title>
+    <link>{{ site.url }}/feed.xml</link>
+    <description>News and releases, with links to updates.</description>
+    <pubDate>{{ site.time | date: "%a, %d %b %Y %H:%M:%S %z" }}</pubDate>
+    {% for post in site.categories['releases'] %}
+      {% if post.tags contains 'app' %}
+        <item>
+          <title>{{ post.title }}</title>
+          <link>{{ site.url }}{{ post.url }}</link>
+          <description>{{ post.content | xml_escape }}</description>
+          {% for category in post.categories %}
+            <category>{{ category }}</category>
+          {% endfor %}
+          <guid isPermalink="false">tag:matthewtodd.github.com/heads_up,2009:{{ post.id }}</guid>
+          <pubDate>{{ post.date | date: "%a, %d %b %Y %H:%M:%S %z" }}</pubDate>
+          <sparkle:minimumSystemVersion>{{ post.minimum_system_version }}</sparkle:minimumSystemVersion>
+          <enclosure url="{{ post.dmg }}"
+            length="{{ post.length }}"
+            type="application/octet-stream"
+            sparkle:dsaSignature="{{ post.signature }}"
+            sparkle:shortVersionString="{{ post.short_version }}"
+            sparkle:version="{{ post.version }}"
+            />
+        </item>
+      {% endif %}
+    {% endfor %}
+  </channel>
+</rss>

@@ -1,0 +1,14 @@
+---
+title: HeadsUp 0.2.1
+layout: default
+dmg: http://matthewtodd.org/downloads/HeadsUp-0.2.1.dmg
+dmg_name: HeadsUp-0.2.1.dmg
+version: 0.2.1.20090203175202.a2baa2de
+short_version: 0.2.1
+length: 286970
+signature: MCwCFAgCeP+BdPrFFtazaVo9kwplm4BiAhQCvrU3LC8WOLeFce4d0ndCM1cKXw==
+minimum_system_version: 10.4.11
+category: releases
+tag: prefPane
+---
+This is a quick bugfix release. Thanks to "Michael Hale":http://github.com/mikehale, HeadsUp now runs on Leopard as well as Tiger. (I'll upgrade one of these days...)

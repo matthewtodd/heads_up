@@ -1,0 +1,16 @@
+---
+title: HeadsUp 0.2.3
+layout: default
+dmg: http://matthewtodd.org/downloads/HeadsUp-0.2.3.dmg
+dmg_name: HeadsUp-0.2.3.dmg
+version: 0.2.3.20100105184720.67a1ec8f
+short_version: 0.2.3
+length: 306424
+signature: MC0CFQCLDefiAuo7EAVICtJztiC2pIYg1wIUNyOxQ8KNKf0eA7A9fQtjbC8zPik=
+minimum_system_version: 10.4.11
+category: releases
+tag: prefPane
+---
+h3. Changelog
+
+* Snow Leopard compatibility

@@ -190,7 +190,7 @@ end
 class Website
   class << self
     def configuration_path
-      'website/_config.yml'
+      'docs/_config.yml'
     end
 
     def configure(options)
@@ -200,15 +200,15 @@ class Website
     end
 
     def release_announcement_path
-      "website/_posts/#{Date.today.strftime('%Y-%m-%d')}-version-#{Project.marketing_version}.textile"
+      "docs/_posts/#{Date.today.strftime('%Y-%m-%d')}-version-#{Project.marketing_version}.textile"
     end
 
     def screenshot_path
-      'website/images/screenshot.jpg'
+      'docs/images/screenshot.jpg'
     end
 
     def small_screenshot_path
-      'website/images/screenshot-small.jpg'
+      'docs/images/screenshot-small.jpg'
     end
 
     private
@@ -325,7 +325,7 @@ desc 'See how the GitHub Pages will look.'
 task :website do
   pid = fork do
     Dir.mktmpdir do |path|
-      exec 'jekyll', 'website', path, '--auto', '--server', '3000', '--url', 'http://localhost:3000'
+      exec 'jekyll', 'docs', path, '--auto', '--server', '3000', '--url', 'http://localhost:3000'
     end
   end
 
